@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>四柱推命鑑定システム</title>
+  <style>
+    :root{--paper:#f7f1e6;--ink:#171512;--muted:#766b5c;--line:rgba(23,21,18,.25);--thin:rgba(23,21,18,.12);--red:#b93425;--red2:#842219;--blue:#1877bd}*{box-sizing:border-box}body{margin:0;color:var(--ink);background:linear-gradient(90deg,rgba(23,21,18,.035) 1px,transparent 1px),linear-gradient(180deg,rgba(23,21,18,.025) 1px,transparent 1px),linear-gradient(140deg,var(--paper),#fffcf5 52%,#eadfce);background-size:28px 28px,28px 28px,auto;font-family:"Yu Mincho","Hiragino Mincho ProN","Yu Gothic",Meiryo,serif}main{width:min(1040px,calc(100% - 28px));margin:auto;padding:32px 0 56px}.system{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.75fr);gap:16px;margin-bottom:24px}.box,.section{border:1px solid var(--line);background:rgba(255,250,241,.88);padding:18px;box-shadow:0 14px 30px rgba(23,21,18,.07)}h1{margin:0;font-size:clamp(36px,6vw,64px);line-height:1.08;color:#51483d}h2{margin:0 0 14px;font-family:"Yu Gothic",Meiryo,sans-serif;color:var(--red2);font-size:22px}.profile{font-family:"Yu Gothic",Meiryo,sans-serif;font-size:clamp(15px,2.4vw,22px);line-height:1.8}.top{display:grid;grid-template-columns:82px 1fr;gap:18px;align-items:center;margin-bottom:22px}.seal{width:82px;aspect-ratio:1;display:grid;place-items:center;border:2px solid var(--red);color:var(--red);font-size:34px;font-weight:900;background:rgba(255,250,241,.65)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.field{display:grid;gap:5px;font-family:"Yu Gothic",Meiryo,sans-serif;color:var(--muted);font-size:12px;font-weight:800}.full{grid-column:1/-1}input,select,textarea{width:100%;border:1px solid var(--line);background:#fffdf8;color:var(--ink);padding:10px 11px;font:inherit}textarea{min-height:104px;resize:vertical;line-height:1.6}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}button{border:1px solid var(--red);background:var(--red);color:#fffaf1;padding:10px 14px;font:inherit;font-weight:900;cursor:pointer}.secondary{background:rgba(255,250,241,.86);color:var(--red2)}.sheet{border:2px solid var(--ink);background:rgba(255,250,241,.9);overflow:hidden}table{width:100%;border-collapse:collapse;font-family:"Yu Gothic",Meiryo,sans-serif;table-layout:fixed}th,td{border:2px solid var(--ink);text-align:center;padding:10px 6px;vertical-align:middle}th{font-size:clamp(15px,3vw,26px)}.blue{color:var(--blue);font-weight:900}.red{color:var(--red);font-weight:900}.ganzhi{font-size:clamp(20px,4vw,30px);display:block}.element{font-size:clamp(12px,2.1vw,17px);display:block}.copy{margin:18px 0;border:2px solid var(--red);background:rgba(185,52,37,.08);padding:18px;text-align:center;font-family:"Yu Gothic",Meiryo,sans-serif;font-size:clamp(21px,4vw,34px);font-weight:900}.reading{font-family:"Yu Gothic",Meiryo,sans-serif;font-size:17px;line-height:2}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.card{border:1px solid var(--thin);background:rgba(255,255,255,.38);padding:15px;font-family:"Yu Gothic",Meiryo,sans-serif}.card h3{margin:0 0 8px;color:var(--red2)}.card p,.card li{font-size:15px;line-height:1.85}.saved{display:grid;gap:8px;max-height:220px;overflow:auto}.saved-item{border:1px solid var(--thin);background:rgba(255,255,255,.44);padding:10px;text-align:left;color:var(--ink)}.result{margin-top:12px;border-left:3px solid var(--red);background:rgba(185,52,37,.07);padding:12px;font-family:"Yu Gothic",Meiryo,sans-serif;line-height:1.75}.section{margin-top:24px}@media(max-width:760px){.system,.cards,.grid{grid-template-columns:1fr}.top{grid-template-columns:68px 1fr}.seal{width:68px;font-size:28px}th,td{border-width:1.5px;padding:8px 4px}.section,.box{padding:15px}}
+  </style>
+</head>
+<body>
+<main>
+  <section class="system">
+    <div class="box">
+      <h2>鑑定入力</h2>
+      <div class="grid">
+        <label class="field">名前<input id="clientName" value="内山文雄"></label>
+        <label class="field">性別<select id="clientGender"><option selected>男性</option><option>女性</option><option>その他</option></select></label>
+        <label class="field">生年月日<input id="birthDate" type="date" value="1985-09-18"></label>
+        <label class="field">出生時刻<input id="birthTime" type="time" value="13:12"></label>
+        <label class="field full">出生地<input id="birthPlace" value="千葉"></label>
+        <label class="field full">鑑定メモ<textarea id="readingMemo" placeholder="相談内容、次回見るポイント、鑑定中の気づき"></textarea></label>
+      </div>
+      <div class="actions"><button id="applyReading">鑑定に反映</button><button id="saveReading">鑑定結果を保存</button><button class="secondary" id="clearForm">入力を戻す</button></div>
+      <div class="result" id="systemNotice">入力内容を反映し、メモ付きで保存できます。</div>
+    </div>
+    <div class="box">
+      <h2>保存・相性</h2>
+      <div class="saved" id="savedReadings"></div>
+      <div class="grid" style="margin-top:14px">
+        <label class="field">相手の名前<input id="partnerName" placeholder="相手の名前"></label>
+        <label class="field">相手の性別<select id="partnerGender"><option selected>未指定</option><option>男性</option><option>女性</option><option>その他</option></select></label>
+        <label class="field">相手の生年月日<input id="partnerDate" type="date"></label>
+        <label class="field">相手の出生時刻<input id="partnerTime" type="time"></label>
+      </div>
+      <div class="actions"><button id="checkCompatibility">相性を見る</button><button class="secondary" id="deleteSelected">選択中を削除</button></div>
+      <div class="result" id="compatibilityResult">相手の情報を入れると相性メモを表示します。</div>
+    </div>
+  </section>
+
+  <header class="top"><div class="seal">庚</div><div><h1 id="titleName">内山文雄 様　鑑定結果</h1><p class="profile" id="profileLine">1985年 09月 18日 13:12　水曜日　千葉　男性</p></div></header>
+
+  <div class="sheet"><table><thead><tr><th>天中殺</th><th>時柱</th><th>日柱</th><th>月柱</th><th>年柱</th><th></th></tr></thead><tbody>
+    <tr><td class="blue" rowspan="5">子丑</td><td><span class="element">(-水)</span><span class="ganzhi blue">癸 未</span><span class="element">(-土)</span></td><td><span class="element">(+金)</span><span class="ganzhi blue">庚 申</span><span class="element">(+金)</span></td><td><span class="element">(-木)</span><span class="ganzhi blue">乙 酉</span><span class="element">(-金)</span></td><td><span class="element">(-木)</span><span class="ganzhi blue">乙 丑</span><span class="element">(-土)</span></td><td><b>干支</b></td></tr>
+    <tr><td class="blue">乙</td><td class="blue">戊</td><td class="blue">庚</td><td class="blue">辛</td><td><b>蔵干</b></td></tr>
+    <tr><td class="blue">傷官</td><td></td><td class="blue">正財</td><td class="blue">正財</td><td><b>通変星</b></td></tr>
+    <tr><td class="blue">正財</td><td class="red">偏印</td><td class="blue">比肩</td><td class="blue">劫財</td><td><b>蔵干通変星</b></td></tr>
+    <tr><td class="blue">冠帯</td><td class="blue">建禄</td><td class="blue">帝旺</td><td class="blue">墓</td><td><b>十二運星</b></td></tr>
+  </tbody></table></div>
+
+  <div class="copy">あなたは<span class="red">未来を鍛える戦略家</span>です</div>
+
+  <section class="section"><h2>命式の解説</h2><div class="reading"><p>日柱が <b class="blue">庚申</b> のあなたは、月令酉で帝旺、日支申で建禄に乗る、かなり強い庚金の命式です。構造を見抜き、勝ち筋を切り出し、現実の形に落とし込む力が出やすい配置です。</p><p>年干・月干に <b class="blue">乙の正財</b> が並ぶため、人・信用・成果・お金・現実化と縁が深い命式です。強い判断力を、誰かの役に立つ仕組みへ変換できるほど運が開きます。</p><p>日支蔵干の <b class="red">偏印</b> は、研究者気質、直感、異分野接続のエンジンです。AI、教育、コミュニティ、占術、企画、防災、遊びのような領域をつなぐほど命式が動き出します。</p></div></section>
+
+  <section class="section"><h2>一般向けアドバイス</h2><div class="cards"><article class="card"><h3>健康運</h3><p>金が強い命式なので、冷え・緊張・こわばりをためないこと。温める、歩く、汗をかく、朝日を浴びることで巡りが整います。</p></article><article class="card"><h3>恋愛運</h3><p>信頼できる相手、現実を一緒に作れる相手と相性が良いです。正しさより、安心して話せる余白を作るほど良縁化します。</p></article><article class="card"><h3>仕事運</h3><p>企画、戦略、事業開発、AI、教育、占術、コミュニティ運営に適性。判断力を仕組みや商品に変えるほど強いです。</p></article><article class="card"><h3>ラッキーカラー・食材</h3><p>朱、赤、橙、深緑が吉。生姜、ねぎ、青菜、発酵食品、温かいスープを増やし、冷たいものや甘いものの習慣化は控えめに。</p></article></div></section>
+
+  <section class="section"><h2>専門判定</h2><div class="cards"><article class="card"><h3>身旺・身強</h3><p>庚日主が酉月に生まれ、日支申に通根。申酉丑で金気が強く、月令得令・通根強。</p></article><article class="card"><h3>格局・用神</h3><p>月刃格・羊刃格。用神は丁火、調候に丙火。喜神は甲乙木。金土の過多に注意。</p></article><article class="card"><h3>干合・支合</h3><p>乙庚干合が二重。支合はなし。酉丑金局半会、申酉西方金半方、丑未冲を重視。</p></article><article class="card"><h3>宿命中殺</h3><p>庚申の天中殺は子丑。年支丑により生年中殺成立。生月中殺・生日中殺は不成立。</p></article><article class="card"><h3>八専干支</h3><p>日柱庚申は八専干支。専門性、集中力、一芸突破、判断力の強さとして読む。</p></article><article class="card"><h3>異常干支</h3><p>命式本体は異常干支なし。ただし大運辛巳は暗合異常干支系として後天運で重視。</p></article></div></section>
+</main>
+<script>
+const key="suimei-reading-records";let selected=null;const $=id=>document.getElementById(id);const f={name:$("clientName"),gender:$("clientGender"),date:$("birthDate"),time:$("birthTime"),place:$("birthPlace"),memo:$("readingMemo"),notice:$("systemNotice"),saved:$("savedReadings"),partnerName:$("partnerName"),partnerGender:$("partnerGender"),partnerDate:$("partnerDate"),partnerTime:$("partnerTime"),compat:$("compatibilityResult")};function wd(d){if(!d)return"";return["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"][new Date(d+"T00:00:00").getDay()]}function fd(d){if(!d)return"生年月日未入力";const [y,m,day]=d.split("-");return `${y}年 ${m}月 ${day}日`}function rec(){return{id:selected||String(Date.now()),savedAt:new Date().toISOString(),name:f.name.value.trim()||"無記名",gender:f.gender.value,date:f.date.value,time:f.time.value,place:f.place.value.trim()||"出生地未入力",memo:f.memo.value.trim()}}function list(){try{return JSON.parse(localStorage.getItem(key)||"[]")}catch{return[]}}function setList(v){localStorage.setItem(key,JSON.stringify(v))}function apply(){const r=rec();$("titleName").textContent=`${r.name} 様　鑑定結果`;$("profileLine").textContent=`${fd(r.date)} ${r.time||"時刻未入力"}　${wd(r.date)}　${r.place}　${r.gender}`;f.notice.textContent=`${r.name}さんの入力内容を鑑定書に反映しました。命式表は現在の庚申サンプルを表示中です。`}function render(){const l=list();f.saved.innerHTML="";if(!l.length){f.saved.innerHTML='<div class="saved-item"><strong>保存された鑑定はまだありません</strong><span>鑑定結果を保存するとここに並びます。</span></div>';return}l.forEach(r=>{const b=document.createElement("button");b.type="button";b.className="saved-item";b.innerHTML=`<strong>${r.name} 様</strong><span>${fd(r.date)} ${r.time||""} / ${r.place||""}<br>${r.memo?r.memo.slice(0,44):"メモなし"}</span>`;b.onclick=()=>{selected=r.id;f.name.value=r.name||"";f.gender.value=r.gender||"男性";f.date.value=r.date||"";f.time.value=r.time||"";f.place.value=r.place||"";f.memo.value=r.memo||"";apply();render()};f.saved.appendChild(b)})}function save(){const r=rec();const n=list().filter(x=>x.id!==r.id);n.unshift(r);setList(n.slice(0,20));selected=r.id;render();f.notice.textContent=`${r.name}さんの鑑定結果とメモを保存しました。`}function del(){if(!selected){f.notice.textContent="削除する鑑定を保存一覧から選んでください。";return}setList(list().filter(x=>x.id!==selected));selected=null;render();f.notice.textContent="選択していた鑑定を削除しました。"}function reset(){selected=null;f.name.value="内山文雄";f.gender.value="男性";f.date.value="1985-09-18";f.time.value="13:12";f.place.value="千葉";f.memo.value="";apply();render()}function compat(){const p=f.partnerName.value.trim()||"相手";const r=rec();const dt=f.partnerDate.value?`${fd(f.partnerDate.value)}生まれ`:"生年月日未入力";f.compat.innerHTML=`<strong>${r.name}さん × ${p}さん</strong><br>${p}さんは${dt}・${f.partnerGender.value}。現段階では詳細命式計算前の相性メモです。<br>${r.name}さんは庚金身旺で判断力が強いため、相性では「相手が安心して話せる余白」を作るほど良縁化します。次段階では相手の四柱、日主、通変星、干合・支合・冲を計算して相性表を自動生成できます。`}$("applyReading").onclick=apply;$("saveReading").onclick=save;$("clearForm").onclick=reset;$("deleteSelected").onclick=del;$("checkCompatibility").onclick=compat;render();apply();
+</script>
+</body>
+</html>
