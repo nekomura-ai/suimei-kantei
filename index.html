@@ -60,9 +60,19 @@ main{width:min(1180px,100% - 28px)}
  .report-guidance{padding:2mm;font-size:8pt;line-height:1.6}.report-guidance p{margin-bottom:1mm}.report-guidance .guidance-score{margin-bottom:1.5mm}.report-manual h4{padding:1.5mm 2mm 0;font-size:7pt}
 .report-sheet #reportMemo{font-size:8pt;padding:1.5mm 2mm;max-height:19mm;overflow:hidden}
  .report-block{margin-bottom:3mm}.report-sheet .report-block h2{font-size:12pt;padding:1mm 2mm}.report-block h2 small,.report-sheet #reportDirection{font-size:8pt}
- .report-sheet .data-table th,.report-sheet .data-table td{font-size:7.5pt;line-height:1.25;padding:.8mm .5mm!important}.report-sheet .data-table th,.report-sheet #yearLuckTable td:last-child{font-size:7pt}
+ .report-sheet .data-table th,.report-sheet .data-table td{font-size:7pt;line-height:1.2;padding:.45mm .5mm!important}.report-sheet .data-table th,.report-sheet #yearLuckTable td:last-child{font-size:7pt}
  .report-sheet .report-start{font-size:7pt;line-height:1.5;margin:1mm 0}.report-key{font-size:7pt;padding:1.5mm 2mm;line-height:1.5}.report-key b{font-size:8pt}
  .report-footer{margin-top:3mm;padding-top:1.5mm;font-size:7pt}
+}
+
+
+.report-insights{border:1px solid #333;font-family:"Yu Gothic",Meiryo,sans-serif}
+.report-insights dl{margin:0;padding:0 9px}.report-insights dl>div{display:grid;grid-template-columns:80px 1fr;gap:8px;border-bottom:1px dotted #bbb;padding:6px 0;font-size:11px;line-height:1.6}
+.report-insights dl>div:last-child{border:0}.report-insights dt{font-weight:700}.report-insights dd{margin:0;overflow-wrap:anywhere}
+.insight-caption{font-size:9px;line-height:1.6;color:#666;margin:0;padding:5px 9px 8px;border-top:1px solid #ddd}
+@media print{
+ .report-insights dl{padding:0 2mm}.report-insights dl>div{grid-template-columns:19mm 1fr;gap:1.5mm;padding:.8mm 0;font-size:7pt;line-height:1.45}
+ .insight-caption{font-size:6pt;line-height:1.4;padding:1mm 2mm}
 }
 
 </style>
@@ -110,11 +120,17 @@ main{width:min(1180px,100% - 28px)}
 <div class="report-right">
 <section class="report-block"><h2>歳運 <small>一年ごとの流れ</small></h2><table class="data-table" id="yearLuckTable"></table></section>
 <section class="report-block"><h2>大運 <small>十年ごとの歩み</small><span id="reportDirection"></span></h2><table class="data-table" id="daiunTable"></table><p id="reportStart" class="report-start">生年月日と性別を入力してください。</p></section>
-<div class="report-key"><b>鑑定の見方</b><p>命式は自分の傾向を見つめるための手がかりです。運勢の記号は簡易判定であり、出来事や結果を保証するものではありません。</p><p>立運は出生日時から前後の節入りまでを3日＝1年で換算。節入り時刻は天文近似計算です。</p></div>
+<section class="report-insights"><h3>命式のポイント</h3>
+<dl><div><dt>生月中殺</dt><dd id="reportMonthExclusion">未算出</dd></div>
+<div><dt>生年中殺</dt><dd id="reportYearExclusion">未算出</dd></div>
+<div><dt>律音</dt><dd id="reportRepeatedPillar">未算出</dd></div>
+<div><dt>通根</dt><dd id="reportRoot">未算出</dd></div>
+<div><dt>身強・身弱</dt><dd id="reportStrength">未算出</dd></div></dl>
+<p class="insight-caption">律音は命式内を照合。通根は日干と同じ五行の蔵干を照合。身強・身弱は月令と支えからの簡易判定です。</p></section>
 </div></div>
 <footer class="report-footer"><span>四柱推命鑑定システム</span><span>自分を知り、これからの選択へ。</span></footer>
 </article></div>
-<details class="calculation-detail"><summary>立運の計算根拠・前提を見る</summary><p class="note" id="daiunNote">大運は日本標準時の出生日時と節入り時刻から計算します。</p></details>
+<details class="calculation-detail"><summary>立運・命式の判定根拠を見る</summary><p class="note" id="natalInsightDetails">命式を入力すると判定根拠を表示します。</p><p class="note" id="daiunNote">大運は日本標準時の出生日時と節入り時刻から計算します。</p></details>
 <div class="copy" id="essenceCopy">生年月日を入力すると<span class="red">命式が自動生成</span>されます</div>
 
 <section class="section"><h2>命式の解説</h2><div id="reading"><p>生年月日と出生時刻を入力すると、詳細鑑定がここへ反映されます。</p></div></section>
@@ -232,7 +248,7 @@ function luckTables(c){
  }
  $("yearLuckTable").innerHTML=yrows;labelDataTable("daiunTable");labelDataTable("yearLuckTable");
 }
-function setAdvanced(c){const ps=[c.pillars.hour,c.pillars.day,c.pillars.month,c.pillars.year].filter(Boolean),texts=ps.map(p=>p.text),brs=ps.map(p=>p.branch);const mt=TW[c.day.stem][c.month.branch],strong=["長生","冠帯","建禄","帝旺"].includes(mt);$("strength").textContent=strong?"身旺・身強寄り":"中庸から身弱寄り";$("strengthNote").textContent=`月支${c.month.branch}が${mt}、日支${c.day.branch}が${c.pillars.day.twelve}。通根は ${brs.includes(c.day.branch)?"日支に根あり":"弱め"} と見ます。`;$("kakyoku").textContent=`${c.pillars.month.hiddenStar}格傾向`;$("kakyokuNote").textContent="月支蔵干の通変星を中心に見る簡易格局です。精密には透干、月令、寒暖燥湿を合わせます。";$("guardian").textContent=EP[c.day.stem][0]==="金"?"火・水を調整に使う":"月令に応じて調整";$("guardianNote").textContent="守護神は日主と季節の偏りを整える五行です。ここでは簡易表示しています。";$("seasonState").textContent=`月支${c.month.branch} / 十二運${mt}`;$("seasonStateNote").textContent="旺相死囚休は季節に対する五行の勢いを見る判断です。";$("relations").textContent=relation(ps);$("tenchuNote").textContent=c.tenchu;$("tenchuDetail").textContent=`生年冲殺・生月冲殺・生日冲殺は天中殺支と各柱支の接触で確認。日居天中殺は該当干支を別途確認します。`;const abnormal=["甲戌","乙亥","丙戌","丁亥","戊戌","己亥","庚子","辛亥","壬子","癸亥"]; $("abnormal").textContent=texts.filter(x=>abnormal.includes(x)).join("・")||"目立つ該当なし";$("shinsatsu").textContent="羊刃・天乙貴人などは詳細ロジック拡張対象";$("ritsunon").textContent="律音・納音は大運/歳運との一致で確認";$("ritsunonNote").textContent="八専干支は壬子から癸亥までの特定干支群を確認します。";$("advancedTerms").textContent="八相局・宿命大半会は算命学寄り用語として参考表示";}
+function setAdvanced(c){const ps=[c.pillars.hour,c.pillars.day,c.pillars.month,c.pillars.year].filter(Boolean),texts=ps.map(p=>p.text),brs=ps.map(p=>p.branch);const mt=TW[c.day.stem][c.month.branch],insight=natalInsights(c);$("strength").textContent=insight.strength;$("strengthNote").textContent=insight.seasonText+"。通根："+(insight.roots.map(p=>p.name+p.branch+"［"+p.stems.join("・")+"］").join("、")||"同五行の根なし")+"。合化や調候などを含む精密判定は行っていません。";$("kakyoku").textContent=`${c.pillars.month.hiddenStar}格傾向`;$("kakyokuNote").textContent="月支蔵干の通変星を中心に見る簡易格局です。精密には透干、月令、寒暖燥湿を合わせます。";$("guardian").textContent=EP[c.day.stem][0]==="金"?"火・水を調整に使う":"月令に応じて調整";$("guardianNote").textContent="守護神は日主と季節の偏りを整える五行です。ここでは簡易表示しています。";$("seasonState").textContent=`月支${c.month.branch} / 十二運${mt}`;$("seasonStateNote").textContent="旺相死囚休は季節に対する五行の勢いを見る判断です。";$("relations").textContent=relation(ps);$("tenchuNote").textContent=c.tenchu;$("tenchuDetail").textContent=`生年中殺・生月中殺・生日中殺は天中殺支と各柱支の接触で確認。日居天中殺は該当干支を別途確認します。`;const abnormal=["甲戌","乙亥","丙戌","丁亥","戊戌","己亥","庚子","辛亥","壬子","癸亥"]; $("abnormal").textContent=texts.filter(x=>abnormal.includes(x)).join("・")||"目立つ該当なし";$("shinsatsu").textContent="羊刃・天乙貴人などは詳細ロジック拡張対象";$("ritsunon").textContent=insight.repeats.length?"命式内の律音："+insight.repeats.join("、"):"命式内の律音：該当なし";$("ritsunonNote").textContent="八専干支は壬子から癸亥までの特定干支群を確認します。";$("advancedTerms").textContent="八相局・宿命大半会は算命学寄り用語として参考表示";}
 function termCard(t,plain,reading){return `<div class="card"><p><b>${t}</b><br><span class="note">意味：${plain}</span><br>この命式では：${reading}</p></div>`}
 function renderRequestedSections(c){const ps=[["時柱",c.pillars.hour],["日柱",c.pillars.day],["月柱",c.pillars.month],["年柱",c.pillars.year]].filter(x=>x[1]);const texts=ps.map(x=>x[1].text),brs=ps.map(x=>x[1].branch),stemList=ps.map(x=>x[1].stem);$("starDetailCards").innerHTML=ps.map(([name,p])=>termCard(name,"柱は人生の担当領域です。年は家系、月は社会、日は本人と夫婦、時は晩年や子ども縁を見ます。",`干支は <strong>${p.text}</strong>、蔵干は <strong>${p.hidden}</strong>、通変星は <strong>${p.stemStar||"日主"}</strong>、蔵干通変星は <strong>${p.hiddenStar}</strong>、十二運星は <strong>${p.twelve}</strong>。`)).join("")+termCard("日支蔵干","日支は内面・配偶者宮・安心感の癖を読む場所です。ここを間違えると鑑定の芯がずれます。",`日支${c.day.branch}の蔵干は <strong>${c.pillars.day.hidden}</strong>、蔵干通変星は <strong>${c.pillars.day.hiddenStar}</strong>。`);
 const stemComb=[["甲","己","甲己干合"],["乙","庚","乙庚干合"],["丙","辛","丙辛干合"],["丁","壬","丁壬干合"],["戊","癸","戊癸干合"]].filter(([a,b])=>stemList.includes(a)&&stemList.includes(b)).map(x=>x[2]);
@@ -243,7 +259,7 @@ const punish=[["子","卯","子卯刑"],["寅","巳","寅巳刑"],["巳","申","
 const half=[["申","子","辰","申子辰の半会・三合水局"],["亥","卯","未","亥卯未の半会・三合木局"],["寅","午","戌","寅午戌の半会・三合火局"],["巳","酉","丑","巳酉丑の半会・三合金局"]].filter(([a,b,d])=>[a,b,d].filter(x=>brs.includes(x)).length>=2).map(x=>x[3]);
 $("relationDetailCards").innerHTML=[termCard("干合","天干同士が結びつき、考え方・才能・人間関係の化学反応を起こす見方です。",stemComb.join("・")||"目立つ干合なし"),termCard("支合","地支同士が結びつき、現実面の縁・協力関係・安心感を作る見方です。",branchComb.join("・")||"目立つ支合なし"),termCard("冲","地支同士がぶつかり、変化・移動・刺激・衝突として出やすい見方です。",clash.join("・")||"目立つ冲なし"),termCard("刑","こじれ・癖・内側の葛藤として出やすい見方です。悪いだけでなく専門性にもなります。",punish.join("・")||"目立つ刑なし"),termCard("害","見えにくい不一致・気疲れ・すれ違いを読む見方です。",harm.join("・")||"目立つ害なし"),termCard("半会・三合","同じ方向へ力が集まり、才能や環境がまとまる見方です。",half.join("・")||"目立つ半会・三合なし")].join("");
 const tenchuBranches=c.tenchu.split("");const tenchuHit=(p)=>p&&tenchuBranches.includes(p.branch)?"該当":"該当なし";const nichii=["甲戌","乙亥","庚子","辛亥","壬午","癸巳"].includes(c.day.text);
-$("tenchuCards").innerHTML=[termCard("天中殺","運がない時期ではなく、枠を作りすぎず整理・学び・準備に向く領域です。",c.tenchu),termCard("生年冲殺","年柱が天中殺に触れる見方。家系・親・社会背景との距離感に出ます。",tenchuHit(c.pillars.year)),termCard("生月冲殺","月柱が天中殺に触れる見方。仕事・社会的役割・家系から受ける役目に出ます。",tenchuHit(c.pillars.month)),termCard("生日冲殺","日柱が天中殺に触れる見方。自分の核・夫婦・生活基盤に出ます。",tenchuHit(c.pillars.day)),termCard("日居天中殺","日柱そのものに特殊な空亡性を見る考え方です。現実の枠に収まりにくい感性として読みます。",nichii?"該当":"該当なし")].join("");
+$("tenchuCards").innerHTML=[termCard("天中殺","運がない時期ではなく、枠を作りすぎず整理・学び・準備に向く領域です。",c.tenchu),termCard("生年中殺","年柱が天中殺に触れる見方。家系・親・社会背景との距離感に出ます。",tenchuHit(c.pillars.year)),termCard("生月中殺","月柱が天中殺に触れる見方。仕事・社会的役割・家系から受ける役目に出ます。",tenchuHit(c.pillars.month)),termCard("生日冲殺","日柱が天中殺に触れる見方。自分の核・夫婦・生活基盤に出ます。",tenchuHit(c.pillars.day)),termCard("日居天中殺","日柱そのものに特殊な空亡性を見る考え方です。現実の枠に収まりにくい感性として読みます。",nichii?"該当":"該当なし")].join("");
 const abnormalList=["甲戌","乙亥","丙戌","丁亥","戊戌","己亥","庚子","辛亥","壬子","癸亥"],kaigo=["庚辰","庚戌","壬辰","戊戌"],hassen=ps.filter(([,p])=>p.index>=48&&p.index<=59).map(([,p])=>p.text),ritsu=texts.filter((x,i)=>texts.indexOf(x)!==i),nacchin=clash.length?clash.join("・"):"大運・歳運との照合で確認",daihan=half.filter(x=>x.includes("半会")||x.includes("三合"));
 $("specialCards").innerHTML=[termCard("異常干支","普通の枠に収まりにくい感性・特殊能力・こだわりの強さを見る干支群です。",texts.filter(x=>abnormalList.includes(x)).join("・")||"該当なし"),termCard("魁罡","強い意志・勝負勘・極端さが出やすい特殊干支です。重複表示はせず一度だけ出します。",texts.filter(x=>kaigo.includes(x)).filter((x,i,a)=>a.indexOf(x)===i).join("・")||"該当なし"),termCard("吉凶神殺星","命式に付く補助的な星。性格や出来事の出方を補足します。",$("shinsatsu").textContent),termCard("律音","同じ干支が重なる現象。強調・再現・同じテーマの反復として読みます。",ritsu.length?ritsu.join("・"):"命式内では目立たず。大運・歳運との一致も確認対象。"),termCard("納音","干支が反対方向に響く現象。切り替え・反転・価値観の転換として読みます。",nacchin),termCard("八専干支","特定の干支群に入り、同じ質が濃く出やすい状態です。",hassen.join("・")||"該当なし"),termCard("八相局","算命学寄りの用語。五行の偏りや局の成立を大きな宿命構造として見ます。","参考確認"),termCard("宿命大半会","算命学寄りの用語。広がり・発展・人を巻き込む力として読みます。",daihan.join("・")||"明確な大半会は簡易確認では目立たず")].join("");
 $("kakyokuCards").innerHTML=[termCard("旺相死囚休","五行が季節からどれくらい力をもらえるかを見る判断です。",$("seasonState").textContent),termCard("格局","命式の型。社会でどの才能を中心に使うかを見る骨格です。",$("kakyoku").textContent),termCard("用神","命式の偏りを整えるために大事にしたい五行・働きです。",$("kakyokuNote").textContent),termCard("守護神","人生のバランスを守る助けになる五行です。",$("guardian").textContent+"。"+$("guardianNote").textContent),termCard("通根","天干が地支に根を持つか。才能が現実に根づくかを見る判断です。",$("strengthNote").textContent),termCard("身旺・身強","日主のエネルギーの強弱。強ければ出し方、弱ければ補い方が大切です。",$("strength").textContent)].join("");
@@ -271,13 +287,43 @@ function renderEnergyGuidance(c){
 }
 function renderManualMemo(text){$("reportMemo").textContent=text||"";$("reportManual").hidden=!text;}
 
+
+// 通根は月律分野表の「当日の代表蔵干」と分け、各支が内包する蔵干全体で照合する。
+const ROOT_STEMS={子:["癸"],丑:["己","癸","辛"],寅:["甲","丙","戊"],卯:["乙"],辰:["戊","乙","癸"],巳:["丙","戊","庚"],午:["丁","己"],未:["己","丁","乙"],申:["庚","壬","戊"],酉:["辛"],戌:["戊","辛","丁"],亥:["壬","甲"]};
+const PILLAR_NAMES={year:"年柱",month:"月柱",day:"日柱",hour:"時柱"};
+function natalInsights(c){
+ const entries=["year","month","day","hour"].filter(k=>c.pillars[k]).map(k=>({key:k,name:PILLAR_NAMES[k],...c.pillars[k]}));
+ const dayElement=EP[c.day.stem][0],seasonElement=EP[c.month.branch][0];
+ const roots=entries.map(p=>({...p,stems:ROOT_STEMS[p.branch].filter(stem=>EP[stem][0]===dayElement)})).filter(p=>p.stems.length);
+ const repeats=[];for(let i=0;i<entries.length;i++)for(let j=i+1;j<entries.length;j++)if(entries[i].text===entries[j].text)repeats.push(entries[i].name+"・"+entries[j].name+"（"+entries[i].text+"）");
+ const sameSeason=seasonElement===dayElement,seasonFeeds=MAKE[seasonElement]===dayElement;
+ const supportStems=entries.filter(p=>p.key!=="day"&&(EP[p.stem][0]===dayElement||MAKE[EP[p.stem][0]]===dayElement));
+ let strength="要総合判断";
+ if(((sameSeason||seasonFeeds)&&roots.length>0)||(roots.length>=2&&supportStems.length>=1))strength="身強寄り（簡易）";
+ else if(!sameSeason&&!seasonFeeds&&roots.length===0&&supportStems.length===0)strength="身弱寄り（簡易）";
+ const seasonText=sameSeason?"月支の五行が日干と同じ":seasonFeeds?"月支の五行が日干を生じる":"月支の五行は日干と同じ・生じる関係にない";
+ return {roots,repeats,strength,seasonText,supportStems,monthExclusion:c.tenchu.includes(c.month.branch),yearExclusion:c.tenchu.includes(c.year.branch),partial:!c.pillars.hour};
+}
+function renderNatalInsights(c){
+ const v=natalInsights(c),tail=v.partial?"／時柱未入力・暫定":"";
+ $("reportMonthExclusion").textContent=(v.monthExclusion?"該当":"該当なし")+"（月支"+c.month.branch+"／天中殺"+c.tenchu+"）";
+ $("reportYearExclusion").textContent=(v.yearExclusion?"該当":"該当なし")+"（年支"+c.year.branch+"）";
+ $("reportRepeatedPillar").textContent=(v.repeats.length?v.repeats.join("、"):"命式内：該当なし")+tail;
+ $("reportRoot").textContent=(v.roots.length?v.roots.map(p=>p.name+p.branch+"［"+p.stems.join("・")+"］").join("、"):"日干と同じ五行の根なし")+tail;
+ $("reportStrength").textContent=v.strength+tail;
+ $("natalInsightDetails").textContent="生月中殺・生年中殺は日柱から求めた天中殺の支と月支・年支を照合します。律音は同じ干支が命式の複数の柱にあるかを確認します（歳運・大運との律音はここには含めません）。通根は日干と同じ五行が地支の蔵干にあるかを確認します。"+v.seasonText+"。通根"+v.roots.length+"柱、日干以外の天干の生扶"+v.supportStems.length+"柱から"+v.strength+"としています。月支の同気・生扶と通根がそろう、または2柱以上の通根と天干の生扶がある場合に身強寄り、いずれの支えもない場合に身弱寄り、それ以外は要総合判断とする独自の簡易ルールです。合化・冲・根の深浅・調候・特殊格局は未評価で、最終判定には命式全体の検討が必要です。運勢エネルギーの合計とは別の指標です。";
+}
+
 function renderReportExtras(c,r){
+ renderNatalInsights(c);
  const counts={木:0,火:0,土:0,金:0,水:0};
  for(const p of Object.values(c.pillars).filter(Boolean)){counts[EP[p.stem][0]]++;counts[EP[p.branch][0]]++}
  $("reportElements").innerHTML=Object.entries(counts).map(([name,count])=>`<span>${name}<b>${count}</b></span>`).join("");
  renderEnergyGuidance(c);renderManualMemo(r.memo);
 }
 function clearReport(){
+ for(const id of ["reportMonthExclusion","reportYearExclusion","reportRepeatedPillar","reportRoot","reportStrength"])$(id).textContent="未算出";
+ $("natalInsightDetails").textContent="命式を入力すると判定根拠を表示します。";
  for(const k of ["hour","day","month","year"])for(const prefix of ["p","h","s","hs","u"])$(prefix+"-"+k).textContent="";
  $("tenchuCell").textContent="";$("yearLuckTable").innerHTML="";$("daiunTable").innerHTML="";
  $("reportDirection").textContent="";$("reportStart").textContent="生年月日と性別を入力してください。";
