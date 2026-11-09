@@ -17,6 +17,46 @@ button{background:#222;color:#fff;border:0;padding:10px 13px;font-weight:700}.se
 .chart th{font-size:clamp(18px,4.4vw,30px);height:58px}.side{width:17%}.pillar-col{width:14%}.label-col{width:26%}.kan{font-size:clamp(20px,5.4vw,34px);line-height:1.45}.small{display:block;font-size:clamp(12px,3.1vw,18px);color:#222}.blue{color:var(--blue)}.red{color:var(--red)}.row-label{font-size:clamp(14px,3.8vw,24px);font-weight:800}.tenchu{font-size:clamp(22px,5.8vw,34px);color:var(--blue)}
 .energy-box{margin:18px 0 8px;border:2px solid #222;padding:12px;text-align:center}.energy-box b{display:block;font-size:clamp(20px,5vw,30px);color:#222}.energy-box span{display:block;font-size:clamp(15px,3.6vw,22px);line-height:1.65;word-break:keep-all}.copy{margin:14px 0 28px;border:2px solid #222;padding:13px 14px;text-align:center;font-size:clamp(20px,5.3vw,30px);font-weight:800}.section{margin-top:30px}.section h2{font-size:clamp(24px,6vw,36px);margin:0 0 18px;font-weight:900}.section h2::before{content:"・ "}.section p,.section li{font-size:clamp(16px,4vw,23px);line-height:1.85}.section b,.section strong{color:var(--blue)}.term-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.term{border:1px solid #ddd;padding:12px;background:#fff}.term b{display:block;color:#222;font-size:18px;margin-bottom:5px}.term span{color:var(--blue);font-weight:800}.term-link{color:inherit;text-decoration:underline;text-underline-offset:3px}.note{color:#666;font-size:14px!important}.cards{display:grid;gap:12px}.card{border-top:1px solid #ddd;padding-top:12px}
 @media(max-width:520px){main{width:calc(100% - 18px)}.grid,.term-grid{grid-template-columns:1fr}.title{margin-top:14px}.title h1{font-size:clamp(28px,8.2vw,34px);white-space:nowrap;letter-spacing:0}.profile{font-size:16px;line-height:1.55}.chart{display:table;table-layout:fixed}.chart tr{display:table-row}.chart th,.chart td{display:table-cell;border-width:1.4px;padding:6px 2px}.side{width:17%}.pillar-col{width:14%}.label-col{width:26%}.row-label{font-size:13px;line-height:1.25}.small{font-size:11px;line-height:1.35}.kan{font-size:20px;line-height:1.35}.tenchu{font-size:22px}.energy-box{padding:10px 8px}.energy-box b{font-size:22px}.energy-box span{font-size:16px;line-height:1.55}.section p,.section li{font-size:17px}.data-table{border-collapse:separate;border-spacing:0 10px;table-layout:auto}.data-table tbody,.data-table tr,.data-table td{display:block;width:100%}.data-table tr:first-child{display:none}.data-table tr{border:1.6px solid #222;background:#fff}.data-table td{border:0!important;border-bottom:1px solid #ddd!important;text-align:left!important;padding:9px 10px!important;font-size:15px;line-height:1.55;white-space:normal;overflow-wrap:anywhere}.data-table td:last-child{border-bottom:0!important}.data-table td::before{content:attr(data-label);display:block;font-size:12px;font-weight:800;color:#666;margin-bottom:2px}.card p{overflow-wrap:anywhere}}
+
+/* 鑑定書：画面でも印刷でも、左に命式・右に歳運と大運。 */
+main{width:min(1180px,100% - 28px)}
+.report-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:28px 0 12px}.report-toolbar b{display:block;font-size:18px}.report-toolbar span{display:block;color:#666;font-size:12px;margin-top:5px}.report-toolbar button{white-space:nowrap;background:#fff;color:#222;border:1px solid #222}
+.report-scroll{overflow-x:auto;padding:2px 2px 16px;overscroll-behavior-x:contain}
+.report-sheet{box-sizing:border-box;width:1120px;min-width:1120px;background:#fff;border:1px solid #bbb;padding:24px 28px 16px;margin:auto;font-family:"Yu Mincho","Hiragino Mincho ProN","Noto Serif CJK JP",serif;color:#222}
+.report-heading{display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:18px}.report-heading h1{margin:0;font-size:34px;font-weight:700;letter-spacing:.22em}.report-heading p{position:absolute;right:0;bottom:0;font-family:"Yu Gothic",Meiryo,sans-serif;font-size:10px;color:#666;margin:0}
+.report-person{display:flex;align-items:center;gap:20px;border-top:2px solid #222;border-bottom:1px solid #222;padding:10px 0;margin-bottom:18px;min-height:46px}.report-person h2{margin:0;font-size:19px;min-width:150px}.report-person #profileLine{font-family:"Yu Gothic",Meiryo,sans-serif;font-size:12px;line-height:1.6}
+.report-columns{display:grid;grid-template-columns:1.04fr 1fr;gap:20px}.report-left,.report-right{min-width:0}.report-sheet .chart{width:100%;table-layout:fixed;border-collapse:collapse}.report-sheet .chart .side{width:14%}.report-sheet .chart .pillar-col{width:16%}.report-sheet .chart .label-col{width:22%}
+.report-sheet .chart th,.report-sheet .chart td{display:table-cell;border:1px solid #333;text-align:center;vertical-align:middle;padding:7px 3px}.report-sheet .chart th{height:36px;font-size:16px;letter-spacing:.06em;background:#f7f6f2}.report-sheet .chart tr:nth-child(2) td{height:106px}.report-sheet .chart tr:nth-child(3) td{height:52px}.report-sheet .chart tr:nth-child(n+4) td{height:72px}.report-sheet .chart .kan{font-size:25px;line-height:1.5}.report-sheet .chart .row-label{font-size:15px;font-weight:600}.report-sheet .chart .small{font-size:12px;line-height:1.6}.report-sheet .chart .tenchu{font-size:24px;letter-spacing:.14em}.report-sheet .chart .blue,.report-sheet .chart .red{color:#222}.report-sheet #tenchuCell{vertical-align:top;padding-top:30px}
+.report-sheet .energy-box{margin:12px 0;border:1px solid #333;padding:10px 8px}.report-sheet .energy-box b{display:block;font-size:18px}.report-sheet .energy-box b span{display:inline;font-size:23px;color:#222}.report-sheet .energy-box>span{display:block;font-size:12px;line-height:1.7;white-space:normal}
+.report-element-box{border:1px solid #333;margin:12px 0}.report-sheet h3{margin:0;padding:6px 10px;font-size:14px;background:#f7f6f2;border-bottom:1px solid #333}.report-sheet h3 small{font-size:10px;font-weight:400;margin-left:6px}.report-sheet #reportElements{display:flex;justify-content:space-around;padding:10px;font-size:15px}.report-sheet #reportElements b{font-size:18px;font-weight:500;margin-left:7px}
+.report-memo{border:1px solid #333;min-height:100px}.report-sheet #reportMemo{font-family:"Yu Gothic",Meiryo,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;line-height:1.7;padding:10px;max-height:100px;overflow:auto}
+.report-block{margin:0 0 14px}.report-sheet .report-block h2{display:flex;align-items:baseline;gap:9px;margin:0;padding:5px 8px;border:1px solid #333;border-bottom:0;font-size:18px;font-weight:600;background:#f7f6f2}.report-block h2 small{font-size:11px;font-weight:400}.report-sheet #reportDirection{font-size:12px;margin-left:auto}
+.report-sheet .data-table{display:table;table-layout:fixed;width:100%;border-collapse:collapse;border-spacing:0;font-family:"Yu Gothic",Meiryo,sans-serif}.report-sheet .data-table tbody{display:table-row-group;width:auto}.report-sheet .data-table tr,.report-sheet .data-table tr:first-child{display:table-row;width:auto;border:0;background:transparent}.report-sheet .data-table th,.report-sheet .data-table td{display:table-cell;width:auto;border:1px solid #555!important;padding:6px 3px!important;font-size:11px;line-height:1.5;text-align:center!important;vertical-align:middle;white-space:normal;overflow-wrap:normal}.report-sheet .data-table td::before{display:none}.report-sheet .data-table th{font-size:10px;font-weight:600}.report-sheet #yearLuckTable th:last-child{width:31%}.report-sheet #yearLuckTable td:last-child{font-size:10px;text-align:left!important}.report-sheet #daiunTable th:first-child{width:29%}.report-sheet .report-start{font-family:"Yu Gothic",Meiryo,sans-serif;font-size:10px;line-height:1.6;margin:6px 0}
+.report-key{border:1px solid #777;padding:9px 10px;font-family:"Yu Gothic",Meiryo,sans-serif;font-size:10px;line-height:1.7;color:#555}.report-key b{font-size:11px;color:#222}.report-key p{margin:4px 0 0}.report-footer{display:flex;justify-content:space-between;border-top:1px solid #aaa;padding-top:8px;margin-top:18px;color:#777;font:10px "Yu Gothic",Meiryo,sans-serif}.calculation-detail{font-size:13px;padding:10px 0}.calculation-detail summary{cursor:pointer}.report-toolbar button:disabled{opacity:.45;cursor:not-allowed}
+@media(min-width:1160px){.report-sheet{width:100%;min-width:0}}
+@media(max-width:520px){.report-toolbar{align-items:flex-start}.report-toolbar b{font-size:15px}.report-toolbar span{font-size:11px;max-width:210px}.report-toolbar button{font-size:12px;padding:9px}.report-sheet{margin:0}}
+@page{size:A4 landscape;margin:8mm}
+@media print{
+ html,body{margin:0!important;padding:0!important;background:#fff!important}
+ main{width:100%!important;margin:0!important;padding:0!important}
+ main>*:not(.report-scroll){display:none!important}
+ .report-scroll{display:block!important;overflow:visible!important;padding:0!important;margin:0!important}
+ .report-sheet{width:100%!important;min-width:0!important;min-height:0!important;border:0!important;padding:0!important;margin:0!important;break-inside:avoid;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+ .report-heading{margin-bottom:4mm}.report-heading h1{font-size:25pt}.report-heading p{font-size:7pt}
+ .report-person{margin-bottom:4mm;padding:2mm 0;min-height:0}.report-person h2{font-size:14pt}.report-person #profileLine{font-size:8pt}
+ .report-columns{gap:5mm;grid-template-columns:1.04fr 1fr}
+ .report-sheet .chart th{height:8mm;font-size:11pt}.report-sheet .chart th,.report-sheet .chart td{padding:1mm .5mm}
+ .report-sheet .chart tr:nth-child(2) td{height:22mm}.report-sheet .chart tr:nth-child(3) td{height:10mm}.report-sheet .chart tr:nth-child(n+4) td{height:14mm}
+ .report-sheet .chart .kan{font-size:18pt}.report-sheet .chart .small{font-size:8pt}.report-sheet .chart .row-label{font-size:10pt}.report-sheet .chart .tenchu{font-size:18pt}
+ .report-sheet .energy-box{margin:2.5mm 0;padding:1.5mm}.report-sheet .energy-box b{font-size:12pt}.report-sheet .energy-box b span{font-size:15pt}.report-sheet .energy-box>span{font-size:8pt}
+ .report-element-box{margin:2.5mm 0}.report-sheet h3{font-size:9pt;padding:1mm 2mm}.report-sheet h3 small{font-size:7pt}.report-sheet #reportElements{font-size:10pt;padding:2mm}.report-sheet #reportElements b{font-size:12pt}
+ .report-memo{min-height:19mm}.report-sheet #reportMemo{font-size:8pt;padding:1.5mm 2mm;max-height:19mm;overflow:hidden}
+ .report-block{margin-bottom:3mm}.report-sheet .report-block h2{font-size:12pt;padding:1mm 2mm}.report-block h2 small,.report-sheet #reportDirection{font-size:8pt}
+ .report-sheet .data-table th,.report-sheet .data-table td{font-size:8pt;line-height:1.4;padding:1.2mm .5mm!important}.report-sheet .data-table th,.report-sheet #yearLuckTable td:last-child{font-size:7pt}
+ .report-sheet .report-start{font-size:7pt;line-height:1.5;margin:1mm 0}.report-key{font-size:7pt;padding:1.5mm 2mm;line-height:1.5}.report-key b{font-size:8pt}
+ .report-footer{margin-top:3mm;padding-top:1.5mm;font-size:7pt}
+}
+
 </style>
 </head>
 <body>
@@ -38,7 +78,13 @@ button{background:#222;color:#fff;border:0;padding:10px 13px;font-weight:700}.se
 <label class="full">相手の出生地（都道府県選択）<select id="partnerPlace"><option value="" selected>都道府県を選択</option></select></label>
 </div><div class="actions"><button id="checkCompatibility" type="button">相性を見る</button><button class="secondary" id="deleteSelected" type="button">選択中を削除</button></div><div class="result" id="compatibilityResult">相手の情報を入れると、命式ベースの相性メモを表示します。</div></section>
 
-<header class="title"><h1 id="titleName">鑑定結果</h1><div class="profile" id="profileLine">生年月日・出生時刻・出生地を入力してください</div></header>
+<div class="report-toolbar"><div><b>一枚で見渡す、四柱推命鑑定書</b><span>スマートフォンでは鑑定書を横にスクロールできます。</span></div><button id="printReport" type="button">印刷・PDF保存</button></div>
+<div class="report-scroll" role="region" aria-label="横長の鑑定書" tabindex="0">
+<article class="report-sheet" aria-label="四柱推命鑑定書">
+<header class="report-heading"><h1>四柱推命鑑定書</h1><p>命式と、これからの流れを一枚に。</p></header>
+<div class="report-person"><h2 id="titleName">鑑定結果</h2><div id="profileLine">生年月日・出生時刻・出生地を入力してください</div></div>
+<div class="report-columns">
+<div class="report-left">
 <table class="chart"><colgroup><col class="side"><col class="pillar-col"><col class="pillar-col"><col class="pillar-col"><col class="pillar-col"><col class="label-col"></colgroup>
 <tr><th>天中殺</th><th>時柱</th><th>日柱</th><th>月柱</th><th>年柱</th><th></th></tr>
 <tr><td class="tenchu" rowspan="5" id="tenchuCell"></td><td id="p-hour"></td><td id="p-day"></td><td id="p-month"></td><td id="p-year"></td><td class="row-label">干支</td></tr>
@@ -48,11 +94,20 @@ button{background:#222;color:#fff;border:0;padding:10px 13px;font-weight:700}.se
 <tr><td class="kan blue" id="u-hour"></td><td class="kan blue" id="u-day"></td><td class="kan blue" id="u-month"></td><td class="kan blue" id="u-year"></td><td class="row-label">十二運星</td></tr>
 </table>
 <div class="energy-box" id="energySummary"><b>運勢エネルギー</b><span>生年月日を入力すると合計値を表示します</span></div>
+<div class="report-element-box"><h3>五行の構成 <small>天干・地支の五行数</small></h3><div id="reportElements">生年月日を入力すると表示します。</div></div>
+<div class="report-memo"><h3>鑑定メモ</h3><div id="reportMemo">気づいたこと・大切にしたいこと</div></div>
+</div>
+<div class="report-right">
+<section class="report-block"><h2>歳運 <small>一年ごとの流れ</small></h2><table class="data-table" id="yearLuckTable"></table></section>
+<section class="report-block"><h2>大運 <small>十年ごとの歩み</small><span id="reportDirection"></span></h2><table class="data-table" id="daiunTable"></table><p id="reportStart" class="report-start">生年月日と性別を入力してください。</p></section>
+<div class="report-key"><b>鑑定の見方</b><p>命式は自分の傾向を見つめるための手がかりです。運勢の記号は簡易判定であり、出来事や結果を保証するものではありません。</p><p>立運は出生日時から前後の節入りまでを3日＝1年で換算。節入り時刻は天文近似計算です。</p></div>
+</div></div>
+<footer class="report-footer"><span>四柱推命鑑定システム</span><span>自分を知り、これからの選択へ。</span></footer>
+</article></div>
+<details class="calculation-detail"><summary>立運の計算根拠・前提を見る</summary><p class="note" id="daiunNote">大運は日本標準時の出生日時と節入り時刻から計算します。</p></details>
 <div class="copy" id="essenceCopy">生年月日を入力すると<span class="red">命式が自動生成</span>されます</div>
 
 <section class="section"><h2>命式の解説</h2><div id="reading"><p>生年月日と出生時刻を入力すると、詳細鑑定がここへ反映されます。</p></div></section>
-<section class="section"><h2>歳運</h2><table class="data-table" id="yearLuckTable"></table></section>
-<section class="section"><h2>大運</h2><table class="data-table" id="daiunTable"></table><p class="note" id="daiunNote">大運は日本標準時の出生日時と節入り時刻から計算します。</p></section>
 <section class="section"><h2>専門判定</h2><div class="term-grid">
 <div class="term"><b>日主強弱・通根</b><span id="strength">未算出</span><p class="note" id="strengthNote"></p></div>
 <div class="term"><b>格局・用神</b><span id="kakyoku">未算出</span><p class="note" id="kakyokuNote"></p></div>
@@ -143,20 +198,30 @@ function luckMark(c,g){const ten=c.tenchu.split("");const rel=relation([c.day,c.
 function luckAdvice(mark,starName,tenchu){if(tenchu)return "天中殺が絡むため、大きく広げるより整理・準備・学び直しを優先。契約や決断は確認を厚くしましょう。";if(mark==="◎")return starName+"を活かし、追い風を使いやすい時。提案、発信、勝負、良縁づくりを具体的に進めましょう。";if(mark==="○")return starName+"が巡るので、準備してきたことを現実に乗せる時。人との約束を守り、小さく実行しましょう。";if(mark==="△")return starName+"のテーマが出るため、焦らず調整する時。衝突を避け、学び直しと体制づくりに使いましょう。";return starName+"のテーマで負荷が出やすい時。無理な拡大は控え、守り・整理・健康管理を優先しましょう。"}
 function labelDataTable(id){const table=$(id),heads=[...table.querySelectorAll("tr:first-child th")].map(th=>th.textContent.trim());[...table.querySelectorAll("tr:not(:first-child)")].forEach(tr=>[...tr.children].forEach((td,i)=>td.setAttribute("data-label",heads[i]||"")))}
 function luckTables(c){
- let rows="<tr><th>年齢</th><th>大運</th><th>運気</th><th>天中殺</th><th>主なアドバイス</th></tr>";
+ let rows="<tr><th>開始年齢</th><th>大運</th><th>通変星</th><th>十二運</th><th>点数</th><th>天中殺</th></tr>";
  const info=daiunInfo(c);
+ $("reportDirection").textContent=info?(info.forward?"順行":"逆行"):"";
+ $("reportStart").textContent=info?`立運：${luckAge(info.startYears)} ／ 3日＝1年で換算（月表示は四捨五入）`:"性別「男性」または「女性」を選択すると算出します。";
  if(!info){
-  rows+='<tr><td colspan="5">順行・逆行の判定には性別「男性」または「女性」の選択が必要です。</td></tr>';
+  rows+='<tr><td colspan="6">順行・逆行の判定には性別「男性」または「女性」の選択が必要です。</td></tr>';
   $("daiunNote").textContent="伝統的な年干の陰陽と男女による方式を採用しています。性別が未選択・その他の場合、大運は算出しません。";
  }else{
   for(let i=0;i<8;i++){
    const g=gz(info.base+(info.forward?1:-1)*(i+1)),age=info.startYears+i*10,st=star(c.day.stem,g.stem),ten=c.tenchu.includes(g.branch),mark=luckMark(c,g);
-   rows+=`<tr><td>${luckAge(age)}</td><td>${g.text}</td><td>${mark}</td><td>${ten?"天中殺":"-"}</td><td>${luckAdvice(mark,st,ten)}</td></tr>`;
+   rows+=`<tr><td>${luckAge(age)}</td><td>${g.text}</td><td>${st}</td><td>${TW[c.day.stem][g.branch]}</td><td>${ENERGY[TW[c.day.stem][g.branch]]}</td><td>${ten?"該当":"—"}</td></tr>`;
   }
   $("daiunNote").textContent=`${info.forward?"順行":"逆行"} ／ 立運：${luckAge(info.startYears)}。出生${info.forward?"後":"前"}の節入り「${info.boundary.name}」（${formatSetsu(info.boundary.ms)} 日本標準時・近似）まで約${info.days.toFixed(3)}日 ÷ 3。年単位の切り捨て・切り上げはせず、月表示のみ四捨五入しています。${c.timeKnown?"":"出生時刻が未入力のため12:00を仮定しています。"}節入りは太陽黄経の近似計算です。節入り直前・直後の出生は天文暦で照合してください。`;
  }
  $("daiunTable").innerHTML=rows;
- const now=new Date().getFullYear();let yrows="<tr><th>年</th><th>歳運</th><th>運気</th><th>天中殺</th><th>読みとアドバイス</th></tr>";for(let y=now-1;y<=now+5;y++){const g=gz(y-1984),st=star(c.day.stem,g.stem),ten=c.tenchu.includes(g.branch),mark=luckMark(c,g);yrows+=`<tr><td>${y}</td><td>${g.text}</td><td>${mark}</td><td>${ten?"天中殺":"-"}</td><td>${luckAdvice(mark,st,ten)} 関係性は「${relation([c.day,c.month,c.year,g])}」。</td></tr>`}$("yearLuckTable").innerHTML=yrows;labelDataTable("daiunTable");labelDataTable("yearLuckTable")}
+ const now=Number(new Intl.DateTimeFormat("en",{timeZone:"Asia/Tokyo",year:"numeric"}).format(new Date()));
+ const themes={比肩:"自分の軸・独立心",劫財:"仲間・協力と分担",食神:"楽しみ・表現・育成",傷官:"感性・技術・見直し",偏財:"交流・ご縁の広がり",正財:"信用・日々の積み重ね",偏官:"行動・責任・挑戦",正官:"役割・信頼・秩序",偏印:"発想・研究・学び直し",印綬:"学び・知識・支え"};
+ let yrows="<tr><th>年</th><th>干支</th><th>通変星</th><th>運気</th><th>天中殺</th><th>テーマ</th></tr>";
+ for(let y=now-2;y<=now+9;y++){
+ const g=gz(y-1984),st=star(c.day.stem,g.stem),ten=c.tenchu.includes(g.branch),mark=luckMark(c,g);
+ yrows+=`<tr><td>${y}</td><td>${g.text}</td><td>${st}</td><td>${mark}</td><td>${ten?"該当":"—"}</td><td>${themes[st]}</td></tr>`;
+ }
+ $("yearLuckTable").innerHTML=yrows;labelDataTable("daiunTable");labelDataTable("yearLuckTable");
+}
 function setAdvanced(c){const ps=[c.pillars.hour,c.pillars.day,c.pillars.month,c.pillars.year].filter(Boolean),texts=ps.map(p=>p.text),brs=ps.map(p=>p.branch);const mt=TW[c.day.stem][c.month.branch],strong=["長生","冠帯","建禄","帝旺"].includes(mt);$("strength").textContent=strong?"身旺・身強寄り":"中庸から身弱寄り";$("strengthNote").textContent=`月支${c.month.branch}が${mt}、日支${c.day.branch}が${c.pillars.day.twelve}。通根は ${brs.includes(c.day.branch)?"日支に根あり":"弱め"} と見ます。`;$("kakyoku").textContent=`${c.pillars.month.hiddenStar}格傾向`;$("kakyokuNote").textContent="月支蔵干の通変星を中心に見る簡易格局です。精密には透干、月令、寒暖燥湿を合わせます。";$("guardian").textContent=EP[c.day.stem][0]==="金"?"火・水を調整に使う":"月令に応じて調整";$("guardianNote").textContent="守護神は日主と季節の偏りを整える五行です。ここでは簡易表示しています。";$("seasonState").textContent=`月支${c.month.branch} / 十二運${mt}`;$("seasonStateNote").textContent="旺相死囚休は季節に対する五行の勢いを見る判断です。";$("relations").textContent=relation(ps);$("tenchuNote").textContent=c.tenchu;$("tenchuDetail").textContent=`生年冲殺・生月冲殺・生日冲殺は天中殺支と各柱支の接触で確認。日居天中殺は該当干支を別途確認します。`;const abnormal=["甲戌","乙亥","丙戌","丁亥","戊戌","己亥","庚子","辛亥","壬子","癸亥"]; $("abnormal").textContent=texts.filter(x=>abnormal.includes(x)).join("・")||"目立つ該当なし";$("shinsatsu").textContent="羊刃・天乙貴人などは詳細ロジック拡張対象";$("ritsunon").textContent="律音・納音は大運/歳運との一致で確認";$("ritsunonNote").textContent="八専干支は壬子から癸亥までの特定干支群を確認します。";$("advancedTerms").textContent="八相局・宿命大半会は算命学寄り用語として参考表示";}
 function termCard(t,plain,reading){return `<div class="card"><p><b>${t}</b><br><span class="note">意味：${plain}</span><br>この命式では：${reading}</p></div>`}
 function renderRequestedSections(c){const ps=[["時柱",c.pillars.hour],["日柱",c.pillars.day],["月柱",c.pillars.month],["年柱",c.pillars.year]].filter(x=>x[1]);const texts=ps.map(x=>x[1].text),brs=ps.map(x=>x[1].branch),stemList=ps.map(x=>x[1].stem);$("starDetailCards").innerHTML=ps.map(([name,p])=>termCard(name,"柱は人生の担当領域です。年は家系、月は社会、日は本人と夫婦、時は晩年や子ども縁を見ます。",`干支は <strong>${p.text}</strong>、蔵干は <strong>${p.hidden}</strong>、通変星は <strong>${p.stemStar||"日主"}</strong>、蔵干通変星は <strong>${p.hiddenStar}</strong>、十二運星は <strong>${p.twelve}</strong>。`)).join("")+termCard("日支蔵干","日支は内面・配偶者宮・安心感の癖を読む場所です。ここを間違えると鑑定の芯がずれます。",`日支${c.day.branch}の蔵干は <strong>${c.pillars.day.hidden}</strong>、蔵干通変星は <strong>${c.pillars.day.hiddenStar}</strong>。`);
@@ -182,7 +247,27 @@ function plainReading(c){
  const inner={比肩:"本音では自分のペースを大切にしたい",劫財:"身近な人ほど本気で関わり、時に強く出やすい",食神:"安心できる相手には自然体で甘えやすい",傷官:"細かい違和感に気づき、言葉が鋭くなることがある",偏財:"人との距離感を柔らかく取り、場を明るくする",正財:"誠実さや約束を大切にし、安心できる関係を求める",偏官:"大切な人を守ろうとして責任を背負いやすい",正官:"礼儀や信頼を重視し、きちんとした関係を望む",偏印:"一人の時間や自由な発想を守りたい",印綬:"理解されること、安心して学べる関係を求める"}[c.pillars.day.hiddenStar]||"内面では安心できる居場所を求める";
  return '<p>あなたは、'+core+'タイプです。社会では、'+social+'ことが運の入口になります。無理に別人になろうとするより、自分の持ち味を周囲に伝わる形へ整えるほど、仕事運も人間関係も動きやすくなります。特に月柱は社会での見られ方、日柱は本音と生活感覚を表すため、この二つが噛み合うほど「自然体なのに評価される」流れが作れます。</p><p>内面では、'+inner+'傾向があります。恋愛や近い人間関係では、正しさよりも安心感を作ることが大切です。相手に合わせすぎると魅力が薄れ、逆に自分の正しさだけで押すと距離が生まれます。大切なのは、感情をぶつける前に「何を不安に感じたのか」「どうしてほしいのか」を短い言葉で伝えることです。</p>';
 }
-function applyReading(){const r=current(),c=build(r);$("titleName").textContent=r.name?`${r.name} 様　鑑定結果`:"鑑定結果";const prof=[fmt(r.date),r.time?`${r.time} 生まれ`:"",r.date?weekday(r.date):"",r.place,r.gender].filter(Boolean);$("profileLine").textContent=prof.length?prof.join("　"):"生年月日・出生時刻・出生地を入力してください";if(!c)return;$("tenchuCell").textContent=c.tenchu;["hour","day","month","year"].forEach(k=>{const p=c.pillars[k];setP(`p-${k}`,p);$(`h-${k}`).textContent=p?.hidden||"";$(`s-${k}`).textContent=p?.stemStar||"";$(`hs-${k}`).textContent=p?.hiddenStar||"";$(`u-${k}`).textContent=p?.twelve||""});const es=energySummary(c);$("energySummary").innerHTML=`<b>運勢エネルギー 合計 <span class="red">${es.total}</span></b><span>日柱 ${es.rows[0].value}（${es.rows[0].star}）・月柱 ${es.rows[1].value}（${es.rows[1].star}）・年柱 ${es.rows[2].value}（${es.rows[2].star}） / ${es.level}</span>`;$("essenceCopy").innerHTML=`あなたは<span class="red">${catchCopy(c)}</span>です`;$("reading").innerHTML=plainReading(c);luckTables(c);setAdvanced(c);renderRequestedSections(c);advice(c);$("systemNotice").textContent="詳細鑑定を更新しました。"}
+function applyReading(){const r=current(),c=build(r);$("titleName").textContent=r.name?`${r.name} 様`:"鑑定結果";const prof=[fmt(r.date),r.time?`${r.time} 生まれ`:"",r.date?weekday(r.date):"",r.place,r.gender].filter(Boolean);$("profileLine").textContent=prof.length?prof.join("　"):"生年月日・出生時刻・出生地を入力してください";$("printReport").disabled=!c;if(!c){clearReport();return;}renderReportExtras(c,r);$("tenchuCell").textContent=c.tenchu;["hour","day","month","year"].forEach(k=>{const p=c.pillars[k];setP(`p-${k}`,p);$(`h-${k}`).textContent=p?.hidden||"";$(`s-${k}`).textContent=p?.stemStar||"";$(`hs-${k}`).textContent=p?.hiddenStar||"";$(`u-${k}`).textContent=p?.twelve||""});const es=energySummary(c);$("energySummary").innerHTML=`<b>運勢エネルギー 合計 <span class="red">${es.total}</span></b><span>日柱 ${es.rows[0].value}（${es.rows[0].star}）・月柱 ${es.rows[1].value}（${es.rows[1].star}）・年柱 ${es.rows[2].value}（${es.rows[2].star}） / ${es.level}</span>`;$("essenceCopy").innerHTML=`あなたは<span class="red">${catchCopy(c)}</span>です`;$("reading").innerHTML=plainReading(c);luckTables(c);setAdvanced(c);renderRequestedSections(c);advice(c);$("systemNotice").textContent="詳細鑑定を更新しました。"}
+
+function renderReportExtras(c,r){
+ const counts={木:0,火:0,土:0,金:0,水:0};
+ for(const p of Object.values(c.pillars).filter(Boolean)){counts[EP[p.stem][0]]++;counts[EP[p.branch][0]]++}
+ $("reportElements").innerHTML=Object.entries(counts).map(([name,count])=>`<span>${name}<b>${count}</b></span>`).join("");
+ $("reportMemo").textContent=r.memo||"";
+}
+function clearReport(){
+ for(const k of ["hour","day","month","year"])for(const prefix of ["p","h","s","hs","u"])$(prefix+"-"+k).textContent="";
+ $("tenchuCell").textContent="";$("yearLuckTable").innerHTML="";$("daiunTable").innerHTML="";
+ $("reportDirection").textContent="";$("reportStart").textContent="生年月日と性別を入力してください。";
+ $("reportElements").textContent="生年月日を入力すると表示します。";$("reportMemo").textContent="";
+ $("energySummary").innerHTML="<b>運勢エネルギー</b><span>生年月日を入力すると合計値を表示します</span>";
+ $("daiunNote").textContent="大運は日本標準時の出生日時と節入り時刻から計算します。";
+ $("essenceCopy").textContent="生年月日を入力すると命式が自動生成されます";
+ $("reading").innerHTML="<p>生年月日と出生時刻を入力すると、詳細鑑定がここへ反映されます。</p>";
+}
+$("printReport").onclick=()=>{if(build(current()))window.print()};
+$("readingMemo").addEventListener("input",()=>{$("reportMemo").textContent=$("readingMemo").value.trim()});
+
 function records(){try{return JSON.parse(localStorage.getItem(storageKey)||"[]")}catch{return[]}}function saveRecords(v){localStorage.setItem(storageKey,JSON.stringify(v))}function renderSaved(){const box=$("savedReadings");box.innerHTML="";const list=records();if(!list.length){box.innerHTML="<p>保存された鑑定はまだありません。</p>";return}list.forEach(r=>{const b=document.createElement("button");b.className="saved-item";b.type="button";b.textContent=`${r.name||"無記名"} 様 / ${fmt(r.date)} ${r.time||""}`;b.onclick=()=>{selectedId=r.id;$("clientName").value=r.name||"";$("clientGender").value=r.gender||"";$("birthDate").value=r.date||"";$("birthTime").value=r.time||"";$("birthPlace").value=r.place||"";$("readingMemo").value=r.memo||"";applyReading();renderSaved()};box.appendChild(b)})}function saveReading(){const r=current(),next=records().filter(x=>x.id!==r.id);next.unshift(r);saveRecords(next.slice(0,20));selectedId=r.id;renderSaved();$("systemNotice").textContent="鑑定結果とメモを保存しました。"}function resetForm(){selectedId=null;["clientName","birthDate","birthTime","birthPlace","readingMemo","partnerName","partnerDate","partnerTime","partnerPlace"].forEach(id=>$(id).value="");$("clientGender").value="";$("partnerGender").value="未指定";applyReading();renderSaved()}function deleteSelected(){if(!selectedId)return;saveRecords(records().filter(x=>x.id!==selectedId));selectedId=null;renderSaved()}function compatibilityAdvice(){const r=current(),c=build(r),p=$("partnerName").value.trim()||"相手",pd=$("partnerDate").value,pp=$("partnerPlace").value;$("compatibilityResult").innerHTML=c?`<b>${r.name||"あなた"}さん × ${p}さん</b><br>${p}さんは${pd?fmt(pd)+"生まれ":"生年月日未入力"}${pp?`・${pp}`:""}。<br>${r.name||"あなた"}さんは日干${c.day.stem}・月支${c.month.branch}。相性では、相手が安心して話せる余白を作るほど安定します。`:"まず本人の生年月日を入力してください。"}
 ["clientName","clientGender","birthDate","birthTime","birthPlace"].forEach(id=>["input","change"].forEach(ev=>$(id).addEventListener(ev,applyReading)));$("applyReading").onclick=applyReading;$("saveReading").onclick=saveReading;$("clearForm").onclick=resetForm;$("deleteSelected").onclick=deleteSelected;$("checkCompatibility").onclick=compatibilityAdvice;renderSaved();applyReading();
 </script>
