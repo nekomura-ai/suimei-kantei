@@ -52,7 +52,7 @@ button{background:#222;color:#fff;border:0;padding:10px 13px;font-weight:700}.se
 
 <section class="section"><h2>命式の解説</h2><div id="reading"><p>生年月日と出生時刻を入力すると、詳細鑑定がここへ反映されます。</p></div></section>
 <section class="section"><h2>歳運</h2><table class="data-table" id="yearLuckTable"></table></section>
-<section class="section"><h2>大運</h2><table class="data-table" id="daiunTable"></table><p class="note">大運は現在、節入り日ベースの簡易起運です。商品版では節入り時刻データで厳密化します。</p></section>
+<section class="section"><h2>大運</h2><table class="data-table" id="daiunTable"></table><p class="note" id="daiunNote">大運は日本標準時の出生日時と節入り時刻から計算します。</p></section>
 <section class="section"><h2>専門判定</h2><div class="term-grid">
 <div class="term"><b>日主強弱・通根</b><span id="strength">未算出</span><p class="note" id="strengthNote"></p></div>
 <div class="term"><b>格局・用神</b><span id="kakyoku">未算出</span><p class="note" id="kakyokuNote"></p></div>
@@ -86,8 +86,55 @@ const TW={甲:{亥:"長生",子:"沐浴",丑:"冠帯",寅:"建禄",卯:"帝旺",
 const ENERGY={長生:9,沐浴:7,冠帯:10,建禄:11,帝旺:12,衰:8,病:4,死:2,墓:5,絶:1,胎:3,養:6};
 function energySummary(c){const rows=[["日柱",c.pillars.day],["月柱",c.pillars.month],["年柱",c.pillars.year]].map(([n,p])=>({name:n,star:p.twelve,value:ENERGY[p.twelve]||1}));const total=rows.reduce((a,x)=>a+x.value,0);return{rows,total,level:total>=26?"高い":total>=15?"平均":"低い"}}
 function energyAdvice(total){if(total>=26)return "エネルギーが高い命式です。影響力が強く、場を動かす力があります。大事なのは勢いを散らさず、責任ある役割・発信・決断に集中させることです。";if(total>=15)return "エネルギーは平均域です。環境との相性で伸び方が大きく変わります。準備、継続、人選びを整えるほど安定して成果になります。";return "エネルギーは低めに出ています。弱いという意味ではなく、繊細に受け取り、深く蓄えるタイプです。休息、学び、補佐役、専門性の蓄積が運を強くします。"}
-function fmt(s){if(!s)return"";const[y,m,d]=s.split("-");return`${y}年 ${m}月 ${d}日`}function weekday(s){return["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"][new Date(`${s}T00:00:00`).getDay()]}function jdn(d){const y=d.getFullYear(),m=d.getMonth()+1,day=d.getDate(),a=Math.floor((14-m)/12),y2=y+4800-a,m2=m+12*a-3;return day+Math.floor((153*m2+2)/5)+365*y2+Math.floor(y2/4)-Math.floor(y2/100)+Math.floor(y2/400)-32045}function gz(i){const n=((i%60)+60)%60;return{index:n,stem:S[n%10],branch:B[n%12],text:S[n%10]+B[n%12]}}function term(y,m,d){return new Date(y,m-1,d)}function ld(date,time){const[y,m,d]=date.split("-").map(Number),[h=12,mi=0]=(time||"12:00").split(":").map(Number);return new Date(y,m-1,d,h,mi)}function yearP(d){const y=d<term(d.getFullYear(),2,4)?d.getFullYear()-1:d.getFullYear();return gz(y-1984)}function monthP(d,ys){const st=[[1,6,"丑"],[2,4,"寅"],[3,6,"卯"],[4,5,"辰"],[5,6,"巳"],[6,6,"午"],[7,7,"未"],[8,8,"申"],[9,8,"酉"],[10,8,"戌"],[11,7,"亥"],[12,7,"子"]];let br="子",start=term(d.getFullYear()-1,12,7);for(const[m,da,b]of st){if(d>=term(d.getFullYear(),m,da)){br=b;start=term(d.getFullYear(),m,da)}}const order=["寅","卯","辰","巳","午","未","申","酉","戌","亥","子","丑"],first={甲:2,己:2,乙:4,庚:4,丙:6,辛:6,丁:8,壬:8,戊:0,癸:0}[ys],stem=S[(first+order.indexOf(br))%10];return{stem,branch:br,text:stem+br,days:Math.max(0,Math.floor((d-start)/86400000))}}function dayP(d){return gz(jdn(d)+49)}function hourP(time,ds){if(!time)return null;const[h,m=0]=time.split(":").map(Number),dec=h+m/60,br=dec>=23||dec<1?"子":B[Math.floor((dec+1)/2)%12],first={甲:0,己:0,乙:2,庚:2,丙:4,辛:4,丁:6,壬:6,戊:8,癸:8}[ds],stem=S[(first+B.indexOf(br))%10];return{stem,branch:br,text:stem+br}}function hs(br,days){return(HIDDEN[br].find(x=>days<=x[0])||HIDDEN[br][HIDDEN[br].length-1])[1]}function star(ds,ts){if(!ts)return"";const[de,dp]=EP[ds],[te,tp]=EP[ts],same=dp===tp;if(de===te)return same?"比肩":"劫財";if(MAKE[de]===te)return same?"食神":"傷官";if(CUT[de]===te)return same?"偏財":"正財";if(CUT[te]===de)return same?"偏官":"正官";return same?"偏印":"印綬"}function elem(x){return EP[x]?`(${EP[x][1]}${EP[x][0]})`:""}
-function current(){return{id:selectedId||String(Date.now()),name:$("clientName").value.trim(),gender:$("clientGender").value,date:$("birthDate").value,time:$("birthTime").value,place:$("birthPlace").value,memo:$("readingMemo").value.trim()}}function build(rec){if(!rec.date)return null;const d=ld(rec.date,rec.time),y=yearP(d),m=monthP(d,y.stem),da=dayP(d),h=hourP(rec.time,da.stem),pillars={hour:h,day:da,month:m,year:y};for(const k of Object.keys(pillars)){const p=pillars[k];if(!p)continue;p.hidden=hs(p.branch,m.days);p.stemStar=k==="day"?"":star(da.stem,p.stem);p.hiddenStar=star(da.stem,p.hidden);p.twelve=TW[da.stem][p.branch]}return{pillars,day:da,month:m,year:y,date:d,tenchu:["戌亥","申酉","午未","辰巳","寅卯","子丑"][Math.floor(da.index/10)]}}
+function fmt(s){if(!s)return"";const[y,m,d]=s.split("-");return`${y}年 ${m}月 ${d}日`}function weekday(s){return["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"][new Date(`${s}T00:00:00`).getDay()]}function jdn(d){const y=d.getFullYear(),m=d.getMonth()+1,day=d.getDate(),a=Math.floor((14-m)/12),y2=y+4800-a,m2=m+12*a-3;return day+Math.floor((153*m2+2)/5)+365*y2+Math.floor(y2/4)-Math.floor(y2/100)+Math.floor(y2/400)-32045}function gz(i){const n=((i%60)+60)%60;return{index:n,stem:S[n%10],branch:B[n%12],text:S[n%10]+B[n%12]}}function term(y,m,d){return new Date(y,m-1,d)}function ld(date,time){const[y,m,d]=date.split("-").map(Number),[h=12,mi=0]=(time||"12:00").split(":").map(Number);return new Date(y,m-1,d,h,mi)}function yearP(d){const year=d.getFullYear(),y=jstInstant(d)<setsuForYear(year)[1].ms?year-1:year;return gz(y-1984)}
+function monthP(d,ys){
+ const ms=jstInstant(d),start=surroundingSetsu(ms).previous,br=start.branch;
+ const order=["寅","卯","辰","巳","午","未","申","酉","戌","亥","子","丑"],first={甲:2,己:2,乙:4,庚:4,丙:6,辛:6,丁:8,壬:8,戊:0,癸:0}[ys],stem=S[(first+order.indexOf(br))%10];
+ return {...gz(pillarIndex(stem,br)),days:Math.max(0,Math.floor((ms-start.ms)/DAY_MS))};
+}
+function dayP(d){return gz(jdn(d)+49)}function hourP(time,ds){if(!time)return null;const[h,m=0]=time.split(":").map(Number),dec=h+m/60,br=dec>=23||dec<1?"子":B[Math.floor((dec+1)/2)%12],first={甲:0,己:0,乙:2,庚:2,丙:4,辛:4,丁:6,壬:6,戊:8,癸:8}[ds],stem=S[(first+B.indexOf(br))%10];return{stem,branch:br,text:stem+br}}function hs(br,days){return(HIDDEN[br].find(x=>days<=x[0])||HIDDEN[br][HIDDEN[br].length-1])[1]}function star(ds,ts){if(!ts)return"";const[de,dp]=EP[ds],[te,tp]=EP[ts],same=dp===tp;if(de===te)return same?"比肩":"劫財";if(MAKE[de]===te)return same?"食神":"傷官";if(CUT[de]===te)return same?"偏財":"正財";if(CUT[te]===de)return same?"偏官":"正官";return same?"偏印":"印綬"}function elem(x){return EP[x]?`(${EP[x][1]}${EP[x][0]})`:""}
+
+// 節入りは太陽の視黄経を数値的に解いて求める（Meeus / NOAA系の近似式）。
+// 固定日や端数処理を使わず、3日=1年・1日=4か月で満年齢に換算。
+// 天文暦の確定値ではないため、節入り時刻の近傍では暦表との照合が必要。
+const DAY_MS=86400000, JST_MS=9*3600000;
+const SETSU=[["小寒",1,6,285,"丑"],["立春",2,4,315,"寅"],["啓蟄",3,6,345,"卯"],["清明",4,5,15,"辰"],["立夏",5,6,45,"巳"],["芒種",6,6,75,"午"],["小暑",7,7,105,"未"],["立秋",8,8,135,"申"],["白露",9,8,165,"酉"],["寒露",10,8,195,"戌"],["立冬",11,7,225,"亥"],["大雪",12,7,255,"子"]];
+const setsuCache=new Map();
+function normAngle(v){return (v%360+360)%360}
+function sunLongitude(ms){
+ const t=(ms/DAY_MS+2440587.5-2451545)/36525, rad=Math.PI/180;
+ const l=280.46646+t*(36000.76983+0.0003032*t);
+ const m=357.52911+t*(35999.05029-0.0001537*t);
+ const center=Math.sin(m*rad)*(1.914602-t*(0.004817+0.000014*t))+Math.sin(2*m*rad)*(0.019993-0.000101*t)+Math.sin(3*m*rad)*0.000289;
+ return normAngle(l+center-0.00569-0.00478*Math.sin((125.04-1934.136*t)*rad));
+}
+function setsuForYear(y){
+ if(setsuCache.has(y))return setsuCache.get(y);
+ const result=SETSU.map(([name,month,day,angle,branch])=>{
+  let lo=Date.UTC(y,month-1,day-4),hi=Date.UTC(y,month-1,day+4);
+  for(let i=0;i<42;i++){const mid=(lo+hi)/2,diff=normAngle(sunLongitude(mid)-angle+180)-180;if(diff<0)lo=mid;else hi=mid}
+  return {name,branch,ms:(lo+hi)/2};
+ });
+ setsuCache.set(y,result);return result;
+}
+function jstInstant(d){return Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),d.getHours(),d.getMinutes())-JST_MS}
+function surroundingSetsu(ms){
+ const y=new Date(ms+JST_MS).getUTCFullYear();
+ const terms=[...setsuForYear(y-1),...setsuForYear(y),...setsuForYear(y+1)];
+ return {previous:terms.filter(t=>t.ms<=ms).at(-1),next:terms.find(t=>t.ms>ms)};
+}
+function pillarIndex(stem,branch){for(let i=0;i<60;i++)if(S[i%10]===stem&&B[i%12]===branch)return i;throw new Error("不正な干支です")}
+function daiunInfo(c){
+ if(!["男性","女性"].includes(c.gender))return null;
+ const forward=(EP[c.year.stem][1]==="+")===(c.gender==="男性"),ms=jstInstant(c.date);
+ const terms=surroundingSetsu(ms),boundary=forward?terms.next:terms.previous;
+ const days=Math.abs(boundary.ms-ms)/DAY_MS;
+ return {forward,boundary,days,startYears:days/3,base:pillarIndex(c.month.stem,c.month.branch)};
+}
+function luckAge(years){const months=Math.round(years*12);return "満"+Math.floor(months/12)+"歳"+(months%12?months%12+"か月":"")+"頃"}
+function formatSetsu(ms){return new Intl.DateTimeFormat("ja-JP",{timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}).format(new Date(ms))}
+
+function current(){return{id:selectedId||String(Date.now()),name:$("clientName").value.trim(),gender:$("clientGender").value,date:$("birthDate").value,time:$("birthTime").value,place:$("birthPlace").value,memo:$("readingMemo").value.trim()}}function build(rec){if(!rec.date)return null;const d=ld(rec.date,rec.time),y=yearP(d),m=monthP(d,y.stem),da=dayP(d),h=hourP(rec.time,da.stem),pillars={hour:h,day:da,month:m,year:y};for(const k of Object.keys(pillars)){const p=pillars[k];if(!p)continue;p.hidden=hs(p.branch,m.days);p.stemStar=k==="day"?"":star(da.stem,p.stem);p.hiddenStar=star(da.stem,p.hidden);p.twelve=TW[da.stem][p.branch]}return{pillars,day:da,month:m,year:y,date:d,gender:rec.gender,timeKnown:!!rec.time,tenchu:["戌亥","申酉","午未","辰巳","寅卯","子丑"][Math.floor(da.index/10)]}}
 function catchCopy(c){const ms=c.pillars.month.hiddenStar;return{正財:"誠実に信頼を積み上げ現実を動かす人",偏財:"人との縁を広げ価値を循環させる人",正官:"責任感と品格で道を整えていく人",偏官:"逆境を突破力に変えて前へ進む人",食神:"楽しさと安心感を周囲へ届ける人",傷官:"鋭い感性で違和感を言葉にする人",偏印:"独自の発想で新しい可能性を開く人",印綬:"知性と学びで人を支え導く人",比肩:"自分の信念を貫き道を切り開く人",劫財:"仲間を巻き込み勝負を形にする人"}[ms]||"自分の強みを社会で形にしていく人"}
 function stemText(s){return{甲:"信念を育てて伸びる人。長期目線で積み上げるほど強い。",乙:"しなやかに人と場を整える人。柔軟さが武器。",丙:"周囲を明るく照らす人。表現力と存在感が強み。",丁:"静かな情熱で導く人。洞察と集中力がある。",戊:"人を支える土台になる人。安定感と信頼感が強い。",己:"現実を整えて育てる人。面倒見と調整力が出る。",庚:"決断力で道を切り開く人。鍛えられるほど強くなる。",辛:"美意識で本質を磨く人。細部を見る力がある。",壬:"大きな流れを読む人。自由な発想と展開力がある。",癸:"繊細に可能性を育てる人。学びと感受性が強い。"}[s]}function starText(x){return{比肩:"自分の軸。独立心と粘り。",劫財:"仲間・勝負・巻き込み力。",食神:"楽しさ・衣食住・自然体の魅力。",傷官:"感性・技術・鋭い言葉。",偏財:"人脈・商売・広げる力。",正財:"信用・約束・お金の管理。",偏官:"行動力・責任・逆境への強さ。",正官:"信頼・秩序・社会的評価。",偏印:"直感・研究・異分野発想。",印綬:"学び・知性・保護。"}[x]||""}
 function setP(id,p){$(id).innerHTML=p?`<span class="small">${elem(p.stem)}</span><span class="kan blue">${p.stem} ${p.branch}</span><span class="small">${elem(p.branch)}</span>`:"<span class='small'>時刻未入力</span>"}
@@ -95,7 +142,21 @@ function relation(ps){const stems=ps.map(p=>p?.stem).filter(Boolean),brs=ps.map(
 function luckMark(c,g){const ten=c.tenchu.split("");const rel=relation([c.day,c.month,c.year,g]);let score=0;if(ten.includes(g.branch))score-=2;if(rel.includes("冲"))score-=1;if(rel.includes("支合")||rel.includes("干合"))score+=1;const st=star(c.day.stem,g.stem);if(["正官","正財","印綬","食神"].includes(st))score+=1;if(["傷官","偏官","劫財"].includes(st))score-=1;return score>=2?"◎":score>=1?"○":score>=-1?"△":"×"}
 function luckAdvice(mark,starName,tenchu){if(tenchu)return "天中殺が絡むため、大きく広げるより整理・準備・学び直しを優先。契約や決断は確認を厚くしましょう。";if(mark==="◎")return starName+"を活かし、追い風を使いやすい時。提案、発信、勝負、良縁づくりを具体的に進めましょう。";if(mark==="○")return starName+"が巡るので、準備してきたことを現実に乗せる時。人との約束を守り、小さく実行しましょう。";if(mark==="△")return starName+"のテーマが出るため、焦らず調整する時。衝突を避け、学び直しと体制づくりに使いましょう。";return starName+"のテーマで負荷が出やすい時。無理な拡大は控え、守り・整理・健康管理を優先しましょう。"}
 function labelDataTable(id){const table=$(id),heads=[...table.querySelectorAll("tr:first-child th")].map(th=>th.textContent.trim());[...table.querySelectorAll("tr:not(:first-child)")].forEach(tr=>[...tr.children].forEach((td,i)=>td.setAttribute("data-label",heads[i]||"")))}
-function luckTables(c){let rows="<tr><th>年齢</th><th>大運</th><th>運気</th><th>天中殺</th><th>主なアドバイス</th></tr>";const start=8,base=c.month.index??((S.indexOf(c.month.stem)-B.indexOf(c.month.branch)+60)%60);for(let i=0;i<8;i++){const g=gz(base+i+1),age=start+i*10,st=star(c.day.stem,g.stem),ten=c.tenchu.includes(g.branch),mark=luckMark(c,g);rows+=`<tr><td>${age}歳頃</td><td>${g.text}</td><td>${mark}</td><td>${ten?"天中殺":"-"}</td><td>${luckAdvice(mark,st,ten)}</td></tr>`}$("daiunTable").innerHTML=rows;const now=new Date().getFullYear();let yrows="<tr><th>年</th><th>歳運</th><th>運気</th><th>天中殺</th><th>読みとアドバイス</th></tr>";for(let y=now-1;y<=now+5;y++){const g=gz(y-1984),st=star(c.day.stem,g.stem),ten=c.tenchu.includes(g.branch),mark=luckMark(c,g);yrows+=`<tr><td>${y}</td><td>${g.text}</td><td>${mark}</td><td>${ten?"天中殺":"-"}</td><td>${luckAdvice(mark,st,ten)} 関係性は「${relation([c.day,c.month,c.year,g])}」。</td></tr>`}$("yearLuckTable").innerHTML=yrows;labelDataTable("daiunTable");labelDataTable("yearLuckTable")}
+function luckTables(c){
+ let rows="<tr><th>年齢</th><th>大運</th><th>運気</th><th>天中殺</th><th>主なアドバイス</th></tr>";
+ const info=daiunInfo(c);
+ if(!info){
+  rows+='<tr><td colspan="5">順行・逆行の判定には性別「男性」または「女性」の選択が必要です。</td></tr>';
+  $("daiunNote").textContent="伝統的な年干の陰陽と男女による方式を採用しています。性別が未選択・その他の場合、大運は算出しません。";
+ }else{
+  for(let i=0;i<8;i++){
+   const g=gz(info.base+(info.forward?1:-1)*(i+1)),age=info.startYears+i*10,st=star(c.day.stem,g.stem),ten=c.tenchu.includes(g.branch),mark=luckMark(c,g);
+   rows+=`<tr><td>${luckAge(age)}</td><td>${g.text}</td><td>${mark}</td><td>${ten?"天中殺":"-"}</td><td>${luckAdvice(mark,st,ten)}</td></tr>`;
+  }
+  $("daiunNote").textContent=`${info.forward?"順行":"逆行"} ／ 立運：${luckAge(info.startYears)}。出生${info.forward?"後":"前"}の節入り「${info.boundary.name}」（${formatSetsu(info.boundary.ms)} 日本標準時・近似）まで約${info.days.toFixed(3)}日 ÷ 3。年単位の切り捨て・切り上げはせず、月表示のみ四捨五入しています。${c.timeKnown?"":"出生時刻が未入力のため12:00を仮定しています。"}節入りは太陽黄経の近似計算です。節入り直前・直後の出生は天文暦で照合してください。`;
+ }
+ $("daiunTable").innerHTML=rows;
+ const now=new Date().getFullYear();let yrows="<tr><th>年</th><th>歳運</th><th>運気</th><th>天中殺</th><th>読みとアドバイス</th></tr>";for(let y=now-1;y<=now+5;y++){const g=gz(y-1984),st=star(c.day.stem,g.stem),ten=c.tenchu.includes(g.branch),mark=luckMark(c,g);yrows+=`<tr><td>${y}</td><td>${g.text}</td><td>${mark}</td><td>${ten?"天中殺":"-"}</td><td>${luckAdvice(mark,st,ten)} 関係性は「${relation([c.day,c.month,c.year,g])}」。</td></tr>`}$("yearLuckTable").innerHTML=yrows;labelDataTable("daiunTable");labelDataTable("yearLuckTable")}
 function setAdvanced(c){const ps=[c.pillars.hour,c.pillars.day,c.pillars.month,c.pillars.year].filter(Boolean),texts=ps.map(p=>p.text),brs=ps.map(p=>p.branch);const mt=TW[c.day.stem][c.month.branch],strong=["長生","冠帯","建禄","帝旺"].includes(mt);$("strength").textContent=strong?"身旺・身強寄り":"中庸から身弱寄り";$("strengthNote").textContent=`月支${c.month.branch}が${mt}、日支${c.day.branch}が${c.pillars.day.twelve}。通根は ${brs.includes(c.day.branch)?"日支に根あり":"弱め"} と見ます。`;$("kakyoku").textContent=`${c.pillars.month.hiddenStar}格傾向`;$("kakyokuNote").textContent="月支蔵干の通変星を中心に見る簡易格局です。精密には透干、月令、寒暖燥湿を合わせます。";$("guardian").textContent=EP[c.day.stem][0]==="金"?"火・水を調整に使う":"月令に応じて調整";$("guardianNote").textContent="守護神は日主と季節の偏りを整える五行です。ここでは簡易表示しています。";$("seasonState").textContent=`月支${c.month.branch} / 十二運${mt}`;$("seasonStateNote").textContent="旺相死囚休は季節に対する五行の勢いを見る判断です。";$("relations").textContent=relation(ps);$("tenchuNote").textContent=c.tenchu;$("tenchuDetail").textContent=`生年冲殺・生月冲殺・生日冲殺は天中殺支と各柱支の接触で確認。日居天中殺は該当干支を別途確認します。`;const abnormal=["甲戌","乙亥","丙戌","丁亥","戊戌","己亥","庚子","辛亥","壬子","癸亥"]; $("abnormal").textContent=texts.filter(x=>abnormal.includes(x)).join("・")||"目立つ該当なし";$("shinsatsu").textContent="羊刃・天乙貴人などは詳細ロジック拡張対象";$("ritsunon").textContent="律音・納音は大運/歳運との一致で確認";$("ritsunonNote").textContent="八専干支は壬子から癸亥までの特定干支群を確認します。";$("advancedTerms").textContent="八相局・宿命大半会は算命学寄り用語として参考表示";}
 function termCard(t,plain,reading){return `<div class="card"><p><b>${t}</b><br><span class="note">意味：${plain}</span><br>この命式では：${reading}</p></div>`}
 function renderRequestedSections(c){const ps=[["時柱",c.pillars.hour],["日柱",c.pillars.day],["月柱",c.pillars.month],["年柱",c.pillars.year]].filter(x=>x[1]);const texts=ps.map(x=>x[1].text),brs=ps.map(x=>x[1].branch),stemList=ps.map(x=>x[1].stem);$("starDetailCards").innerHTML=ps.map(([name,p])=>termCard(name,"柱は人生の担当領域です。年は家系、月は社会、日は本人と夫婦、時は晩年や子ども縁を見ます。",`干支は <strong>${p.text}</strong>、蔵干は <strong>${p.hidden}</strong>、通変星は <strong>${p.stemStar||"日主"}</strong>、蔵干通変星は <strong>${p.hiddenStar}</strong>、十二運星は <strong>${p.twelve}</strong>。`)).join("")+termCard("日支蔵干","日支は内面・配偶者宮・安心感の癖を読む場所です。ここを間違えると鑑定の芯がずれます。",`日支${c.day.branch}の蔵干は <strong>${c.pillars.day.hidden}</strong>、蔵干通変星は <strong>${c.pillars.day.hiddenStar}</strong>。`);
