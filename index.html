@@ -134,6 +134,100 @@ main{width:min(1180px,100% - 28px)}
  .timing-guide #hourLuckTable{break-inside:avoid}
 }
 
+
+/* 縦画面のための鑑定書。紙の横幅へ縮小せず、内容を縦に流す。 */
+.pillar-chars{display:inline-flex;gap:.2em;justify-content:center}
+#reportScroll[data-view="portrait"]{max-width:760px;margin:0 auto;overflow:visible;padding:0}
+#reportScroll[data-view="portrait"] .report-stage{width:100%;height:auto}
+#reportScroll[data-view="portrait"] .report-sheet{width:100%;min-width:0;transform:none;padding:24px}
+#reportScroll[data-view="portrait"] .report-heading{display:block;text-align:center;margin-bottom:18px}
+#reportScroll[data-view="portrait"] .report-heading h1{font-size:30px;letter-spacing:.12em}
+#reportScroll[data-view="portrait"] .report-heading p{position:static;font-size:11px;margin:8px 0 0;line-height:1.6}
+#reportScroll[data-view="portrait"] .report-person{display:block;padding:12px 0}
+#reportScroll[data-view="portrait"] .report-person h2{font-size:20px;margin-bottom:6px}
+#reportScroll[data-view="portrait"] .report-person #profileLine{font-size:13px;line-height:1.9;overflow-wrap:anywhere}
+#reportScroll[data-view="portrait"] .report-columns{display:flex;flex-direction:column;gap:18px}
+#reportScroll[data-view="portrait"] .report-left,#reportScroll[data-view="portrait"] .report-right{display:contents}
+#reportScroll[data-view="portrait"] .chart{order:1}
+#reportScroll[data-view="portrait"] .energy-box{order:2;margin:0}
+#reportScroll[data-view="portrait"] .report-memo{order:3}
+#reportScroll[data-view="portrait"] .report-element-box{order:4;margin:0}
+#reportScroll[data-view="portrait"] .report-insights{order:5}
+#reportScroll[data-view="portrait"] .report-year-luck{order:6}
+#reportScroll[data-view="portrait"] .report-decade-luck{order:7}
+#reportScroll[data-view="portrait"] .report-block{margin:0}
+#reportScroll[data-view="portrait"] h3{font-size:16px;padding:10px 12px}
+#reportScroll[data-view="portrait"] h3 small{display:block;font-size:11px;margin:4px 0 0}
+#reportScroll[data-view="portrait"] .energy-box{padding:14px 10px}
+#reportScroll[data-view="portrait"] .energy-box b{font-size:18px}
+#reportScroll[data-view="portrait"] .energy-box b span{font-size:26px}
+#reportScroll[data-view="portrait"] .energy-box>span{font-size:12px;line-height:1.9}
+#reportScroll[data-view="portrait"] .report-guidance{font-size:14px;line-height:1.9;padding:12px}
+#reportScroll[data-view="portrait"] .report-guidance p{margin-bottom:10px}
+#reportScroll[data-view="portrait"] .health-table th,#reportScroll[data-view="portrait"] .health-table td{font-size:12px;line-height:1.8;padding:8px}
+#reportScroll[data-view="portrait"] .health-table th:first-child{width:17%}
+#reportScroll[data-view="portrait"] .health-table .element-count{font-size:15px}
+#reportScroll[data-view="portrait"] .health-summary,#reportScroll[data-view="portrait"] .health-note{font-size:11px;line-height:1.9;padding:10px}
+#reportScroll[data-view="portrait"] .report-insights dl{display:block;padding:0 12px}
+#reportScroll[data-view="portrait"] .report-insights dl>div{grid-template-columns:88px 1fr;gap:10px;font-size:13px;line-height:1.8;padding:10px 0}
+#reportScroll[data-view="portrait"] .insight-caption{font-size:11px;line-height:1.9;padding:10px 12px}
+#reportScroll[data-view="portrait"] .report-start{font-size:12px;line-height:1.8;margin-top:10px}
+#reportScroll[data-view="portrait"] #reportMemo{font-size:13px;max-height:none;overflow:visible}
+#reportScroll[data-view="portrait"] .report-manual h4{font-size:12px}
+body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"] .calculation-detail{max-width:760px;margin-left:auto;margin-right:auto}
+@media screen and (max-width:600px){
+ main{width:calc(100% - 20px)}
+ #reportScroll[data-view="portrait"] .report-sheet{padding:16px 10px}
+ #reportScroll[data-view="portrait"] .report-heading h1{font-size:25px;letter-spacing:.08em}
+ #reportScroll[data-view="portrait"] .report-person h2{font-size:18px}
+ #reportScroll[data-view="portrait"] .chart .side{width:12%}
+ #reportScroll[data-view="portrait"] .chart .pillar-col{width:16%}
+ #reportScroll[data-view="portrait"] .chart .label-col{width:24%}
+ #reportScroll[data-view="portrait"] .chart th{font-size:13px;letter-spacing:0;height:34px}
+ #reportScroll[data-view="portrait"] .chart th,#reportScroll[data-view="portrait"] .chart td{padding:5px 2px}
+ #reportScroll[data-view="portrait"] .chart .pillar-chars{display:flex;flex-direction:column;align-items:center;gap:0;font-size:23px;line-height:1.35}
+ #reportScroll[data-view="portrait"] .chart .small{font-size:10px}
+ #reportScroll[data-view="portrait"] .chart .kan{font-size:18px}
+ #reportScroll[data-view="portrait"] .chart .tenchu{font-size:18px;letter-spacing:0}
+ #reportScroll[data-view="portrait"] .chart .row-label{font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+ #reportScroll[data-view="portrait"] .chart tr:nth-child(n+4) td{height:66px}
+ #reportScroll[data-view="portrait"] h3{font-size:15px;padding:9px 10px}
+ #reportScroll[data-view="portrait"] .health-table th,#reportScroll[data-view="portrait"] .health-table td{font-size:11px;padding:7px 4px;overflow-wrap:anywhere}
+ #reportScroll[data-view="portrait"] .health-table .element-count{font-size:14px}
+ #reportScroll[data-view="portrait"] .report-insights dl>div{grid-template-columns:78px 1fr;font-size:13px;gap:8px}
+ #reportScroll[data-view="portrait"] .data-table,#reportScroll[data-view="portrait"] .data-table tbody{display:block;width:100%}
+ #reportScroll[data-view="portrait"] .data-table{border:0;border-spacing:0}
+ #reportScroll[data-view="portrait"] .data-table tr,#reportScroll[data-view="portrait"] .data-table tr:first-child{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid #777;margin:0 0 10px;padding:9px;gap:10px 8px;background:#fff}
+ #reportScroll[data-view="portrait"] .data-table tr:first-child{display:none}
+ #reportScroll[data-view="portrait"] .data-table th,#reportScroll[data-view="portrait"] .data-table td{display:block;border:0!important;padding:0!important;font-size:15px;line-height:1.6;text-align:left!important;overflow-wrap:anywhere}
+ #reportScroll[data-view="portrait"] .data-table td::before{display:block;content:attr(data-label);font-size:10px;line-height:1.5;color:#666;margin-bottom:2px}
+ #reportScroll[data-view="portrait"] .data-table td:first-child{font-weight:700}
+ #reportScroll[data-view="portrait"] #yearLuckTable td:last-child{grid-column:1/-1;font-size:13px;border-top:1px dotted #ccc!important;padding-top:7px!important}
+ #reportScroll[data-view="portrait"] #yearLuckTable td:nth-child(5){grid-column:2/4}
+ #reportScroll[data-view="portrait"] .data-table .year-tenchu{background:#f8f3e8}
+ #reportScroll[data-view="portrait"] .report-block h2{font-size:18px;padding:10px;margin-bottom:10px;border-bottom:1px solid #333}
+ #reportScroll[data-view="portrait"] .report-footer{display:block;font-size:9px;line-height:1.9}
+ #reportScroll[data-view="portrait"] .report-footer span{display:block}
+}
+@page portraitReport{size:A4 portrait;margin:10mm}
+@media print{
+ body[data-report-view="portrait"] main{page:portraitReport}
+ #reportScroll[data-view="portrait"]{max-width:none;margin:0}
+ #reportScroll[data-view="portrait"] .report-sheet{break-inside:auto;padding:0!important}
+ #reportScroll[data-view="portrait"] .report-columns{display:block}
+ #reportScroll[data-view="portrait"] .report-columns>*{break-inside:auto}
+ #reportScroll[data-view="portrait"] .report-heading h1{font-size:22pt}
+ #reportScroll[data-view="portrait"] .report-person #profileLine{font-size:9pt}
+ #reportScroll[data-view="portrait"] .report-guidance{font-size:10pt;line-height:1.7}
+ #reportScroll[data-view="portrait"] .report-element-box,#reportScroll[data-view="portrait"] .report-memo,#reportScroll[data-view="portrait"] .report-insights,#reportScroll[data-view="portrait"] .report-block{margin:4mm 0;break-inside:avoid}
+ #reportScroll[data-view="portrait"] .chart{break-inside:avoid}
+ #reportScroll[data-view="portrait"] .health-table th,#reportScroll[data-view="portrait"] .health-table td{font-size:9pt}
+ #reportScroll[data-view="portrait"] .report-insights dl>div{font-size:9pt;padding:1.5mm 0}
+ #reportScroll[data-view="portrait"] .data-table th,#reportScroll[data-view="portrait"] .data-table td{font-size:8pt;padding:1.2mm!important}
+ #reportScroll[data-view="portrait"] .health-note,#reportScroll[data-view="portrait"] .health-summary,#reportScroll[data-view="portrait"] .insight-caption{font-size:8pt}
+ body[data-report-view="portrait"] .timing-guide{max-width:none}
+}
+
 </style>
 </head>
 <body>
@@ -155,8 +249,8 @@ main{width:min(1180px,100% - 28px)}
 <label class="full">相手の出生地（都道府県選択）<select id="partnerPlace"><option value="" selected>都道府県を選択</option></select></label>
 </div><div class="actions"><button id="checkCompatibility" type="button">相性を見る</button><button class="secondary" id="deleteSelected" type="button">選択中を削除</button></div><div class="result" id="compatibilityResult">相手の情報を入れると、命式ベースの相性メモを表示します。</div></section>
 
-<div class="report-toolbar"><div><b>一枚で見渡す、四柱推命鑑定書</b><span>全体を見渡す表示と、大きく読む表示を切り替えられます。</span></div><div class="report-view-buttons"><button class="secondary" id="reportFit" type="button" aria-pressed="true">全体を見る</button><button class="secondary" id="reportRead" type="button" aria-pressed="false">大きく読む</button><button id="printReport" type="button">印刷・PDF保存</button></div></div>
-<div class="report-scroll" id="reportScroll" role="region" aria-label="横長の鑑定書" tabindex="0"><div class="report-stage" id="reportStage">
+<div class="report-toolbar"><div><b>縦に読める、四柱推命鑑定書</b><span>スマホの縦画面で、そのまま読める鑑定書です。</span></div><div class="report-view-buttons"><button class="secondary" id="reportFit" type="button" aria-pressed="false">横一枚で見る</button><button class="secondary" id="reportRead" type="button" aria-pressed="true">縦で読む</button><button id="printReport" type="button">印刷・PDF保存</button></div></div>
+<div class="report-scroll" id="reportScroll" role="region" data-view="portrait" aria-label="四柱推命鑑定書" tabindex="0"><div class="report-stage" id="reportStage">
 <article id="reportSheet" class="report-sheet" aria-label="四柱推命鑑定書">
 <header class="report-heading"><h1>四柱推命鑑定書</h1><p>命式と、これからの流れを一枚に。</p></header>
 <div class="report-person"><h2 id="titleName">鑑定結果</h2><div id="profileLine">生年月日・出生時刻・出生地を入力してください</div></div>
@@ -177,8 +271,8 @@ main{width:min(1180px,100% - 28px)}
 <div class="report-manual" id="reportManual" hidden><h4>鑑定メモ</h4><div id="reportMemo"></div></div></div>
 </div>
 <div class="report-right">
-<section class="report-block"><h2>歳運 <small>一年ごとの流れ</small></h2><table class="data-table" id="yearLuckTable"></table></section>
-<section class="report-block"><h2>大運 <small>十年ごとの歩み</small><span id="reportDirection"></span></h2><table class="data-table" id="daiunTable"></table><p id="reportStart" class="report-start">生年月日と性別を入力してください。</p></section>
+<section class="report-block report-year-luck"><h2>歳運 <small>一年ごとの流れ</small></h2><table class="data-table" id="yearLuckTable"></table></section>
+<section class="report-block report-decade-luck"><h2>大運 <small>十年ごとの歩み</small><span id="reportDirection"></span></h2><table class="data-table" id="daiunTable"></table><p id="reportStart" class="report-start">生年月日と性別を入力してください。</p></section>
 <section class="report-insights"><h3>命式のポイント</h3>
 <dl><div><dt>生月中殺</dt><dd id="reportMonthExclusion">未算出</dd></div>
 <div><dt>生年中殺</dt><dd id="reportYearExclusion">未算出</dd></div>
@@ -294,7 +388,7 @@ function formatSetsu(ms){return new Intl.DateTimeFormat("ja-JP",{timeZone:"Asia/
 function current(){return{id:selectedId||String(Date.now()),name:$("clientName").value.trim(),gender:$("clientGender").value,date:$("birthDate").value,time:$("birthTime").value,place:$("birthPlace").value,memo:$("readingMemo").value.trim()}}function build(rec){if(!rec.date)return null;const d=ld(rec.date,rec.time),y=yearP(d),m=monthP(d,y.stem),da=dayP(d),h=hourP(rec.time,da.stem),pillars={hour:h,day:da,month:m,year:y};for(const k of Object.keys(pillars)){const p=pillars[k];if(!p)continue;p.hidden=hs(p.branch,m.days);p.stemStar=k==="day"?"":star(da.stem,p.stem);p.hiddenStar=star(da.stem,p.hidden);p.twelve=TW[da.stem][p.branch]}return{pillars,day:da,month:m,year:y,date:d,gender:rec.gender,timeKnown:!!rec.time,tenchu:["戌亥","申酉","午未","辰巳","寅卯","子丑"][Math.floor(da.index/10)]}}
 function catchCopy(c){const ms=c.pillars.month.hiddenStar;return{正財:"誠実に信頼を積み上げ現実を動かす人",偏財:"人との縁を広げ価値を循環させる人",正官:"責任感と品格で道を整えていく人",偏官:"逆境を突破力に変えて前へ進む人",食神:"楽しさと安心感を周囲へ届ける人",傷官:"鋭い感性で違和感を言葉にする人",偏印:"独自の発想で新しい可能性を開く人",印綬:"知性と学びで人を支え導く人",比肩:"自分の信念を貫き道を切り開く人",劫財:"仲間を巻き込み勝負を形にする人"}[ms]||"自分の強みを社会で形にしていく人"}
 function stemText(s){return{甲:"信念を育てて伸びる人。長期目線で積み上げるほど強い。",乙:"しなやかに人と場を整える人。柔軟さが武器。",丙:"周囲を明るく照らす人。表現力と存在感が強み。",丁:"静かな情熱で導く人。洞察と集中力がある。",戊:"人を支える土台になる人。安定感と信頼感が強い。",己:"現実を整えて育てる人。面倒見と調整力が出る。",庚:"決断力で道を切り開く人。鍛えられるほど強くなる。",辛:"美意識で本質を磨く人。細部を見る力がある。",壬:"大きな流れを読む人。自由な発想と展開力がある。",癸:"繊細に可能性を育てる人。学びと感受性が強い。"}[s]}function starText(x){return{比肩:"自分の軸。独立心と粘り。",劫財:"仲間・勝負・巻き込み力。",食神:"楽しさ・衣食住・自然体の魅力。",傷官:"感性・技術・鋭い言葉。",偏財:"人脈・商売・広げる力。",正財:"信用・約束・お金の管理。",偏官:"行動力・責任・逆境への強さ。",正官:"信頼・秩序・社会的評価。",偏印:"直感・研究・異分野発想。",印綬:"学び・知性・保護。"}[x]||""}
-function setP(id,p){$(id).innerHTML=p?`<span class="small">${elem(p.stem)}</span><span class="kan blue">${p.stem} ${p.branch}</span><span class="small">${elem(p.branch)}</span>`:"<span class='small'>時刻未入力</span>"}
+function setP(id,p){$(id).innerHTML=p?`<span class="small">${elem(p.stem)}</span><span class="kan blue pillar-chars"><span>${p.stem}</span><span>${p.branch}</span></span><span class="small">${elem(p.branch)}</span>`:"<span class='small'>時刻未入力</span>"}
 function relation(ps){const stems=ps.map(p=>p?.stem).filter(Boolean),brs=ps.map(p=>p?.branch).filter(Boolean),out=[];[["甲","己","甲己干合"],["乙","庚","乙庚干合"],["丙","辛","丙辛干合"],["丁","壬","丁壬干合"],["戊","癸","戊癸干合"]].forEach(([a,b,t])=>{if(stems.includes(a)&&stems.includes(b))out.push(t)});[["子","丑","子丑支合"],["寅","亥","寅亥支合"],["卯","戌","卯戌支合"],["辰","酉","辰酉支合"],["巳","申","巳申支合"],["午","未","午未支合"],["子","午","子午冲"],["丑","未","丑未冲"],["寅","申","寅申冲"],["卯","酉","卯酉冲"],["辰","戌","辰戌冲"],["巳","亥","巳亥冲"]].forEach(([a,b,t])=>{if(brs.includes(a)&&brs.includes(b))out.push(t)});return out.length?out.join("・"):"大きな干合・支合・冲は目立ちません"}
 function luckMark(c,g){const ten=c.tenchu.split("");const rel=relation([c.day,c.month,c.year,g]);let score=0;if(ten.includes(g.branch))score-=2;if(rel.includes("冲"))score-=1;if(rel.includes("支合")||rel.includes("干合"))score+=1;const st=star(c.day.stem,g.stem);if(["正官","正財","印綬","食神"].includes(st))score+=1;if(["傷官","偏官","劫財"].includes(st))score-=1;return score>=2?"◎":score>=1?"○":score>=-1?"△":"×"}
 function luckAdvice(mark,starName,tenchu){if(tenchu)return "天中殺は準備・勉強・貢献を中心に。振り返りや、人を支える活動に使いましょう。";if(mark==="◎")return starName+"を活かし、追い風を使いやすい時。提案、発信、勝負、良縁づくりを具体的に進めましょう。";if(mark==="○")return starName+"が巡るので、準備してきたことを現実に乗せる時。人との約束を守り、小さく実行しましょう。";if(mark==="△")return starName+"のテーマが出るため、焦らず調整する時。衝突を避け、学び直しと体制づくりに使いましょう。";return starName+"のテーマで負荷が出やすい時。無理な拡大は控え、守り・整理・健康管理を優先しましょう。"}
@@ -488,19 +582,26 @@ function renderTimingGuide(c){
  $("hourLuckTable").innerHTML="<tr><th>時間帯（日本標準時）</th><th>十二支</th><th>目安</th><th>使い方のヒント</th></tr>"+hours.map(r=>{let label=r.tenchu?"天中殺":r.suggested?"活動の候補":"自分のペースで",action=r.tenchu?"準備・勉強・貢献。資料を整える、振り返る、人を手伝う時間に。":r.suggested?"集中したい仕事・企画・対話などに使う候補。現実の予定に合わせて選びましょう。":"日常の作業や連絡、無理のない活動に。";if(r.start>=21||r.start<7)action="睡眠・休息を優先。起きている場合は"+(r.tenchu?"準備・勉強・貢献を無理のない範囲で。":"軽い振り返りや翌日の準備に。");return `<tr class="${r.tenchu?"tenchu-period":r.suggested?"suggested-period":""}"><td>${r.label}</td><td>${r.branch}</td><td>${label}</td><td>${action}</td></tr>`}).join("");
  labelDataTable("hourLuckTable");
 }
-let reportViewMode="fit";
+let reportViewMode="portrait";
 function syncReportView(){
  const sheet=$("reportSheet"),stage=$("reportStage"),scroll=$("reportScroll");
  if(!sheet?.style||!stage?.style||!scroll?.style)return;
+ scroll.setAttribute("data-view",reportViewMode);
+ document.body?.setAttribute("data-report-view",reportViewMode);
+ if(reportViewMode==="portrait"){
+  sheet.style.width="100%";sheet.style.minWidth="0";sheet.style.transform="none";
+  stage.style.width="100%";stage.style.height="auto";scroll.style.overflowX="visible";
+  $("reportFit").setAttribute("aria-pressed","false");$("reportRead").setAttribute("aria-pressed","true");return;
+ }
  const width=1120,available=Math.max(1,(scroll.clientWidth||width)-4),scale=reportViewMode==="fit"?Math.min(1,available/width):1;
  sheet.style.width=width+"px";sheet.style.minWidth=width+"px";sheet.style.transform="scale("+scale+")";
  stage.style.width=(width*scale)+"px";stage.style.height=((sheet.offsetHeight||0)*scale)+"px";
  scroll.style.overflowX=reportViewMode==="fit"?"hidden":"auto";
- $("reportFit").setAttribute("aria-pressed",String(reportViewMode==="fit"));$("reportRead").setAttribute("aria-pressed",String(reportViewMode==="read"));
+ $("reportFit").setAttribute("aria-pressed",String(reportViewMode==="fit"));$("reportRead").setAttribute("aria-pressed","false");
 }
 function scheduleReportView(){if(typeof requestAnimationFrame==="function")requestAnimationFrame(syncReportView);else syncReportView()}
-function setReportView(mode){reportViewMode=mode;scheduleReportView()}
-$("reportFit").onclick=()=>setReportView("fit");$("reportRead").onclick=()=>setReportView("read");
+function setReportView(mode){reportViewMode=mode==="read"?"portrait":mode;scheduleReportView()}
+$("reportFit").onclick=()=>setReportView("fit");$("reportRead").onclick=()=>setReportView("portrait");
 window.addEventListener?.("resize",scheduleReportView);
 if(typeof ResizeObserver!=="undefined"){const reportObserver=new ResizeObserver(scheduleReportView);reportObserver.observe($("reportSheet"));reportObserver.observe($("reportScroll"));}
 $("luckYear").value=String(currentJstYear());$("luckYear").addEventListener("input",()=>{const c=build(current());if(c)renderTimingGuide(c)});
