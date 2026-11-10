@@ -96,6 +96,44 @@ main{width:min(1180px,100% - 28px)}
  .health-table th,.health-table td{font-size:6.5pt;line-height:1.3;padding:.7mm 1mm}.health-table .element-count{font-size:7pt}
  .health-summary,.health-note{font-size:6pt;line-height:1.35;padding:1mm 1.5mm}
 }
+
+.report-view-buttons{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.report-view-buttons button{font-size:12px;padding:9px}
+.report-view-buttons button[aria-pressed="true"]{background:#222;color:#fff}
+.report-scroll{overflow:hidden}.report-stage{position:relative;margin:0 auto}.report-sheet{transform-origin:top left}
+.timing-guide{margin:30px 0;padding:22px;border:1px solid #ccc;background:#fff}
+.timing-heading{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
+.timing-guide h2{font-size:23px;margin:0 0 10px}.timing-guide h2 small{font-size:13px;font-weight:400;margin-left:8px}
+.timing-heading p,.timing-note{font-size:13px;color:#555;line-height:1.8;margin:0 0 12px}
+.timing-heading label{min-width:130px}.timing-heading input{width:130px}
+.timing-summary{font-size:15px;line-height:1.8;padding:12px;background:#f7f6f2;border-left:3px solid #333}
+.timing-table-wrap{margin:14px 0 28px}.timing-guide .data-table{font-size:13px}
+.timing-guide .data-table td,.timing-guide .data-table th{padding:9px 7px;line-height:1.6}
+.timing-guide .data-table th{background:#f7f6f2;font-size:12px}
+.timing-guide .data-table td:nth-child(2){font-variant-numeric:tabular-nums}
+.timing-guide .tenchu-period td{background:#f8f3e8}.timing-guide .suggested-period td{background:#edf5f2}
+.timing-guide .current-period td:first-child{border-left:4px solid #333}
+.timing-guide #monthLuckTable th:nth-child(2){width:26%}
+.timing-guide #monthLuckTable th:last-child{width:23%}
+.timing-guide #hourLuckTable th:last-child{width:42%}
+@media(max-width:600px){
+ .report-toolbar{display:block}.report-view-buttons{justify-content:flex-start;margin-top:10px}.report-toolbar span{max-width:none}
+ .report-stage{margin:0 auto}.timing-guide{padding:14px 10px}.timing-heading{display:block}.timing-heading label{margin:12px 0;width:150px}
+ .timing-guide .data-table tr:first-child{display:none}.timing-guide h2{font-size:20px}.timing-summary{font-size:14px}
+}
+@media print{
+ .report-stage{width:100%!important;height:auto!important;margin:0!important}
+ .report-sheet{width:100%!important;min-width:0!important;transform:none!important}
+ main>.timing-guide{display:block!important;break-before:page;padding:0;border:0;margin:0}
+ .timing-heading label,.timing-guide details{display:none!important}
+ .timing-guide h2{font-size:13pt}.timing-heading p,.timing-note{font-size:8pt;margin-bottom:2mm}
+ .timing-summary{font-size:8pt;padding:2mm;margin:2mm 0}
+ .timing-guide .data-table{display:table;border-collapse:collapse}
+ .timing-guide .data-table th,.timing-guide .data-table td{display:table-cell;font-size:7pt;padding:1mm;line-height:1.35}
+ .timing-guide .data-table td::before{display:none}
+ .timing-table-wrap{margin:2mm 0 4mm}
+ .timing-guide #hourLuckTable{break-inside:avoid}
+}
+
 </style>
 </head>
 <body>
@@ -117,9 +155,9 @@ main{width:min(1180px,100% - 28px)}
 <label class="full">相手の出生地（都道府県選択）<select id="partnerPlace"><option value="" selected>都道府県を選択</option></select></label>
 </div><div class="actions"><button id="checkCompatibility" type="button">相性を見る</button><button class="secondary" id="deleteSelected" type="button">選択中を削除</button></div><div class="result" id="compatibilityResult">相手の情報を入れると、命式ベースの相性メモを表示します。</div></section>
 
-<div class="report-toolbar"><div><b>一枚で見渡す、四柱推命鑑定書</b><span>スマートフォンでは鑑定書を横にスクロールできます。</span></div><button id="printReport" type="button">印刷・PDF保存</button></div>
-<div class="report-scroll" role="region" aria-label="横長の鑑定書" tabindex="0">
-<article class="report-sheet" aria-label="四柱推命鑑定書">
+<div class="report-toolbar"><div><b>一枚で見渡す、四柱推命鑑定書</b><span>全体を見渡す表示と、大きく読む表示を切り替えられます。</span></div><div class="report-view-buttons"><button class="secondary" id="reportFit" type="button" aria-pressed="true">全体を見る</button><button class="secondary" id="reportRead" type="button" aria-pressed="false">大きく読む</button><button id="printReport" type="button">印刷・PDF保存</button></div></div>
+<div class="report-scroll" id="reportScroll" role="region" aria-label="横長の鑑定書" tabindex="0"><div class="report-stage" id="reportStage">
+<article id="reportSheet" class="report-sheet" aria-label="四柱推命鑑定書">
 <header class="report-heading"><h1>四柱推命鑑定書</h1><p>命式と、これからの流れを一枚に。</p></header>
 <div class="report-person"><h2 id="titleName">鑑定結果</h2><div id="profileLine">生年月日・出生時刻・出生地を入力してください</div></div>
 <div class="report-columns">
@@ -156,8 +194,19 @@ main{width:min(1180px,100% - 28px)}
 <p class="insight-caption">大半会は年・月・日の三柱、他の合と律音は四柱を照合。方合は三支がそろった場合。身強・身弱は簡易判定です。</p></section>
 </div></div>
 <footer class="report-footer"><span>四柱推命鑑定システム</span><span>自分を知り、これからの選択へ。</span></footer>
-</article></div>
+</article></div></div>
 <details class="calculation-detail"><summary>立運・命式の判定根拠を見る</summary><p class="note" id="natalInsightDetails">命式を入力すると判定根拠を表示します。</p><p class="note" id="daiunNote">大運は日本標準時の出生日時と節入り時刻から計算します。</p><p class="note">食事の参考：<a href="https://www.maff.go.jp/j/syokuiku/shishinn.html" target="_blank" rel="noopener">農林水産省「食生活指針」</a>。五行別の食材は、色や食品の種類を広げるための例です。病気の予防・治療効果を五行から判断したものではありません。</p></details>
+
+<section class="timing-guide" id="timingGuide" aria-label="月ごとと一日の過ごし方">
+<div class="timing-heading"><div><h2>月運 <small>月ごとの流れ</small></h2><p>月は1日ではなく節入りで切り替わります。立春から翌年の立春までの12か月を表示します。</p></div><label>運勢を見る年<input id="luckYear" type="number" min="1900" max="2100" step="1" inputmode="numeric"></label></div>
+<p class="timing-summary" id="monthLuckSummary">生年月日を入力すると表示します。</p><div class="timing-table-wrap"><table class="data-table" id="monthLuckTable"></table></div>
+<h2>一日の時間帯ガイド <small>十二支の固定の目安</small></h2>
+<p class="timing-summary" id="hourLuckSummary">生年月日を入力すると表示します。</p>
+<p class="timing-note">天中殺の時間は、準備・勉強・貢献に充てる提案です。深夜は睡眠・休息を優先してください。時間帯の吉凶は成果や失敗を決めるものではありません。</p>
+<div class="timing-table-wrap"><table class="data-table" id="hourLuckTable"></table></div>
+<details class="calculation-detail"><summary>月運・時間帯ガイドの見方</summary><p class="note">月運は節入り時刻（近似）と年干から月の干支を計算し、本人の日干との通変星・天中殺を表示します。日本標準時で扱い、期間の終わりの時刻は次の月に属します。時間帯ガイドは定時法の十二支を使い、本人の天中殺の二支にあたる時間を準備・勉強・貢献向けとします。活動候補は7〜21時の天中殺以外の時間帯から、日干に対する十二運の点数が高い順に3枠を選んだ独自の簡易目安です。毎日変わる日運・時柱を精密に計算したものではありません。体調や生活リズム、現実の予定を優先して使ってください。</p><p class="note">時刻の参考：<a href="https://eco.mtk.nao.ac.jp/koyomi/wiki/BDBDC6F3BBD9.html" target="_blank" rel="noopener">国立天文台「十二支」</a></p></details>
+</section>
+
 <div class="copy" id="essenceCopy">生年月日を入力すると<span class="red">命式が自動生成</span>されます</div>
 
 <section class="section"><h2>命式の解説</h2><div id="reading"><p>生年月日と出生時刻を入力すると、詳細鑑定がここへ反映されます。</p></div></section>
@@ -248,7 +297,7 @@ function stemText(s){return{甲:"信念を育てて伸びる人。長期目線�
 function setP(id,p){$(id).innerHTML=p?`<span class="small">${elem(p.stem)}</span><span class="kan blue">${p.stem} ${p.branch}</span><span class="small">${elem(p.branch)}</span>`:"<span class='small'>時刻未入力</span>"}
 function relation(ps){const stems=ps.map(p=>p?.stem).filter(Boolean),brs=ps.map(p=>p?.branch).filter(Boolean),out=[];[["甲","己","甲己干合"],["乙","庚","乙庚干合"],["丙","辛","丙辛干合"],["丁","壬","丁壬干合"],["戊","癸","戊癸干合"]].forEach(([a,b,t])=>{if(stems.includes(a)&&stems.includes(b))out.push(t)});[["子","丑","子丑支合"],["寅","亥","寅亥支合"],["卯","戌","卯戌支合"],["辰","酉","辰酉支合"],["巳","申","巳申支合"],["午","未","午未支合"],["子","午","子午冲"],["丑","未","丑未冲"],["寅","申","寅申冲"],["卯","酉","卯酉冲"],["辰","戌","辰戌冲"],["巳","亥","巳亥冲"]].forEach(([a,b,t])=>{if(brs.includes(a)&&brs.includes(b))out.push(t)});return out.length?out.join("・"):"大きな干合・支合・冲は目立ちません"}
 function luckMark(c,g){const ten=c.tenchu.split("");const rel=relation([c.day,c.month,c.year,g]);let score=0;if(ten.includes(g.branch))score-=2;if(rel.includes("冲"))score-=1;if(rel.includes("支合")||rel.includes("干合"))score+=1;const st=star(c.day.stem,g.stem);if(["正官","正財","印綬","食神"].includes(st))score+=1;if(["傷官","偏官","劫財"].includes(st))score-=1;return score>=2?"◎":score>=1?"○":score>=-1?"△":"×"}
-function luckAdvice(mark,starName,tenchu){if(tenchu)return "天中殺が絡むため、大きく広げるより整理・準備・学び直しを優先。契約や決断は確認を厚くしましょう。";if(mark==="◎")return starName+"を活かし、追い風を使いやすい時。提案、発信、勝負、良縁づくりを具体的に進めましょう。";if(mark==="○")return starName+"が巡るので、準備してきたことを現実に乗せる時。人との約束を守り、小さく実行しましょう。";if(mark==="△")return starName+"のテーマが出るため、焦らず調整する時。衝突を避け、学び直しと体制づくりに使いましょう。";return starName+"のテーマで負荷が出やすい時。無理な拡大は控え、守り・整理・健康管理を優先しましょう。"}
+function luckAdvice(mark,starName,tenchu){if(tenchu)return "天中殺は準備・勉強・貢献を中心に。振り返りや、人を支える活動に使いましょう。";if(mark==="◎")return starName+"を活かし、追い風を使いやすい時。提案、発信、勝負、良縁づくりを具体的に進めましょう。";if(mark==="○")return starName+"が巡るので、準備してきたことを現実に乗せる時。人との約束を守り、小さく実行しましょう。";if(mark==="△")return starName+"のテーマが出るため、焦らず調整する時。衝突を避け、学び直しと体制づくりに使いましょう。";return starName+"のテーマで負荷が出やすい時。無理な拡大は控え、守り・整理・健康管理を優先しましょう。"}
 function labelDataTable(id){const table=$(id),heads=[...table.querySelectorAll("tr:first-child th")].map(th=>th.textContent.trim());[...table.querySelectorAll("tr:not(:first-child)")].forEach(tr=>[...tr.children].forEach((td,i)=>td.setAttribute("data-label",heads[i]||"")))}
 function luckTables(c){
  let rows="<tr><th>開始年齢</th><th>大運</th><th>通変星</th><th>十二運</th><th>点数</th><th>天中殺</th></tr>";
@@ -271,7 +320,7 @@ function luckTables(c){
  let yrows="<tr><th>年</th><th>干支</th><th>通変星</th><th>運気</th><th>天中殺</th><th>テーマ</th></tr>";
  for(let y=now-2;y<=now+9;y++){
  const g=gz(y-1984),st=star(c.day.stem,g.stem),ten=c.tenchu.includes(g.branch),mark=luckMark(c,g);
- yrows+=`<tr${ten?' class="year-tenchu"':""}><td>${y}</td><td>${g.text}</td><td>${st}</td><td>${mark}</td><td>${ten?"天中殺":"—"}</td><td>${themes[st]}</td></tr>`;
+ yrows+=`<tr${ten?' class="year-tenchu"':""}><td>${y}</td><td>${g.text}</td><td>${st}</td><td>${mark}</td><td>${ten?"天中殺":"—"}</td><td>${ten?"準備・勉強・貢献":themes[st]}</td></tr>`;
  }
  $("yearLuckTable").innerHTML=yrows;labelDataTable("daiunTable");labelDataTable("yearLuckTable");
 }
@@ -386,10 +435,12 @@ function renderNatalInsights(c){
 
 function renderReportExtras(c,r){
  renderNatalInsights(c);
+ renderTimingGuide(c);scheduleReportView();
  renderHealthHints(c);
  renderEnergyGuidance(c);renderManualMemo(r.memo);
 }
 function clearReport(){
+ $("monthLuckTable").innerHTML="";$("hourLuckTable").innerHTML="";$("monthLuckSummary").textContent="生年月日を入力すると表示します。";$("hourLuckSummary").textContent="生年月日を入力すると表示します。";scheduleReportView();
  for(const id of ["reportMonthExclusion","reportYearExclusion","reportDayExclusion","reportSeatedExclusion","reportDaihankai","reportStemCombine","reportBranchCombine","reportDirectionalCombine","reportRepeatedPillar","reportRoot","reportStrength"])$(id).textContent="未算出";
  $("natalInsightDetails").textContent="命式を入力すると判定根拠を表示します。";
  for(const k of ["hour","day","month","year"])for(const prefix of ["p","h","s","hs","u"])$(prefix+"-"+k).textContent="";
@@ -402,7 +453,57 @@ function clearReport(){
  $("reading").innerHTML="<p>生年月日と出生時刻を入力すると、詳細鑑定がここへ反映されます。</p>";
 }
 $("printReport").onclick=()=>{if(build(current()))window.print()};
-$("readingMemo").addEventListener("input",()=>{renderManualMemo($("readingMemo").value.trim())});
+$("readingMemo").addEventListener("input",()=>{renderManualMemo($("readingMemo").value.trim());scheduleReportView()});
+
+
+function jstCivil(ms){const d=new Date(ms+JST_MS);return new Date(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate(),d.getUTCHours(),d.getUTCMinutes())}
+function currentJstYear(){return new Date(Date.now()+JST_MS).getUTCFullYear()}
+function monthPeriods(year){
+ if(!Number.isInteger(year)||year<1900||year>2100)return [];
+ const bounds=[...setsuForYear(year).slice(1),setsuForYear(year+1)[0],setsuForYear(year+1)[1]];
+ return bounds.slice(0,-1).map((start,i)=>{const end=bounds[i+1],date=jstCivil(start.ms+60000),yp=yearP(date),pillar=monthP(date,yp.stem);return {start,end,pillar,month:new Date(start.ms+JST_MS).getUTCMonth()+1}});
+}
+function monthAction(c,g){
+ if(c.tenchu.includes(g.branch))return "準備・勉強・貢献。振り返りや身の回りを整える月に。";
+ const st=star(c.day.stem,g.stem);
+ return ({比肩:"自分の軸を整え、主体的に一歩進める。",劫財:"仲間との協力や役割分担を整える。",食神:"楽しさ・表現・人を育てる活動に。",傷官:"技術を磨き、企画や表現を見直す。",偏財:"交流や紹介を通じてご縁を広げる。",正財:"約束を守り、信用や仕組みを積み重ねる。",偏官:"優先順位を決め、課題に一つずつ取り組む。",正官:"責任ある仕事や、手続き・約束の確認に。",偏印:"新しい発想や研究、学び直しに。",印綬:"勉強・記録・経験を人に伝える活動に。"})[st];
+}
+const HOUR_WINDOWS=B.map((branch,i)=>({branch,start:i===0?23:i*2-1,end:i===0?1:i*2+1,label:i===0?"23:00〜翌01:00":String(i*2-1).padStart(2,"0")+":00〜"+String(i*2+1).padStart(2,"0")+":00"}));
+function hourPeriods(c){
+ const rows=HOUR_WINDOWS.map(w=>({...w,tenchu:c.tenchu.includes(w.branch),twelve:TW[c.day.stem][w.branch],energy:ENERGY[TW[c.day.stem][w.branch]]}));
+ const selected=rows.filter(r=>!r.tenchu&&r.start>=7&&r.start<21).sort((a,b)=>b.energy-a.energy||a.start-b.start).slice(0,3).map(r=>r.branch);
+ return rows.map(r=>({...r,suggested:selected.includes(r.branch)}));
+}
+function renderTimingGuide(c){
+ const year=Number($("luckYear").value),periods=monthPeriods(year),now=Date.now();
+ if(!periods.length){$("monthLuckSummary").textContent="1900〜2100年の整数を入力してください。";$("monthLuckTable").innerHTML="";}
+ else{
+ const hit=periods.filter(p=>c.tenchu.includes(p.pillar.branch));
+ $("monthLuckSummary").textContent=year+"年の月運（立春〜翌年立春）／天中殺："+hit.map(p=>formatSetsu(p.start.ms)+"〜"+formatSetsu(p.end.ms)).join("、")+"。この期間は準備・勉強・貢献を中心に。";
+ $("monthLuckTable").innerHTML="<tr><th>月</th><th>期間（日本標準時・近似）</th><th>干支</th><th>通変星</th><th>運気</th><th>天中殺</th><th>過ごし方のヒント</th></tr>"+periods.map(p=>{const ten=c.tenchu.includes(p.pillar.branch),current=now>=p.start.ms&&now<p.end.ms;return `<tr class="${ten?"tenchu-period":""} ${current?"current-period":""}"><td>${p.month}月期</td><td>${formatSetsu(p.start.ms)}〜<br>${formatSetsu(p.end.ms)}</td><td>${p.pillar.text}</td><td>${star(c.day.stem,p.pillar.stem)}</td><td>${luckMark(c,p.pillar)}</td><td>${ten?"天中殺":"—"}</td><td>${monthAction(c,p.pillar)}</td></tr>`}).join("");
+ labelDataTable("monthLuckTable");
+ }
+ const hours=hourPeriods(c),candidates=hours.filter(r=>r.suggested).sort((a,b)=>b.energy-a.energy||a.start-b.start);
+ $("hourLuckSummary").textContent="活動に使う候補："+candidates.map(r=>r.label+"（"+r.branch+"）").join("、")+"。天中殺："+hours.filter(r=>r.tenchu).map(r=>r.label+"（"+r.branch+"）").join("、")+"。";
+ $("hourLuckTable").innerHTML="<tr><th>時間帯（日本標準時）</th><th>十二支</th><th>目安</th><th>使い方のヒント</th></tr>"+hours.map(r=>{let label=r.tenchu?"天中殺":r.suggested?"活動の候補":"自分のペースで",action=r.tenchu?"準備・勉強・貢献。資料を整える、振り返る、人を手伝う時間に。":r.suggested?"集中したい仕事・企画・対話などに使う候補。現実の予定に合わせて選びましょう。":"日常の作業や連絡、無理のない活動に。";if(r.start>=21||r.start<7)action="睡眠・休息を優先。起きている場合は"+(r.tenchu?"準備・勉強・貢献を無理のない範囲で。":"軽い振り返りや翌日の準備に。");return `<tr class="${r.tenchu?"tenchu-period":r.suggested?"suggested-period":""}"><td>${r.label}</td><td>${r.branch}</td><td>${label}</td><td>${action}</td></tr>`}).join("");
+ labelDataTable("hourLuckTable");
+}
+let reportViewMode="fit";
+function syncReportView(){
+ const sheet=$("reportSheet"),stage=$("reportStage"),scroll=$("reportScroll");
+ if(!sheet?.style||!stage?.style||!scroll?.style)return;
+ const width=1120,available=Math.max(1,(scroll.clientWidth||width)-4),scale=reportViewMode==="fit"?Math.min(1,available/width):1;
+ sheet.style.width=width+"px";sheet.style.minWidth=width+"px";sheet.style.transform="scale("+scale+")";
+ stage.style.width=(width*scale)+"px";stage.style.height=((sheet.offsetHeight||0)*scale)+"px";
+ scroll.style.overflowX=reportViewMode==="fit"?"hidden":"auto";
+ $("reportFit").setAttribute("aria-pressed",String(reportViewMode==="fit"));$("reportRead").setAttribute("aria-pressed",String(reportViewMode==="read"));
+}
+function scheduleReportView(){if(typeof requestAnimationFrame==="function")requestAnimationFrame(syncReportView);else syncReportView()}
+function setReportView(mode){reportViewMode=mode;scheduleReportView()}
+$("reportFit").onclick=()=>setReportView("fit");$("reportRead").onclick=()=>setReportView("read");
+window.addEventListener?.("resize",scheduleReportView);
+if(typeof ResizeObserver!=="undefined"){const reportObserver=new ResizeObserver(scheduleReportView);reportObserver.observe($("reportSheet"));reportObserver.observe($("reportScroll"));}
+$("luckYear").value=String(currentJstYear());$("luckYear").addEventListener("input",()=>{const c=build(current());if(c)renderTimingGuide(c)});
 
 function records(){try{return JSON.parse(localStorage.getItem(storageKey)||"[]")}catch{return[]}}function saveRecords(v){localStorage.setItem(storageKey,JSON.stringify(v))}function renderSaved(){const box=$("savedReadings");box.innerHTML="";const list=records();if(!list.length){box.innerHTML="<p>保存された鑑定はまだありません。</p>";return}list.forEach(r=>{const b=document.createElement("button");b.className="saved-item";b.type="button";b.textContent=`${r.name||"無記名"} 様 / ${fmt(r.date)} ${r.time||""}`;b.onclick=()=>{selectedId=r.id;$("clientName").value=r.name||"";$("clientGender").value=r.gender||"";$("birthDate").value=r.date||"";$("birthTime").value=r.time||"";$("birthPlace").value=r.place||"";$("readingMemo").value=r.memo||"";applyReading();renderSaved()};box.appendChild(b)})}function saveReading(){const r=current(),next=records().filter(x=>x.id!==r.id);next.unshift(r);saveRecords(next.slice(0,20));selectedId=r.id;renderSaved();$("systemNotice").textContent="鑑定結果とメモを保存しました。"}function resetForm(){selectedId=null;["clientName","birthDate","birthTime","birthPlace","readingMemo","partnerName","partnerDate","partnerTime","partnerPlace"].forEach(id=>$(id).value="");$("clientGender").value="";$("partnerGender").value="未指定";applyReading();renderSaved()}function deleteSelected(){if(!selectedId)return;saveRecords(records().filter(x=>x.id!==selectedId));selectedId=null;renderSaved()}function compatibilityAdvice(){const r=current(),c=build(r),p=$("partnerName").value.trim()||"相手",pd=$("partnerDate").value,pp=$("partnerPlace").value;$("compatibilityResult").innerHTML=c?`<b>${r.name||"あなた"}さん × ${p}さん</b><br>${p}さんは${pd?fmt(pd)+"生まれ":"生年月日未入力"}${pp?`・${pp}`:""}。<br>${r.name||"あなた"}さんは日干${c.day.stem}・月支${c.month.branch}。相性では、相手が安心して話せる余白を作るほど安定します。`:"まず本人の生年月日を入力してください。"}
 ["clientName","clientGender","birthDate","birthTime","birthPlace"].forEach(id=>["input","change"].forEach(ev=>$(id).addEventListener(ev,applyReading)));$("applyReading").onclick=applyReading;$("saveReading").onclick=saveReading;$("clearForm").onclick=resetForm;$("deleteSelected").onclick=deleteSelected;$("checkCompatibility").onclick=compatibilityAdvice;renderSaved();applyReading();
