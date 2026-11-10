@@ -300,6 +300,27 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 .screen-report[data-density="dense"] .screen-timing{font-size:7px}
 @media print{.screen-report[data-density] .screen-content{gap:2mm}.screen-report[data-density] .screen-chart{font-size:13pt}.screen-report[data-density] th,.screen-report[data-density] td{font-size:9pt;padding:1mm}.screen-report[data-density] .screen-points{font-size:8pt}.screen-report[data-density] .screen-advice>p{font-size:10pt}.screen-report[data-density] h2{font-size:11pt}}
 
+
+.comprehensive-reading{width:100%;max-width:760px;margin:20px auto;padding:24px;border:1px solid #777;background:#fff}
+.comprehensive-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:2px solid #333;padding-bottom:14px}
+.comprehensive-heading h2{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:26px;letter-spacing:.1em;margin:0 0 6px}
+.comprehensive-heading p{font-size:12px;line-height:1.6;color:#666;margin:0}
+#readingCharCount{font-size:11px;white-space:nowrap;border:1px solid #bbb;padding:6px}
+.reading-basis{font-size:12px;line-height:1.8;background:#f5f4f0;margin:14px 0;padding:10px}
+.reading-topic{border-bottom:1px solid #ddd;padding:16px 0}.reading-topic:last-child{border-bottom:0}
+.reading-topic h3{display:flex;gap:10px;align-items:baseline;font-size:18px;margin:0 0 9px}
+.reading-topic h3 span{font-size:12px;color:#777;font-weight:400}
+.reading-topic p{font-size:15px;line-height:1.95;margin:0;overflow-wrap:anywhere}
+.reading-footnote{font-size:11px;line-height:1.8;color:#666;border-top:1px solid #aaa;margin:16px 0 0;padding-top:10px}
+.screen-elements .element-body{font-size:8px;color:#555;white-space:normal}
+@media(max-width:600px){.comprehensive-reading{padding:18px 14px}.comprehensive-heading{display:block}#readingCharCount{display:inline-block;margin-top:10px}.reading-topic h3{font-size:17px}.reading-topic p{font-size:15px}}
+@media print{
+ main>.comprehensive-reading{display:block!important;page:portraitReport;break-before:page;max-width:none;margin:0;border:0;padding:0}
+ .comprehensive-heading h2{font-size:18pt}.comprehensive-heading p,.reading-basis{font-size:8pt}
+ .reading-topic{padding:3mm 0;break-inside:avoid}.reading-topic h3{font-size:12pt;margin-bottom:2mm}
+ .reading-topic p{font-size:10pt;line-height:1.7}.reading-footnote{font-size:8pt}
+}
+
 </style>
 </head>
 <body>
@@ -326,6 +347,14 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 <header class="screen-head"><div><h1>四柱推命鑑定書</h1><p id="screenPerson">生年月日を入力してください</p></div><button class="screen-print" id="printScreen" type="button">印刷</button></header>
 <div class="screen-content" id="screenContent"><p class="screen-empty">情報を入力して「鑑定に反映」を押すと、この一枚に命式・運勢・アドバイスを表示します。</p></div>
 </article>
+
+<section class="comprehensive-reading" id="comprehensiveReading" aria-label="九項目の総合鑑定">
+<header class="comprehensive-heading"><div><h2>総合鑑定</h2><p>命式から読む、持ち味とこれからの活かし方</p></div><span id="readingCharCount">約1,000文字・9項目</span></header>
+<p class="reading-basis" id="readingBasis">生年月日を入力すると、9項目の鑑定文を表示します。</p>
+<div id="comprehensiveSections"></div>
+<p class="reading-footnote">命式に基づく占術上の読み解きです。未来の出来事や相手の気持ち、健康状態を断定するものではありません。</p>
+</section>
+
 <details class="full-reading" id="fullReading"><summary>月運・時間帯・詳しい鑑定を見る</summary>
 
 <div class="report-toolbar"><div><b>縦に読める、四柱推命鑑定書</b><span>スマホの縦画面で、そのまま読める鑑定書です。</span></div><div class="report-view-buttons"><button class="secondary" id="reportFit" type="button" aria-pressed="false">横一枚で見る</button><button class="secondary" id="reportRead" type="button" aria-pressed="true">縦で読む</button><button id="printReport" type="button">印刷・PDF保存</button></div></div>
@@ -368,7 +397,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 </div></div>
 <footer class="report-footer"><span>四柱推命鑑定システム</span><span>自分を知り、これからの選択へ。</span></footer>
 </article></div></div>
-<details class="calculation-detail"><summary>立運・命式の判定根拠を見る</summary><p class="note" id="natalInsightDetails">命式を入力すると判定根拠を表示します。</p><p class="note" id="daiunNote">大運は日本標準時の出生日時と節入り時刻から計算します。</p><p class="note">食事の参考：<a href="https://www.maff.go.jp/j/syokuiku/shishinn.html" target="_blank" rel="noopener">農林水産省「食生活指針」</a>。五行別の食材は、色や食品の種類を広げるための例です。病気の予防・治療効果を五行から判断したものではありません。</p></details>
+<details class="calculation-detail"><summary>立運・命式の判定根拠を見る</summary><p class="note" id="natalInsightDetails">命式を入力すると判定根拠を表示します。</p><p class="note" id="daiunNote">大運は日本標準時の出生日時と節入り時刻から計算します。</p><p class="note">食事の参考：<a href="https://www.maff.go.jp/j/syokuiku/shishinn.html" target="_blank" rel="noopener">農林水産省「食生活指針」</a>。五行別の食材は、色や食品の種類を広げるための例です。病気の予防・治療効果を五行から判断したものではありません。</p><p class="note">身体配当の参考：<a href="https://www.kotaro.co.jp/kampo/kiso/gozo/" target="_blank" rel="noopener">小太郎漢方製薬「生命活動の5本柱・五臓」</a>。伝統的な五臓・五官・五体の分類として掲載しています。</p></details>
 
 <section class="timing-guide" id="timingGuide" aria-label="月ごとと一日の過ごし方">
 <div class="timing-heading"><div><h2>月運 <small>月ごとの流れ</small></h2><p>月は1日ではなく節入りで切り替わります。立春から翌年の立春までの12か月を表示します。</p></div><label>運勢を見る年<input id="luckYear" type="number" min="1900" max="2100" step="1" inputmode="numeric"></label></div>
@@ -576,7 +605,7 @@ function elementOverview(c){
 }
 function renderHealthHints(c){
  const v=elementOverview(c);
- $("reportElements").innerHTML=`<p class="health-summary">命式の数：${v.more.join("・")}が多め／${v.less.join("・")}が少なめ${v.partial?"（時柱未入力・暫定）":""}</p><table class="health-table"><tr><th>五行・数</th><th>色・五味</th><th>取り入れ方の目安</th></tr>${Object.entries(v.counts).map(([e,n])=>{const m=ELEMENT_MATCH[e],a=symbolicAdjustment(c,e);return `<tr><td class="element-count" style="color:${m.ink}">${e} ${n}</td><td>${m.color}／${m.taste}<br>${m.food}</td><td>${a.text}。<br>${a.food}。</td></tr>`}).join("")}</table><p class="health-note">増減は配色・モチーフの選択の目安で、味の摂取量の指示ではありません。五行の多寡で病気や栄養不足は判定できません。甘味や塩分を増やさず、食材の種類を広げてバランスよく選びましょう。</p>`;
+ $("reportElements").innerHTML=`<p class="health-summary">命式の数：${v.more.join("・")}が多め／${v.less.join("・")}が少なめ${v.partial?"（時柱未入力・暫定）":""}</p><table class="health-table"><tr><th>五行・数</th><th>色・五味</th><th>伝統的な身体対応</th><th>取り入れ方の目安</th></tr>${Object.entries(v.counts).map(([e,n])=>{const m=ELEMENT_MATCH[e],a=symbolicAdjustment(c,e);return `<tr><td class="element-count" style="color:${m.ink}">${e} ${n}</td><td>${m.color}／${m.taste}<br>${m.food}</td><td>${m.organs}<br>${m.sense}／${m.parts}</td><td>${a.text}。<br>${a.food}。</td></tr>`}).join("")}</table><p class="health-note">身体対応は東洋思想の伝統的な分類で、五臓名は現代医学の臓器そのものとは一致しません。数から部位の不調は判断できません。増減は配色・食材選びの目安で、味の摂取量の指示ではありません。五行の多寡で病気や栄養不足は判定できません。甘味や塩分を増やさず、食材の種類を広げてバランスよく選びましょう。</p>`;
 
 }
 
@@ -611,6 +640,7 @@ function renderNatalInsights(c){
 }
 
 function renderReportExtras(c,r){
+ renderComprehensiveReading(c);
  renderScreenReport(c,r);
  renderNatalInsights(c);
  renderTimingGuide(c);scheduleReportView();
@@ -618,6 +648,7 @@ function renderReportExtras(c,r){
  renderEnergyGuidance(c);renderManualMemo(r.memo);
 }
 function clearReport(){
+ $("comprehensiveSections").innerHTML="";$("readingCharCount").textContent="約1,000文字・9項目";$("readingBasis").textContent="生年月日を入力すると、9項目の鑑定文を表示します。";
  $("screenPerson").textContent="生年月日を入力してください";$("screenContent").innerHTML='<p class="screen-empty">情報を入力すると、この一枚に鑑定結果を表示します。</p>';
  $("monthLuckTable").innerHTML="";$("hourLuckTable").innerHTML="";$("monthLuckSummary").textContent="生年月日を入力すると表示します。";$("hourLuckSummary").textContent="生年月日を入力すると表示します。";scheduleReportView();
  for(const id of ["reportMonthExclusion","reportYearExclusion","reportDayExclusion","reportSeatedExclusion","reportDaihankai","reportStemCombine","reportBranchCombine","reportDirectionalCombine","reportRepeatedPillar","reportRoot","reportStrength"])$(id).textContent="未算出";
@@ -692,7 +723,7 @@ if(typeof ResizeObserver!=="undefined"){const reportObserver=new ResizeObserver(
 $("luckYear").value=String(currentJstYear());$("luckYear").addEventListener("input",()=>{const c=build(current());if(c)renderTimingGuide(c)});
 
 
-const ELEMENT_MATCH={木:{color:"青・緑",taste:"酸",ink:"#28724b",food:"青菜・柑橘"},火:{color:"赤",taste:"苦",ink:"#aa382c",food:"ゴーヤ・春菊"},土:{color:"黄",taste:"甘",ink:"#8a690f",food:"かぼちゃ・いも"},金:{color:"白",taste:"辛",ink:"#5e6770",food:"大根・ねぎ"},水:{color:"黒",taste:"鹹",ink:"#294e72",food:"魚・海藻"}};
+const ELEMENT_MATCH={木:{organs:"肝・胆",sense:"目",parts:"筋・爪",bodyShort:"肝／目・筋",color:"青・緑",taste:"酸",ink:"#28724b",food:"青菜・柑橘"},火:{organs:"心・小腸",sense:"舌",parts:"血脈",bodyShort:"心／舌・脈",color:"赤",taste:"苦",ink:"#aa382c",food:"ゴーヤ・春菊"},土:{organs:"脾・胃",sense:"口",parts:"肌肉・唇",bodyShort:"脾／口・肌肉",color:"黄",taste:"甘",ink:"#8a690f",food:"かぼちゃ・いも"},金:{organs:"肺・大腸",sense:"鼻",parts:"皮膚・毛",bodyShort:"肺／鼻・皮膚",color:"白",taste:"辛",ink:"#5e6770",food:"大根・ねぎ"},水:{organs:"腎・膀胱",sense:"耳",parts:"骨・髪",bodyShort:"腎／耳・骨",color:"黒",taste:"鹹",ink:"#294e72",food:"魚・海藻"}};
 function symbolicAdjustment(c,e){const v=elementOverview(c),n=v.counts[e],max=Math.max(...Object.values(v.counts)),min=Math.min(...Object.values(v.counts));if(max===min)return {mark:"→",text:"色：今のまま",food:"食材は偏らず"};if(n===min)return {mark:"↑",text:"色：取り入れる",food:e==="水"?"塩分を増やさず魚・海藻を適量":e==="土"?"菓子でなく芋などを適量":ELEMENT_MATCH[e].food+"を少量の候補に"};if(n===max)return {mark:"↓",text:"色：控えめ",food:"同じ食材に偏らない"};return {mark:"→",text:"色：今のまま",food:"食材は偏らず"};}
 function compactLuckAge(years){const months=Math.round(years*12);return Math.floor(months/12)+"歳"+(months%12?months%12+"月":"")}
 function renderScreenReport(c,r){
@@ -705,14 +736,14 @@ function renderScreenReport(c,r){
  let decadeRows="";if(info)for(let i=0;i<8;i++){const g=gz(info.base+(info.forward?1:-1)*(i+1));decadeRows+=`<tr><td>${compactLuckAge(info.startYears+10*i)}</td><td>${g.text}</td><td>${isTenchu(c,g.branch)?"天中殺":star(c.day.stem,g.stem)}</td></tr>`;}
  const combine=x.stemCombines.length?"あり":"なし",root=n.roots.map(p=>p.branch).join("・");
  const points=`<div class="screen-points">生年中殺 ${yes(n.yearExclusion)} ／ 生月 ${yes(n.monthExclusion)}<br>生日中殺 ${yes(x.dayExclusion)} ／ 日座 ${yes(x.seated)}<br>大半会 ${x.daihankai.length?x.daihankai.map(v=>v.split("［")[0].replaceAll("柱","")).join("、"):"なし"} ／ 干合 ${combine}<br>支合 ${yes(!!x.branchCombines.length)} ／ 方合 ${yes(!!x.directions.length)}<br>律音 ${yes(!!n.repeats.length)} ／ 通根 ${root||"なし"}</div>`;
- const elementRows=Object.entries(counts).map(([e,count])=>{const m=ELEMENT_MATCH[e],a=symbolicAdjustment(c,e);return `<tr><th style="color:${m.ink}">${e} ${count}</th><td>${m.color}／${m.taste}</td><td>${a.text}</td><td>${m.food}${a.mark==="↑"?"（少量の候補）":a.mark==="↓"?"（偏りを控える）":"（適量）"}</td></tr>`}).join("");
+ const elementRows=Object.entries(counts).map(([e,count])=>{const m=ELEMENT_MATCH[e],a=symbolicAdjustment(c,e);return `<tr><th style="color:${m.ink}">${e} ${count}</th><td>${m.color}／${m.taste}<br><span class="element-body">${m.bodyShort}</span></td><td>${a.text}</td><td>${m.food}${a.mark==="↑"?"（少量の候補）":a.mark==="↓"?"（偏りを控える）":"（適量）"}</td></tr>`}).join("");
  const advice=energy.total>=26?{strength:"自ら動き、仲間を巻き込む力。",care:"予定や役割を抱え込みすぎない。",action:"テーマを絞り、任せる役割と休む時間を決める。"}:energy.total>=15?{strength:"人や環境に合わせ、積み上げる力。",care:"周囲に合わせすぎず、自分の軸を持つ。",action:"良い仲間・習慣を選び、小さな挑戦を続ける。"}:{strength:"細かく感じ取り、深く磨く力。",care:"予定を詰め込みすぎず、自分のペースで。",action:"安心できる仲間と、集中・回復できる時間を作る。"};
  const hours=hourPeriods(c),active=hours.filter(h=>h.suggested).sort((a,b)=>a.start-b.start).map(h=>h.start+"–"+h.end).join("・"),quiet=hours.filter(h=>h.tenchu).map(h=>h.start+"–"+h.end).join("・");
  const currentMonth=monthPeriods(year).find(p=>Date.now()>=p.start.ms&&Date.now()<p.end.ms);
  $("screenContent").innerHTML=chart+`<div class="screen-meta"><span>天中殺 <b>${c.tenchu}</b>〈二支〉</span><span>エネルギー <b>${energy.total}</b>（${energy.level}）</span><span>${n.strength}</span></div>
  <div class="screen-twins"><section><h2>歳運 ${year-2}–${year+9}</h2><table><tr><th>年</th><th>干支</th><th>目安</th></tr>${yearRows}</table></section>
  <section><h2>大運 ${info?(info.forward?"順行":"逆行"):"性別未選択"}</h2><table><tr><th>開始</th><th>干支</th><th>星・天中殺</th></tr>${decadeRows||'<tr><td colspan="3">性別を選択してください</td></tr>'}</table>${points}</section></div>
- <section class="screen-elements"><h2>五行・色・味・取り入れ方</h2><table><tr><th>五行数</th><th>色／五味</th><th>配色の目安</th><th>食材の例</th></tr>${elementRows}</table><p>増減は単純な五行数による色・食材選びの占術的ヒント。用神の精密判定ではありません。塩分・糖分は増やさず、食材は偏らず選びます。</p></section>
+ <section class="screen-elements"><h2>五行・色・味・身体対応と取り入れ方</h2><table><tr><th>五行数</th><th>色・味／身体</th><th>配色の目安</th><th>食材の例</th></tr>${elementRows}</table><p>増減は単純な五行数による色・食材選びの占術的ヒント。身体対応は伝統的分類で診断ではありません。塩分・糖分は増やさず、食材は偏らず選びます。</p></section>
  <section class="screen-advice"><h2>エネルギー ${energy.total} からのアドバイス</h2><p><b>強み</b> ${advice.strength}<br><b>注意</b> ${advice.care}<br><b>活用</b> ${advice.action}</p><p id="screenMemo" class="screen-memo"></p></section>
  <footer class="screen-timing"><p>活動候補 ${active}時 ／ 天中殺 ${quiet}時</p><p>${currentMonth?"今月 "+currentMonth.pillar.text+" ／ ":""}天中殺は準備・勉強・貢献。深夜は休息を優先。</p><small>天中殺：二支方式（前後拡張なし）。占術上の目安で、五行から病気は判定しません。</small></footer>`;
  $("screenMemo").textContent=r.memo?"メモ："+r.memo:"";scheduleCompactScreen();
@@ -731,6 +762,40 @@ function fitCompactScreen(){
 function scheduleCompactScreen(){if(typeof requestAnimationFrame==="function")requestAnimationFrame(fitCompactScreen);}
 window.addEventListener?.("resize",scheduleCompactScreen);
 window.visualViewport?.addEventListener?.("resize",scheduleCompactScreen);
+
+
+const CORE_READING={
+ 甲:"信念を育て、時間をかけて形にする",乙:"人や状況を読み、柔軟な工夫で道をつくる",丙:"明るく伝え、場の温度を上げる",丁:"小さな変化に気づき、必要なものを丁寧に照らす",戊:"物事を受け止め、人が頼れる土台を築く",己:"相手の状態を見ながら整え、育てる",庚:"本質を見極め、決断して仕組みを変える",辛:"細部を磨き、質や美意識で価値をつくる",壬:"全体の流れを読み、新しい世界へ広げる",癸:"観察と探究を重ね、見えにくい可能性を育てる"
+};
+const SOCIAL_READING={
+ 比肩:"自分の判断で進める裁量や専門性",劫財:"仲間との協力や、役割を越えて人を動かす力",食神:"楽しさ・表現・育成を通じて安心を届ける力",傷官:"細かな違和感を捉え、技術や言葉で改善する力",偏財:"交流や紹介を通じて価値を循環させる力",正財:"信用を積み重ね、約束を着実に形にする力",偏官:"課題に向き合い、責任をもって実行する力",正官:"秩序と信頼を整え、周囲が安心して動ける力",偏印:"研究や異分野の発想から可能性を探る力",印綬:"学びや経験を整理し、人の成長を支える力"
+};
+const INNER_READING={
+ 比肩:"自分のペースと対等さ",劫財:"仲間としての一体感",食神:"自然体で楽しめる安心感",傷官:"細かな気持ちを理解し合うこと",偏財:"会話と交流の心地よさ",正財:"誠実さと約束の積み重ね",偏官:"行動で支え合えること",正官:"礼儀と信頼のある関係",偏印:"自由な発想と一人の時間",印綬:"気持ちを受け止め合うこと"
+};
+function comprehensiveReading(c){
+ const ms=c.pillars.month.hiddenStar,ds=c.pillars.day.hiddenStar,n=natalInsights(c),x=extendedNatal(c),es=energySummary(c);
+ const core=CORE_READING[c.day.stem],social=SOCIAL_READING[ms],inner=INNER_READING[ds];
+ const pace=es.total>=26?"力を広く使える一方、予定や責任を抱え込みやすい":es.total>=15?"環境との組み合わせによって、持ち味の出方が変わりやすい":"静かに集中する時間があるほど、持ち味を深めやすい";
+ const money=Object.values(c.pillars).filter(Boolean).some(p=>["正財","偏財"].includes(p.stemStar)||["正財","偏財"].includes(p.hiddenStar));
+ return [
+ {title:"全体運",text:`日主は${c.day.stem}。${core}持ち味をもつ命式として読みます。${pace}傾向です。今は何を広げるかと同じくらい、何を続けるかを大切に。力を注ぐテーマを絞り、実行と振り返りを繰り返すことで、経験が次の選択を支える土台になります。`},
+ {title:"本質・才能",text:`月柱の蔵干通変星は${ms}で、社会では${social}が鍵になります。日支には${ds}の象意もあり、内面では${inner}を大切にしやすい読みです。得意なことを職種名だけで捉えず、人から何を頼まれるかに注目すると、自分の才能を具体化できます。`},
+ {title:"恋愛・結婚運",text:`親しい関係では、${inner}が安心につながると読みます。魅力を感じることと、一緒に暮らしやすいことを丁寧に見てください。連絡の頻度、お金、自由な時間について早めに話し合い、小さな約束を守り合うことが、長く続く信頼を育てます。`},
+ {title:"家庭・家族運",text:n.yearExclusion?"生年中殺があり、家族や周囲の期待に自分を合わせるだけでなく、自分なりの暮らし方をつくる視点が大切です。家族との縁を切るという意味ではありません。感謝を伝えながら、できる支援と難しいことを分け、互いの生活を尊重できる距離を育ててください。":"家族との関係は、当然だと思っている役割を言葉にすると整えやすくなります。支える側に回りすぎず、助けてほしいことも伝えましょう。家事やお金、休む時間を小さく相談し、誰か一人の我慢で成り立たない仕組みをつくることが、安心できる家庭の土台です。"},
+ {title:"仕事・事業運",text:`仕事では${ms}の示す、${social}を看板にすると持ち味が伝わりやすくなります。誰のどんな困りごとに応えるかを絞り、小さく試して改善を重ねましょう。得意な役割と任せる役割を分け、実績を言葉や仕組みに残すことが、継続しやすい仕事につながります。`},
+ {title:"金運",text:`${money?"命式には財星の表れがあり、人や現実の価値をどう扱うかが一つのテーマです。":"お金は、才能や経験を相手に伝わる価値へ変える過程を意識すると扱いやすくなります。"}収入の大小を命式だけで決めることはできません。売上と利益、生活費と事業費を分け、続けてよい支出かを定期的に見直す習慣を持ちましょう。`},
+ {title:"対人・ご縁運",text:x.daihankai.length?"宿命大半会があり、つながりや活動を広げる象意として読みます。広がるほど、誰とどこまで関わるかを丁寧に選ぶことが大切です。相手の得意と自分の得意をつなぎ、約束や役割を明確にしてください。助けることと抱え込むことを分けると、ご縁を長く育てられます。":"ご縁は、人数を増やすこと以上に、安心して話せる関係を積み重ねることが力になります。相手の得意や困りごとを知り、無理のない範囲で小さな協力を重ねましょう。断るときも理由を短く伝え、互いの時間と役割を尊重することが、信頼できるつながりを育てます。"},
+ {title:"心身のバランス",text:`運勢エネルギーは${es.total}で、${pace}読みです。ただし、数値や「身強・身弱」は体の丈夫さや病気を示しません。忙しいときほど、睡眠、食事、予定の余白を先に確保してください。五行の身体対応は生活を見直す参考にとどめ、不調が続く場合は医療機関で相談しましょう。`},
+ {title:"学び・成長運",text:`学びは、集めた知識を小さく実践し、人に伝えることで自分の力になっていきます。月柱の${ms}を、自分に合う学び方や役割を探す手がかりにしてください。天中殺の${c.tenchu}が巡る時期は、準備・勉強・貢献の時間に。結果を急がず、試して気づいたことを記録する習慣を育てましょう。`}
+ ];
+}
+function renderComprehensiveReading(c){
+ const rows=comprehensiveReading(c),length=Array.from(rows.map(r=>r.text).join("")).length;
+ $("readingCharCount").textContent="本文"+length+"文字・9項目";
+ $("readingBasis").textContent="日主 "+c.day.stem+" ／ 月柱 "+c.month.text+"・"+c.pillars.month.hiddenStar+" ／ 日支の蔵干通変星 "+c.pillars.day.hiddenStar+" ／ 運勢エネルギー "+energySummary(c).total+(c.pillars.hour?"":"（出生時刻未入力・暫定）");
+ $("comprehensiveSections").innerHTML=rows.map((r,i)=>`<section class="reading-topic"><h3><span>${String(i+1).padStart(2,"0")}</span>${r.title}</h3><p>${r.text}</p></section>`).join("");
+}
 
 function records(){try{return JSON.parse(localStorage.getItem(storageKey)||"[]")}catch{return[]}}function saveRecords(v){localStorage.setItem(storageKey,JSON.stringify(v))}function renderSaved(){const box=$("savedReadings");box.innerHTML="";const list=records();if(!list.length){box.innerHTML="<p>保存された鑑定はまだありません。</p>";return}list.forEach(r=>{const b=document.createElement("button");b.className="saved-item";b.type="button";b.textContent=`${r.name||"無記名"} 様 / ${fmt(r.date)} ${r.time||""}`;b.onclick=()=>{selectedId=r.id;$("clientName").value=r.name||"";$("clientGender").value=r.gender||"";$("birthDate").value=r.date||"";$("birthTime").value=r.time||"";$("birthPlace").value=r.place||"";$("readingMemo").value=r.memo||"";applyReading();renderSaved()};box.appendChild(b)})}function saveReading(){const r=current(),next=records().filter(x=>x.id!==r.id);next.unshift(r);saveRecords(next.slice(0,20));selectedId=r.id;renderSaved();$("systemNotice").textContent="鑑定結果とメモを保存しました。"}function resetForm(){selectedId=null;["clientName","birthDate","birthTime","birthPlace","readingMemo","partnerName","partnerDate","partnerTime","partnerPlace"].forEach(id=>$(id).value="");$("clientGender").value="";$("partnerGender").value="未指定";applyReading();renderSaved()}function deleteSelected(){if(!selectedId)return;saveRecords(records().filter(x=>x.id!==selectedId));selectedId=null;renderSaved()}function compatibilityAdvice(){const r=current(),c=build(r),p=$("partnerName").value.trim()||"相手",pd=$("partnerDate").value,pp=$("partnerPlace").value;$("compatibilityResult").innerHTML=c?`<b>${r.name||"あなた"}さん × ${p}さん</b><br>${p}さんは${pd?fmt(pd)+"生まれ":"生年月日未入力"}${pp?`・${pp}`:""}。<br>${r.name||"あなた"}さんは日干${c.day.stem}・月支${c.month.branch}。相性では、相手が安心して話せる余白を作るほど安定します。`:"まず本人の生年月日を入力してください。"}
 ["clientName","clientGender","birthDate","birthTime","birthPlace"].forEach(id=>["input","change"].forEach(ev=>$(id).addEventListener(ev,applyReading)));$("applyReading").onclick=()=>{applyReading();if(build(current()))$("screenReport").scrollIntoView?.({behavior:"instant",block:"start"})};$("saveReading").onclick=saveReading;$("clearForm").onclick=resetForm;$("deleteSelected").onclick=deleteSelected;$("checkCompatibility").onclick=compatibilityAdvice;renderSaved();applyReading();
