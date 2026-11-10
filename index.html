@@ -230,7 +230,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 
 
 .full-reading{max-width:1180px;margin:14px auto 0}.full-reading>summary{font-size:13px;cursor:pointer;border:1px solid #bbb;padding:12px;background:#fafafa}
-.screen-report{box-sizing:border-box;width:100%;max-width:460px;height:calc(100svh - 12px);max-height:820px;min-height:570px;margin:14px auto 0;padding:9px;border:1px solid #555;background:#fff;color:#222;display:flex;flex-direction:column;font-family:"Yu Gothic",Meiryo,sans-serif;font-size:11px;line-height:1.3;scroll-margin-top:6px}
+.screen-report{box-sizing:border-box;width:100%;max-width:460px;height:auto;max-height:min(820px,calc(100svh - 12px));min-height:0;margin:14px auto 0;padding:9px;border:1px solid #555;background:#fff;color:#222;display:flex;flex-direction:column;font-family:"Yu Gothic",Meiryo,sans-serif;font-size:11px;line-height:1.3;scroll-margin-top:6px}
 .screen-head{display:flex;justify-content:space-between;align-items:flex-start;gap:6px;border-bottom:1px solid #333;padding-bottom:5px;margin-bottom:5px}
 .screen-head h1{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:20px;letter-spacing:.12em;margin:0 0 3px;line-height:1.2}
 .screen-head p{margin:0;font-size:10px;line-height:1.3;overflow-wrap:anywhere}
@@ -243,7 +243,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 .screen-chart th:first-child{width:17%}
 .screen-report h2{font-size:10px;line-height:1.3;letter-spacing:0;margin:0;background:#f5f4f0;border:1px solid #aaa;border-bottom:0;padding:3px 5px}
 .screen-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:3px;font-size:9px;border-top:1px solid #777;border-bottom:1px solid #777;padding:3px 0}
-.screen-meta b{font-size:12px}.screen-twins{display:grid;grid-template-columns:1fr 1fr;gap:6px;flex:1;min-height:0}
+.screen-meta b{font-size:12px}.screen-twins{display:grid;grid-template-columns:1fr 1fr;gap:6px;flex:1;min-height:min-content}
 .screen-twins section{min-width:0}.screen-twins table{font-size:9px}.screen-twins th,.screen-twins td{height:12px;padding:1px}
 .screen-tenchu td{background:#f8f0de;font-weight:700}
 .screen-points{font-size:8px;line-height:1.4;border:1px solid #aaa;border-top:0;padding:4px 3px;overflow-wrap:anywhere}
@@ -257,7 +257,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 .screen-timing p{margin:0 0 2px}.screen-timing small{display:block;font-size:7px;color:#666}
 .screen-empty{font-size:14px;line-height:1.9;padding:16px}
 @media(max-height:680px){
- .screen-report{padding:7px;min-height:550px}
+ .screen-report{padding:7px;min-height:0}
  .screen-head h1{font-size:18px}.screen-content{gap:4px}
  .screen-chart{font-size:11px}.screen-report th,.screen-report td{line-height:1.2}
  .screen-twins th,.screen-twins td{height:11px}.screen-advice>p{font-size:9px;line-height:1.3}
@@ -275,6 +275,30 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
  .screen-timing{font-size:8pt}.screen-timing small,.screen-elements>p{font-size:7pt}
  .screen-content{gap:2mm}
 }
+
+
+.screen-report[data-density="compact"] .screen-content{gap:3px}
+.screen-report[data-density="compact"] .screen-chart{font-size:10px}
+.screen-report[data-density="compact"] th,.screen-report[data-density="compact"] td{line-height:1.2;padding:0 1px}
+.screen-report[data-density="compact"] .screen-twins table{font-size:8px}
+.screen-report[data-density="compact"] .screen-twins td,.screen-report[data-density="compact"] .screen-twins th{height:10px}
+.screen-report[data-density="compact"] .screen-elements table{font-size:8px}
+.screen-report[data-density="compact"] .screen-points{font-size:7px;line-height:1.3;padding:2px}
+.screen-report[data-density="compact"] .screen-advice>p{font-size:9px;line-height:1.3;margin:3px 4px}
+.screen-report[data-density="compact"] h2{font-size:9px;padding:2px 3px}
+.screen-report[data-density="dense"] .screen-content{gap:2px}
+.screen-report[data-density="dense"] .screen-chart{font-size:9px}
+.screen-report[data-density="dense"] th,.screen-report[data-density="dense"] td{font-size:8px;line-height:1.1;padding:0 1px}
+.screen-report[data-density="dense"] .screen-twins table{font-size:8px}
+.screen-report[data-density="dense"] .screen-twins td,.screen-report[data-density="dense"] .screen-twins th{height:9px}
+.screen-report[data-density="dense"] .screen-points{font-size:7px;line-height:1.2;padding:2px}
+.screen-report[data-density="dense"] h2{font-size:9px;padding:2px 3px}
+.screen-report[data-density="dense"] .screen-advice>p{font-size:8px;line-height:1.3;margin:2px 4px}
+.screen-report[data-density="dense"] .screen-elements>p{font-size:7px;margin:2px 0}
+.screen-report[data-density="dense"] .screen-head h1{font-size:17px}
+.screen-report[data-density="dense"] .screen-meta{font-size:8px;padding:2px 0}
+.screen-report[data-density="dense"] .screen-timing{font-size:7px}
+@media print{.screen-report[data-density] .screen-content{gap:2mm}.screen-report[data-density] .screen-chart{font-size:13pt}.screen-report[data-density] th,.screen-report[data-density] td{font-size:9pt;padding:1mm}.screen-report[data-density] .screen-points{font-size:8pt}.screen-report[data-density] .screen-advice>p{font-size:10pt}.screen-report[data-density] h2{font-size:11pt}}
 
 </style>
 </head>
@@ -689,12 +713,25 @@ function renderScreenReport(c,r){
  <section class="screen-elements"><h2>五行・色・味・取り入れ方</h2><table><tr><th>五行数</th><th>色／五味</th><th>配色の目安</th><th>食材の例</th></tr>${elementRows}</table><p>増減は単純な五行数による色・食材選びの占術的ヒント。用神の精密判定ではありません。塩分・糖分は増やさず、食材は偏らず選びます。</p></section>
  <section class="screen-advice"><h2>エネルギー ${energy.total} からのアドバイス</h2><p><b>強み</b> ${advice.strength}<br><b>注意</b> ${advice.care}<br><b>活用</b> ${advice.action}</p><p id="screenMemo" class="screen-memo"></p></section>
  <footer class="screen-timing"><p>活動候補 ${active}時 ／ 天中殺 ${quiet}時</p><p>${currentMonth?"今月 "+currentMonth.pillar.text+" ／ ":""}天中殺は準備・勉強・貢献。深夜は休息を優先。</p><small>占術上の簡易目安です。五行から病気や栄養不足は判定しません。</small></footer>`;
- $("screenMemo").textContent=r.memo?"メモ："+r.memo:"";
+ $("screenMemo").textContent=r.memo?"メモ："+r.memo:"";scheduleCompactScreen();
 }
 $("printScreen").onclick=()=>{if(build(current()))window.print()};
 
+
+function fitCompactScreen(){
+ const panel=$("screenReport"),content=$("screenContent");
+ if(!panel?.getBoundingClientRect||!content?.getBoundingClientRect)return;
+ panel.setAttribute("data-density","normal");
+ const over=()=>content.getBoundingClientRect().bottom>panel.getBoundingClientRect().bottom-6||panel.scrollHeight>panel.clientHeight+2;
+ if(over())panel.setAttribute("data-density","compact");
+ if(over())panel.setAttribute("data-density","dense");
+}
+function scheduleCompactScreen(){if(typeof requestAnimationFrame==="function")requestAnimationFrame(fitCompactScreen);}
+window.addEventListener?.("resize",scheduleCompactScreen);
+window.visualViewport?.addEventListener?.("resize",scheduleCompactScreen);
+
 function records(){try{return JSON.parse(localStorage.getItem(storageKey)||"[]")}catch{return[]}}function saveRecords(v){localStorage.setItem(storageKey,JSON.stringify(v))}function renderSaved(){const box=$("savedReadings");box.innerHTML="";const list=records();if(!list.length){box.innerHTML="<p>保存された鑑定はまだありません。</p>";return}list.forEach(r=>{const b=document.createElement("button");b.className="saved-item";b.type="button";b.textContent=`${r.name||"無記名"} 様 / ${fmt(r.date)} ${r.time||""}`;b.onclick=()=>{selectedId=r.id;$("clientName").value=r.name||"";$("clientGender").value=r.gender||"";$("birthDate").value=r.date||"";$("birthTime").value=r.time||"";$("birthPlace").value=r.place||"";$("readingMemo").value=r.memo||"";applyReading();renderSaved()};box.appendChild(b)})}function saveReading(){const r=current(),next=records().filter(x=>x.id!==r.id);next.unshift(r);saveRecords(next.slice(0,20));selectedId=r.id;renderSaved();$("systemNotice").textContent="鑑定結果とメモを保存しました。"}function resetForm(){selectedId=null;["clientName","birthDate","birthTime","birthPlace","readingMemo","partnerName","partnerDate","partnerTime","partnerPlace"].forEach(id=>$(id).value="");$("clientGender").value="";$("partnerGender").value="未指定";applyReading();renderSaved()}function deleteSelected(){if(!selectedId)return;saveRecords(records().filter(x=>x.id!==selectedId));selectedId=null;renderSaved()}function compatibilityAdvice(){const r=current(),c=build(r),p=$("partnerName").value.trim()||"相手",pd=$("partnerDate").value,pp=$("partnerPlace").value;$("compatibilityResult").innerHTML=c?`<b>${r.name||"あなた"}さん × ${p}さん</b><br>${p}さんは${pd?fmt(pd)+"生まれ":"生年月日未入力"}${pp?`・${pp}`:""}。<br>${r.name||"あなた"}さんは日干${c.day.stem}・月支${c.month.branch}。相性では、相手が安心して話せる余白を作るほど安定します。`:"まず本人の生年月日を入力してください。"}
-["clientName","clientGender","birthDate","birthTime","birthPlace"].forEach(id=>["input","change"].forEach(ev=>$(id).addEventListener(ev,applyReading)));$("applyReading").onclick=()=>{applyReading();if(build(current()))$("screenReport").scrollIntoView?.({behavior:"smooth",block:"start"})};$("saveReading").onclick=saveReading;$("clearForm").onclick=resetForm;$("deleteSelected").onclick=deleteSelected;$("checkCompatibility").onclick=compatibilityAdvice;renderSaved();applyReading();
+["clientName","clientGender","birthDate","birthTime","birthPlace"].forEach(id=>["input","change"].forEach(ev=>$(id).addEventListener(ev,applyReading)));$("applyReading").onclick=()=>{applyReading();if(build(current()))$("screenReport").scrollIntoView?.({behavior:"instant",block:"start"})};$("saveReading").onclick=saveReading;$("clearForm").onclick=resetForm;$("deleteSelected").onclick=deleteSelected;$("checkCompatibility").onclick=compatibilityAdvice;renderSaved();applyReading();
 </script>
 </body>
 </html>
