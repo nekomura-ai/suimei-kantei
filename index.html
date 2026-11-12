@@ -153,9 +153,9 @@ main{width:min(1180px,100% - 28px)}
 #reportScroll[data-view="portrait"] .report-left,#reportScroll[data-view="portrait"] .report-right{display:contents}
 #reportScroll[data-view="portrait"] .chart{order:1}
 #reportScroll[data-view="portrait"] .energy-box{order:2;margin:0}
-#reportScroll[data-view="portrait"] .report-memo{order:3}
-#reportScroll[data-view="portrait"] .report-element-box{order:4;margin:0}
-#reportScroll[data-view="portrait"] .report-insights{order:5}
+#reportScroll[data-view="portrait"] .report-memo{order:4}
+#reportScroll[data-view="portrait"] .report-element-box{order:5;margin:0}
+#reportScroll[data-view="portrait"] .report-insights{order:3}
 #reportScroll[data-view="portrait"] .report-year-luck{order:6}
 #reportScroll[data-view="portrait"] .report-decade-luck{order:7}
 #reportScroll[data-view="portrait"] .report-block{margin:0}
@@ -257,7 +257,8 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 .screen-twins>section:last-child th:first-child{width:43%}
 .screen-twins>section:last-child th:nth-child(2){width:20%}
 @media print{.screen-month-luck td span{margin-inline-start:.4em}}
-.screen-points{font-size:8px;line-height:1.4;border:1px solid #aaa;border-top:0;padding:4px 3px;overflow-wrap:anywhere}
+.screen-points{display:flex;flex-wrap:wrap;gap:1px .8em;font-size:8px;line-height:1.4;border:1px solid #aaa;border-top:0;padding:4px 3px;overflow-wrap:anywhere}
+.screen-points span{white-space:nowrap}
 .screen-elements table{font-size:9px}.screen-elements table th:first-child{width:14%}.screen-elements table th:nth-child(2){width:22%}
 .screen-elements>p{font-size:8px;line-height:1.35;margin:3px 0 0;color:#555}
 .screen-advice{border:1px solid #aaa}.screen-advice h2{border:0;border-bottom:1px solid #aaa}
@@ -384,14 +385,6 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 <tr><td class="kan blue" id="u-hour"></td><td class="kan blue" id="u-day"></td><td class="kan blue" id="u-month"></td><td class="kan blue" id="u-year"></td><td class="row-label">十二運星</td></tr>
 </table>
 <div class="energy-box" id="energySummary"><b>運勢エネルギー</b><span>生年月日を入力すると合計値を表示します</span></div>
-<div class="report-element-box"><h3>五行バランスと健康のヒント <small>天干・地支の五行数</small></h3><div id="reportElements">生年月日を入力すると表示します。</div></div>
-<div class="report-memo"><h3>運勢エネルギーからのアドバイス</h3>
-<div class="report-guidance" id="reportGuidance"><p>生年月日を入力すると、合計に応じたヒントを表示します。</p></div>
-<div class="report-manual" id="reportManual" hidden><h4>鑑定メモ</h4><div id="reportMemo"></div></div></div>
-</div>
-<div class="report-right">
-<section class="report-block report-year-luck"><h2>歳運 <small>一年ごとの流れ</small></h2><table class="data-table" id="yearLuckTable"></table></section>
-<section class="report-block report-decade-luck"><h2>大運 <small>十年ごとの歩み</small><span id="reportDirection"></span></h2><table class="data-table" id="daiunTable"></table><p id="reportStart" class="report-start">生年月日と性別を入力してください。</p></section>
 <section class="report-insights"><h3>命式のポイント</h3>
 <dl><div><dt>生月中殺</dt><dd id="reportMonthExclusion">未算出</dd></div>
 <div><dt>生年中殺</dt><dd id="reportYearExclusion">未算出</dd></div>
@@ -405,6 +398,14 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 <div><dt>通根</dt><dd id="reportRoot">未算出</dd></div>
 <div><dt>身強・身弱</dt><dd id="reportStrength">未算出</dd></div></dl>
 <p class="insight-caption">大半会は年・月・日の三柱、他の合と律音は四柱を照合。方合は三支がそろった場合。身強・身弱は簡易判定です。</p></section>
+<div class="report-element-box"><h3>五行バランスと健康のヒント <small>天干・地支の五行数</small></h3><div id="reportElements">生年月日を入力すると表示します。</div></div>
+<div class="report-memo"><h3>運勢エネルギーからのアドバイス</h3>
+<div class="report-guidance" id="reportGuidance"><p>生年月日を入力すると、合計に応じたヒントを表示します。</p></div>
+<div class="report-manual" id="reportManual" hidden><h4>鑑定メモ</h4><div id="reportMemo"></div></div></div>
+</div>
+<div class="report-right">
+<section class="report-block report-year-luck"><h2>歳運 <small>一年ごとの流れ</small></h2><table class="data-table" id="yearLuckTable"></table></section>
+<section class="report-block report-decade-luck"><h2>大運 <small>十年ごとの歩み</small><span id="reportDirection"></span></h2><table class="data-table" id="daiunTable"></table><p id="reportStart" class="report-start">生年月日と性別を入力してください。</p></section>
 </div></div>
 <footer class="report-footer"><span>四柱推命鑑定システム</span><span>自分を知り、これからの選択へ。</span></footer>
 </article></div></div>
@@ -526,6 +527,7 @@ function luckTables(c){
   rows+='<tr><td colspan="6">順行・逆行の判定には性別「男性」または「女性」の選択が必要です。</td></tr>';
   $("daiunNote").textContent="伝統的な年干の陰陽と男女による方式を採用しています。性別が未選択・その他の場合、大運は算出しません。";
  }else{
+  if(Math.round(info.startYears*12)>0)rows+='<tr><td>0歳</td><td>立運前</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>';
   for(let i=0;i<8;i++){
    const g=gz(info.base+(info.forward?1:-1)*(i+1)),age=info.startYears+i*10,st=star(c.day.stem,g.stem),ten=isTenchu(c,g.branch),mark=luckMark(c,g);
    rows+=`<tr><td>${luckAge(age)}</td><td>${g.text}</td><td>${st}</td><td>${TW[c.day.stem][g.branch]}</td><td>${ENERGY[TW[c.day.stem][g.branch]]}</td><td>${ten?"天中殺":"—"}</td></tr>`;
@@ -758,9 +760,9 @@ function renderScreenReport(c,r){
  const chartRows=[["天干",p=>pillarCharacter(p.stem)],["地支",p=>pillarCharacter(p.branch)],["蔵干",p=>p.hidden],["通変星",p=>p.stemStar||"日主"],["蔵干星",p=>p.hiddenStar],["十二運",p=>p.twelve]];
  const chart='<table class="screen-chart"><tr><th></th>'+keys.map(k=>"<th>"+k[1]+"</th>").join("")+"</tr>"+chartRows.map(([name,get])=>"<tr><th>"+name+"</th>"+keys.map(([key])=>"<td>"+(c.pillars[key]?get(c.pillars[key]):"—")+"</td>").join("")+"</tr>").join("")+"</table>";
  let yearRows="";for(let y=year-2;y<=year+9;y++){const g=gz(y-1984),ten=isTenchu(c,g.branch);yearRows+=`<tr class="${ten?"screen-tenchu":""}"><td>${y}</td><td>${g.text}</td><td>${ten?"天中殺":luckMark(c,g)}</td></tr>`;}
- let decadeRows="";if(info)for(let i=0;i<8;i++){const g=gz(info.base+(info.forward?1:-1)*(i+1));decadeRows+=`<tr><td>${compactLuckAge(info.startYears+10*i)}</td><td>${g.text}</td><td>${isTenchu(c,g.branch)?"天中殺":star(c.day.stem,g.stem)}</td></tr>`;}
+ let decadeRows=info&&Math.round(info.startYears*12)>0?'<tr><td>0歳</td><td colspan="2">立運前</td></tr>':"";if(info)for(let i=0;i<8;i++){const g=gz(info.base+(info.forward?1:-1)*(i+1));decadeRows+=`<tr><td>${compactLuckAge(info.startYears+10*i)}</td><td>${g.text}</td><td>${isTenchu(c,g.branch)?"天中殺":star(c.day.stem,g.stem)}</td></tr>`;}
  const combine=x.stemCombines.length?"あり":"なし",root=n.roots.map(p=>p.branch).join("・");
- const points=`<div class="screen-points">生年中殺 ${yes(n.yearExclusion)} ／ 生月 ${yes(n.monthExclusion)}<br>生日中殺 ${yes(x.dayExclusion)} ／ 日座 ${yes(x.seated)}<br>大半会 ${x.daihankai.length?x.daihankai.map(v=>v.split("［")[0].replaceAll("柱","")).join("、"):"なし"} ／ 干合 ${combine}<br>支合 ${yes(!!x.branchCombines.length)} ／ 方合 ${yes(!!x.directions.length)}<br>律音 ${yes(!!n.repeats.length)} ／ 通根 ${root||"なし"}</div>`;
+ const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月 ${yes(n.monthExclusion)}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座 ${yes(x.seated)}</span><span>大半会 ${x.daihankai.length?x.daihankai.map(v=>v.split("［")[0].replaceAll("柱","")).join("、"):"なし"}</span><span>干合 ${combine}</span><span>支合 ${yes(!!x.branchCombines.length)}</span><span>方合 ${yes(!!x.directions.length)}</span><span>律音 ${yes(!!n.repeats.length)}</span><span>通根 ${root||"なし"}</span></div></section>`;
  const elementRows=Object.entries(counts).map(([e,count])=>{const m=ELEMENT_MATCH[e],a=symbolicAdjustment(c,e);return `<tr><th style="color:${m.ink}">${e} ${count}</th><td>${m.color}／${m.taste}<br><span class="element-body">${m.bodyShort}</span></td><td>${a.text}</td><td>${m.food}${a.mark==="↑"?"（少量の候補）":a.mark==="↓"?"（偏りを控える）":"（適量）"}</td></tr>`}).join("");
  const advice=energy.total>=26?{strength:"自ら動き、仲間を巻き込む力。",care:"予定や役割を抱え込みすぎない。",action:"テーマを絞り、任せる役割と休む時間を決める。"}:energy.total>=15?{strength:"人や環境に合わせ、積み上げる力。",care:"周囲に合わせすぎず、自分の軸を持つ。",action:"良い仲間・習慣を選び、小さな挑戦を続ける。"}:{strength:"細かく感じ取り、深く磨く力。",care:"予定を詰め込みすぎず、自分のペースで。",action:"安心できる仲間と、集中・回復できる時間を作る。"};
  const hours=hourPeriods(c),active=hours.filter(h=>h.suggested).sort((a,b)=>a.start-b.start).map(h=>h.start+"–"+h.end).join("・"),quiet=hours.filter(h=>h.tenchu).map(h=>h.start+"–"+h.end).join("・");
@@ -774,10 +776,11 @@ function renderScreenReport(c,r){
  }).join("");
  const currentMonth=monthPeriods(year).find(p=>Date.now()>=p.start.ms&&Date.now()<p.end.ms);
  $("screenContent").innerHTML=chart+`<div class="screen-meta"><span>天中殺 <b>${c.tenchu}</b>〈二支〉</span><span>エネルギー <b>${energy.total}</b>（${energy.level}）</span><span>${n.strength}</span></div>
+ ${points}
  <div class="screen-twins">
  <section class="screen-month-luck"><h2>毎月の運気/天中殺<small>${monthYear}年・地支のみで計算</small></h2><table><tr><th>月期</th><th>運気・関係</th></tr>${monthRows}</table></section>
  <section><h2>歳運 ${year-2}–${year+9}</h2><table><tr><th>年</th><th>干支</th><th>目安</th></tr>${yearRows}</table></section>
- <section><h2>大運 ${info?(info.forward?"順行":"逆行"):"性別未選択"}</h2><table><tr><th>開始</th><th>干支</th><th>星・天中殺</th></tr>${decadeRows||'<tr><td colspan="3">性別を選択してください</td></tr>'}</table>${points}</section></div>
+ <section><h2>大運 ${info?(info.forward?"順行":"逆行"):"性別未選択"}</h2><table><tr><th>開始</th><th>干支</th><th>星・天中殺</th></tr>${decadeRows||'<tr><td colspan="3">性別を選択してください</td></tr>'}</table></section></div>
  <section class="screen-elements"><h2>五行・色・味・身体対応と取り入れ方</h2><table><tr><th>五行数</th><th>色・味／身体</th><th>配色の目安</th><th>食材の例</th></tr>${elementRows}</table><p>増減は単純な五行数による色・食材選びの占術的ヒント。身体対応は伝統的分類で診断ではありません。塩分・糖分は増やさず、食材は偏らず選びます。</p></section>
  <section class="screen-advice"><h2>エネルギー ${energy.total} からのアドバイス</h2><p><b>強み</b> ${advice.strength}<br><b>注意</b> ${advice.care}<br><b>活用</b> ${advice.action}</p><p id="screenMemo" class="screen-memo"></p></section>
  <footer class="screen-timing"><p>活動候補 ${active}時 ／ 天中殺 ${quiet}時</p><p>${currentMonth?"今月 "+currentMonth.pillar.text+" ／ ":""}天中殺は準備・勉強・貢献。深夜は休息を優先。</p><small>天中殺：二支方式（前後拡張なし）。占術上の目安で、五行から病気は判定しません。</small></footer>`;
