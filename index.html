@@ -684,7 +684,7 @@ function monthlyBranchLuck(c,branch){
  const relations=[["日支",c.day.branch],["月支",c.month.branch],["年支",c.year.branch]].map(([label,natal])=>{
   const pair=relation([{branch:natal},{branch}]);
   const kind=pair.endsWith("支合")?"支合":pair.endsWith("冲")?"冲":"";
-  return {kind,description:kind?`${label}「${natal}」と${kind}`:natal===branch?`${label}と同じ「${natal}」`:""};
+  return {kind,description:kind?`${label}「${natal}」と${kind}`:""};
  });
  const tenchu=isTenchu(c,branch);
  const score=Number(relations.some(r=>r.kind==="支合"))-Number(relations.some(r=>r.kind==="冲"))-2*Number(tenchu);
