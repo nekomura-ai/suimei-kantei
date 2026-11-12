@@ -113,7 +113,8 @@ main{width:min(1180px,100% - 28px)}
 .timing-guide .tenchu-period td{background:#f8f3e8}.timing-guide .suggested-period td{background:#edf5f2}
 .timing-guide .current-period td:first-child{border-left:4px solid #333}
 .timing-guide #monthLuckTable th:nth-child(2){width:26%}
-.timing-guide #monthLuckTable th:last-child{width:23%}
+.timing-guide #monthLuckTable th:last-child{width:44%}
+.timing-guide #monthLuckTable th small{display:block;font-weight:400}
 .timing-guide #hourLuckTable th:last-child{width:42%}
 @media(max-width:600px){
  .report-toolbar{display:block}.report-view-buttons{justify-content:flex-start;margin-top:10px}.report-toolbar span{max-width:none}
@@ -408,7 +409,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 <p class="timing-summary" id="hourLuckSummary">生年月日を入力すると表示します。</p>
 <p class="timing-note">天中殺の時間は、準備・勉強・貢献に充てる提案です。深夜は睡眠・休息を優先してください。時間帯の吉凶は成果や失敗を決めるものではありません。</p>
 <div class="timing-table-wrap"><table class="data-table" id="hourLuckTable"></table></div>
-<details class="calculation-detail"><summary>月運・時間帯ガイドの見方</summary><p class="note">天中殺は二支方式です。年は二年、月は二か月、日は十二日周期の二日、時間は二つの刻（合計四時間）を対象とし、日干の陰陽による前後の拡張はしません。</p><p class="note">月運は節入り時刻（近似）と年干から月の干支を計算し、本人の日干との通変星・天中殺を表示します。日本標準時で扱い、期間の終わりの時刻は次の月に属します。時間帯ガイドは定時法の十二支を使い、本人の天中殺の二支にあたる時間を準備・勉強・貢献向けとします。活動候補は7〜21時の天中殺以外の時間帯から、日干に対する十二運の点数が高い順に3枠を選んだ独自の簡易目安です。毎日変わる日運・時柱を精密に計算したものではありません。体調や生活リズム、現実の予定を優先して使ってください。</p><p class="note">時刻の参考：<a href="https://eco.mtk.nao.ac.jp/koyomi/wiki/BDBDC6F3BBD9.html" target="_blank" rel="noopener">国立天文台「十二支」</a></p></details>
+<details class="calculation-detail"><summary>月運・時間帯ガイドの見方</summary><p class="note">天中殺は二支方式です。年は二年、月は二か月、日は十二日周期の二日、時間は二つの刻（合計四時間）を対象とし、日干の陰陽による前後の拡張はしません。</p><p class="note">毎月の運気は、巡る地支と命式の年支・月支・日支を照らし、支合があれば＋1、冲があれば−1、天中殺は−2とする簡易目安です。表では日支・月支との関係を表示します。日本標準時で扱い、期間の終わりの時刻は次の月に属します。時間帯ガイドは定時法の十二支を使い、本人の天中殺の二支にあたる時間を準備・勉強・貢献向けとします。活動候補は7〜21時の天中殺以外の時間帯から、日干に対する十二運の点数が高い順に3枠を選んだ独自の簡易目安です。毎日変わる日運・時柱を精密に計算したものではありません。体調や生活リズム、現実の予定を優先して使ってください。</p><p class="note">時刻の参考：<a href="https://eco.mtk.nao.ac.jp/koyomi/wiki/BDBDC6F3BBD9.html" target="_blank" rel="noopener">国立天文台「十二支」</a></p></details>
 </section>
 
 <div class="copy" id="essenceCopy">生年月日を入力すると<span class="red">命式が自動生成</span>されます</div>
@@ -679,10 +680,15 @@ function monthPeriods(year){
  const bounds=[...setsuForYear(year).slice(1),setsuForYear(year+1)[0],setsuForYear(year+1)[1]];
  return bounds.slice(0,-1).map((start,i)=>{const end=bounds[i+1],date=jstCivil(start.ms+60000),yp=yearP(date),pillar=monthP(date,yp.stem);return {start,end,pillar,month:new Date(start.ms+JST_MS).getUTCMonth()+1}});
 }
-function monthAction(c,g){
- if(isTenchu(c,g.branch))return "準備・勉強・貢献。振り返りや身の回りを整える月に。";
- const st=star(c.day.stem,g.stem);
- return ({比肩:"自分の軸を整え、主体的に一歩進める。",劫財:"仲間との協力や役割分担を整える。",食神:"楽しさ・表現・人を育てる活動に。",傷官:"技術を磨き、企画や表現を見直す。",偏財:"交流や紹介を通じてご縁を広げる。",正財:"約束を守り、信用や仕組みを積み重ねる。",偏官:"優先順位を決め、課題に一つずつ取り組む。",正官:"責任ある仕事や、手続き・約束の確認に。",偏印:"新しい発想や研究、学び直しに。",印綬:"勉強・記録・経験を人に伝える活動に。"})[st];
+function monthlyBranchLuck(c,branch){
+ const relations=[["日支",c.day.branch],["月支",c.month.branch],["年支",c.year.branch]].map(([label,natal])=>{
+  const pair=relation([{branch:natal},{branch}]);
+  const kind=pair.endsWith("支合")?"支合":pair.endsWith("冲")?"冲":"";
+  return {kind,description:kind?`${label}「${natal}」と${kind}`:natal===branch?`${label}と同じ「${natal}」`:""};
+ });
+ const tenchu=isTenchu(c,branch);
+ const score=Number(relations.some(r=>r.kind==="支合"))-Number(relations.some(r=>r.kind==="冲"))-2*Number(tenchu);
+ return {mark:score>0?"◯":score>=-1?"△":"×",tenchu,details:relations.slice(0,2).map(r=>r.description).filter(Boolean)};
 }
 const HOUR_WINDOWS=B.map((branch,i)=>({branch,start:i===0?23:i*2-1,end:i===0?1:i*2+1,label:i===0?"23:00〜翌01:00":String(i*2-1).padStart(2,"0")+":00〜"+String(i*2+1).padStart(2,"0")+":00"}));
 function hourPeriods(c){
@@ -696,7 +702,12 @@ function renderTimingGuide(c){
  else{
  const hit=periods.filter(p=>isTenchu(c,p.pillar.branch));
  $("monthLuckSummary").textContent=year+"年の月運（立春〜翌年立春）／天中殺："+hit.map(p=>formatSetsu(p.start.ms)+"〜"+formatSetsu(p.end.ms)).join("、")+"。この期間は準備・勉強・貢献を中心に。";
- $("monthLuckTable").innerHTML="<tr><th>月</th><th>期間（日本標準時・近似）</th><th>干支</th><th>通変星</th><th>運気</th><th>天中殺</th><th>過ごし方のヒント</th></tr>"+periods.map(p=>{const ten=isTenchu(c,p.pillar.branch),current=now>=p.start.ms&&now<p.end.ms;return `<tr class="${ten?"tenchu-period":""} ${current?"current-period":""}"><td>${p.month}月期</td><td>${formatSetsu(p.start.ms)}〜<br>${formatSetsu(p.end.ms)}</td><td>${p.pillar.text}</td><td>${star(c.day.stem,p.pillar.stem)}</td><td>${luckMark(c,p.pillar)}</td><td>${ten?"天中殺":"—"}</td><td>${monthAction(c,p.pillar)}</td></tr>`}).join("");
+ $("monthLuckTable").innerHTML='<tr><th>月期</th><th>期間（日本標準時・近似）</th><th>巡る地支</th><th>毎月の運気/天中殺<small>※地支のみで計算</small></th></tr>'+periods.map(p=>{
+  const branch=p.pillar.branch,{mark,tenchu,details}=monthlyBranchLuck(c,branch),current=now>=p.start.ms&&now<p.end.ms;
+  const labels=[`<strong>${mark}</strong>`,...details];
+  if(tenchu)labels.push("<strong>天中殺</strong>");
+  return `<tr class="${tenchu?"tenchu-period":""} ${current?"current-period":""}"><td>${p.month===1?"翌":""}${p.month}月期</td><td>${formatSetsu(p.start.ms)}〜<br>${formatSetsu(p.end.ms)}</td><td>${branch}</td><td>${labels.join(" ／ ")}</td></tr>`;
+ }).join("");
  labelDataTable("monthLuckTable");
  }
  const hours=hourPeriods(c),candidates=hours.filter(r=>r.suggested).sort((a,b)=>b.energy-a.energy||a.start-b.start);
