@@ -731,7 +731,7 @@ $("luckYear").value=String(currentJstYear());$("luckYear").addEventListener("inp
 
 const ELEMENT_MATCH={木:{organs:"肝・胆",sense:"目",parts:"筋・爪",bodyShort:"肝／目・筋",color:"青・緑",taste:"酸",ink:"#28724b",food:"青菜・柑橘"},火:{organs:"心・小腸",sense:"舌",parts:"血脈",bodyShort:"心／舌・脈",color:"赤",taste:"苦",ink:"#aa382c",food:"ゴーヤ・春菊"},土:{organs:"脾・胃",sense:"口",parts:"肌肉・唇",bodyShort:"脾／口・肌肉",color:"黄",taste:"甘",ink:"#8a690f",food:"かぼちゃ・いも"},金:{organs:"肺・大腸",sense:"鼻",parts:"皮膚・毛",bodyShort:"肺／鼻・皮膚",color:"白",taste:"辛",ink:"#5e6770",food:"大根・ねぎ"},水:{organs:"腎・膀胱",sense:"耳",parts:"骨・髪",bodyShort:"腎／耳・骨",color:"黒",taste:"鹹",ink:"#294e72",food:"魚・海藻"}};
 function symbolicAdjustment(c,e){const v=elementOverview(c),n=v.counts[e],max=Math.max(...Object.values(v.counts)),min=Math.min(...Object.values(v.counts));if(max===min)return {mark:"→",text:"色：今のまま",food:"食材は偏らず"};if(n===min)return {mark:"↑",text:"色：取り入れる",food:e==="水"?"塩分を増やさず魚・海藻を適量":e==="土"?"菓子でなく芋などを適量":ELEMENT_MATCH[e].food+"を少量の候補に"};if(n===max)return {mark:"↓",text:"色：控えめ",food:"同じ食材に偏らない"};return {mark:"→",text:"色：今のまま",food:"食材は偏らず"};}
-function compactLuckAge(years){const months=Math.round(years*12);return Math.floor(months/12)+"歳"+(months%12?months%12+"月":"")}
+function compactLuckAge(years){const months=Math.round(years*12);return Math.floor(months/12)+"歳"+(months%12?months%12+"か月":"")}
 function renderScreenReport(c,r){
  const n=natalInsights(c),x=extendedNatal(c),energy=energySummary(c),counts=elementCounts(c),info=daiunInfo(c),year=currentJstYear(),yes=b=>b?"あり":"なし";
  $("screenPerson").textContent=(r.name?r.name+" 様 ／ ":"")+r.date.replaceAll("-","/")+(r.time?" "+r.time:"")+" ／ "+(r.gender||"性別未選択");
