@@ -418,7 +418,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 <p class="timing-summary" id="hourLuckSummary">生年月日を入力すると表示します。</p>
 <p class="timing-note">天中殺の時間は、準備・勉強・貢献に充てる提案です。深夜は睡眠・休息を優先してください。時間帯の吉凶は成果や失敗を決めるものではありません。</p>
 <div class="timing-table-wrap"><table class="data-table" id="hourLuckTable"></table></div>
-<details class="calculation-detail"><summary>月運・時間帯ガイドの見方</summary><p class="note">天中殺は二支方式です。年は二年、月は二か月、日は十二日周期の二日、時間は二つの刻（合計四時間）を対象とし、日干の陰陽による前後の拡張はしません。</p><p class="note">毎月の運気は、巡る地支と命式の年支・月支・日支を照らし、支合があれば＋1、冲があれば−1、天中殺は−2とする簡易目安です。表では日支・月支との関係を表示します。日本標準時で扱い、期間の終わりの時刻は次の月に属します。時間帯ガイドは定時法の十二支を使い、本人の天中殺の二支にあたる時間を準備・勉強・貢献向けとします。活動候補は7〜21時の天中殺以外の時間帯から、日干に対する十二運の点数が高い順に3枠を選んだ独自の簡易目安です。毎日変わる日運・時柱を精密に計算したものではありません。体調や生活リズム、現実の予定を優先して使ってください。</p><p class="note">時刻の参考：<a href="https://eco.mtk.nao.ac.jp/koyomi/wiki/BDBDC6F3BBD9.html" target="_blank" rel="noopener">国立天文台「十二支」</a></p></details>
+<details class="calculation-detail"><summary>月運・時間帯ガイドの見方</summary><p class="note">天中殺は二支方式です。年は二年、月は二か月、日は十二日周期の二日、時間は二つの刻（合計四時間）を対象とし、日干の陰陽による前後の拡張はしません。</p><p class="note">毎月の運気は、巡る地支と命式の年支・月支・日支を照らし、柱ごとに支合は＋1、冲は−1とし、天中殺は−2とする簡易目安です。合計2点以上は◎、1点は◯、−1〜0点は△、−2点以下は×です。表では日支・月支との関係を表示します。日本標準時で扱い、期間の終わりの時刻は次の月に属します。時間帯ガイドは定時法の十二支を使い、本人の天中殺の二支にあたる時間を準備・勉強・貢献向けとします。活動候補は7〜21時の天中殺以外の時間帯から、日干に対する十二運の点数が高い順に3枠を選んだ独自の簡易目安です。毎日変わる日運・時柱を精密に計算したものではありません。体調や生活リズム、現実の予定を優先して使ってください。</p><p class="note">時刻の参考：<a href="https://eco.mtk.nao.ac.jp/koyomi/wiki/BDBDC6F3BBD9.html" target="_blank" rel="noopener">国立天文台「十二支」</a></p></details>
 </section>
 
 <div class="copy" id="essenceCopy">生年月日を入力すると<span class="red">命式が自動生成</span>されます</div>
@@ -519,18 +519,18 @@ function luckMark(c,g){const rel=relation([c.day,c.month,c.year,g]);let score=0;
 function luckAdvice(mark,starName,tenchu){if(tenchu)return "天中殺は準備・勉強・貢献を中心に。振り返りや、人を支える活動に使いましょう。";if(mark==="◎")return starName+"を活かし、追い風を使いやすい時。提案、発信、勝負、良縁づくりを具体的に進めましょう。";if(mark==="○")return starName+"が巡るので、準備してきたことを現実に乗せる時。人との約束を守り、小さく実行しましょう。";if(mark==="△")return starName+"のテーマが出るため、焦らず調整する時。衝突を避け、学び直しと体制づくりに使いましょう。";return starName+"のテーマで負荷が出やすい時。無理な拡大は控え、守り・整理・健康管理を優先しましょう。"}
 function labelDataTable(id){const table=$(id),heads=[...table.querySelectorAll("tr:first-child th")].map(th=>th.textContent.trim());[...table.querySelectorAll("tr:not(:first-child)")].forEach(tr=>[...tr.children].forEach((td,i)=>td.setAttribute("data-label",heads[i]||"")))}
 function luckTables(c){
- let rows="<tr><th>開始年齢</th><th>大運</th><th>通変星</th><th>十二運</th><th>点数</th><th>天中殺</th></tr>";
+ let rows="<tr><th>開始年齢</th><th>大運</th><th>通変星</th><th>十二運</th><th>点数</th><th>運気</th><th>天中殺</th></tr>";
  const info=daiunInfo(c);
  $("reportDirection").textContent=info?(info.forward?"順行":"逆行"):"";
  $("reportStart").textContent=info?`立運：${luckAge(info.startYears)} ／ 3日＝1年で換算（月表示は四捨五入）`:"性別「男性」または「女性」を選択すると算出します。";
  if(!info){
-  rows+='<tr><td colspan="6">順行・逆行の判定には性別「男性」または「女性」の選択が必要です。</td></tr>';
+  rows+='<tr><td colspan="7">順行・逆行の判定には性別「男性」または「女性」の選択が必要です。</td></tr>';
   $("daiunNote").textContent="伝統的な年干の陰陽と男女による方式を採用しています。性別が未選択・その他の場合、大運は算出しません。";
  }else{
-  if(Math.round(info.startYears*12)>0)rows+='<tr><td>0歳</td><td>立運前</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>';
+  if(Math.round(info.startYears*12)>0)rows+='<tr><td>0歳</td><td>立運前</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>';
   for(let i=0;i<8;i++){
    const g=gz(info.base+(info.forward?1:-1)*(i+1)),age=info.startYears+i*10,st=star(c.day.stem,g.stem),ten=isTenchu(c,g.branch),mark=luckMark(c,g);
-   rows+=`<tr><td>${luckAge(age)}</td><td>${g.text}</td><td>${st}</td><td>${TW[c.day.stem][g.branch]}</td><td>${ENERGY[TW[c.day.stem][g.branch]]}</td><td>${ten?"天中殺":"—"}</td></tr>`;
+   rows+=`<tr><td>${luckAge(age)}</td><td>${g.text}</td><td>${st}</td><td>${TW[c.day.stem][g.branch]}</td><td>${ENERGY[TW[c.day.stem][g.branch]]}</td><td>${mark.replace("○","◯")}</td><td>${ten?"天中殺":"—"}</td></tr>`;
   }
   $("daiunNote").textContent=`${info.forward?"順行":"逆行"} ／ 立運：${luckAge(info.startYears)}。出生${info.forward?"後":"前"}の節入り「${info.boundary.name}」（${formatSetsu(info.boundary.ms)} 日本標準時・近似）まで約${info.days.toFixed(3)}日 ÷ 3。年単位の切り捨て・切り上げはせず、月表示のみ四捨五入しています。${c.timeKnown?"":"出生時刻が未入力のため12:00を仮定しています。"}節入りは太陽黄経の近似計算です。節入り直前・直後の出生は天文暦で照合してください。`;
  }
@@ -697,8 +697,8 @@ function monthlyBranchLuck(c,branch){
   return {kind,description:kind?`${label}「${natal}」と${kind}`:""};
  });
  const tenchu=isTenchu(c,branch);
- const score=Number(relations.some(r=>r.kind==="支合"))-Number(relations.some(r=>r.kind==="冲"))-2*Number(tenchu);
- return {mark:score>0?"◯":score>=-1?"△":"×",tenchu,details:relations.slice(0,2).map(r=>r.description).filter(Boolean)};
+ const score=relations.filter(r=>r.kind==="支合").length-relations.filter(r=>r.kind==="冲").length-2*Number(tenchu);
+ return {mark:score>=2?"◎":score===1?"◯":score>=-1?"△":"×",tenchu,details:relations.slice(0,2).map(r=>r.description).filter(Boolean)};
 }
 const HOUR_WINDOWS=B.map((branch,i)=>({branch,start:i===0?23:i*2-1,end:i===0?1:i*2+1,label:i===0?"23:00〜翌01:00":String(i*2-1).padStart(2,"0")+":00〜"+String(i*2+1).padStart(2,"0")+":00"}));
 function hourPeriods(c){
@@ -760,7 +760,7 @@ function renderScreenReport(c,r){
  const chartRows=[["天干",p=>pillarCharacter(p.stem)],["地支",p=>pillarCharacter(p.branch)],["蔵干",p=>p.hidden],["通変星",p=>p.stemStar||"日主"],["蔵干星",p=>p.hiddenStar],["十二運",p=>p.twelve]];
  const chart='<table class="screen-chart"><tr><th></th>'+keys.map(k=>"<th>"+k[1]+"</th>").join("")+"</tr>"+chartRows.map(([name,get])=>"<tr><th>"+name+"</th>"+keys.map(([key])=>"<td>"+(c.pillars[key]?get(c.pillars[key]):"—")+"</td>").join("")+"</tr>").join("")+"</table>";
  let yearRows="";for(let y=year-2;y<=year+9;y++){const g=gz(y-1984),ten=isTenchu(c,g.branch);yearRows+=`<tr class="${ten?"screen-tenchu":""}"><td>${y}</td><td>${g.text}</td><td>${ten?"天中殺":luckMark(c,g)}</td></tr>`;}
- let decadeRows=info&&Math.round(info.startYears*12)>0?'<tr><td>0歳</td><td colspan="2">立運前</td></tr>':"";if(info)for(let i=0;i<8;i++){const g=gz(info.base+(info.forward?1:-1)*(i+1));decadeRows+=`<tr><td>${compactLuckAge(info.startYears+10*i)}</td><td>${g.text}</td><td>${isTenchu(c,g.branch)?"天中殺":star(c.day.stem,g.stem)}</td></tr>`;}
+ let decadeRows=info&&Math.round(info.startYears*12)>0?'<tr><td>0歳</td><td colspan="2">立運前</td></tr>':"";if(info)for(let i=0;i<8;i++){const g=gz(info.base+(info.forward?1:-1)*(i+1));decadeRows+=`<tr><td>${compactLuckAge(info.startYears+10*i)}</td><td>${g.text}</td><td><strong>${luckMark(c,g).replace("○","◯")}</strong><br>${isTenchu(c,g.branch)?"天中殺":star(c.day.stem,g.stem)}</td></tr>`;}
  const combine=x.stemCombines.length?"あり":"なし",root=n.roots.map(p=>p.branch).join("・");
  const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月 ${yes(n.monthExclusion)}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座 ${yes(x.seated)}</span><span>大半会 ${x.daihankai.length?x.daihankai.map(v=>v.split("［")[0].replaceAll("柱","")).join("、"):"なし"}</span><span>干合 ${combine}</span><span>支合 ${yes(!!x.branchCombines.length)}</span><span>方合 ${yes(!!x.directions.length)}</span><span>律音 ${yes(!!n.repeats.length)}</span><span>通根 ${root||"なし"}</span></div></section>`;
  const elementRows=Object.entries(counts).map(([e,count])=>{const m=ELEMENT_MATCH[e],a=symbolicAdjustment(c,e);return `<tr><th style="color:${m.ink}">${e} ${count}</th><td>${m.color}／${m.taste}<br><span class="element-body">${m.bodyShort}</span></td><td>${a.text}</td><td>${m.food}${a.mark==="↑"?"（少量の候補）":a.mark==="↓"?"（偏りを控える）":"（適量）"}</td></tr>`}).join("");
@@ -780,7 +780,7 @@ function renderScreenReport(c,r){
  <div class="screen-twins">
  <section class="screen-month-luck"><h2>毎月の運気/天中殺<small>${monthYear}年・地支のみで計算</small></h2><table><tr><th>月期</th><th>運気・関係</th></tr>${monthRows}</table></section>
  <section><h2>歳運 ${year-2}–${year+9}</h2><table><tr><th>年</th><th>干支</th><th>目安</th></tr>${yearRows}</table></section>
- <section><h2>大運 ${info?(info.forward?"順行":"逆行"):"性別未選択"}</h2><table><tr><th>開始</th><th>干支</th><th>星・天中殺</th></tr>${decadeRows||'<tr><td colspan="3">性別を選択してください</td></tr>'}</table></section></div>
+ <section><h2>大運 ${info?(info.forward?"順行":"逆行"):"性別未選択"}</h2><table><tr><th>開始</th><th>干支</th><th>運気・星</th></tr>${decadeRows||'<tr><td colspan="3">性別を選択してください</td></tr>'}</table></section></div>
  <section class="screen-elements"><h2>五行・色・味・身体対応と取り入れ方</h2><table><tr><th>五行数</th><th>色・味／身体</th><th>配色の目安</th><th>食材の例</th></tr>${elementRows}</table><p>増減は単純な五行数による色・食材選びの占術的ヒント。身体対応は伝統的分類で診断ではありません。塩分・糖分は増やさず、食材は偏らず選びます。</p></section>
  <section class="screen-advice"><h2>エネルギー ${energy.total} からのアドバイス</h2><p><b>強み</b> ${advice.strength}<br><b>注意</b> ${advice.care}<br><b>活用</b> ${advice.action}</p><p id="screenMemo" class="screen-memo"></p></section>
  <footer class="screen-timing"><p>活動候補 ${active}時 ／ 天中殺 ${quiet}時</p><p>${currentMonth?"今月 "+currentMonth.pillar.text+" ／ ":""}天中殺は準備・勉強・貢献。深夜は休息を優先。</p><small>天中殺：二支方式（前後拡張なし）。占術上の目安で、五行から病気は判定しません。</small></footer>`;
