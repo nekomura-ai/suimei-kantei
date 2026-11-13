@@ -454,6 +454,9 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
  .screen-report-frame .screen-report-stage{width:100%!important;height:auto!important}
  .screen-report-frame .screen-report{width:100%!important;transform:none!important}
 }
+
+/* 鑑定書は左右の余白まで使う。 */
+.screen-report-frame{max-width:none}
 </style>
 </head>
 <body>
@@ -1114,8 +1117,7 @@ function fitCompactScreen(){
  }
  const naturalWidth=1080;
  panel.style.width=naturalWidth+"px";
- const targetWidth=Math.min(frame.clientWidth,Math.round(window.innerWidth*0.47));
- const scale=Math.min(1,Math.max(1,targetWidth)/naturalWidth);
+ const scale=Math.max(1,frame.clientWidth)/naturalWidth;
  panel.style.transform="scale("+scale+")";
  stage.style.width=Math.round(naturalWidth*scale)+"px";
  stage.style.height=Math.ceil(panel.offsetHeight*scale)+"px";
