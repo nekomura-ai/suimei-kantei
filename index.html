@@ -259,8 +259,10 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 @media print{.screen-month-luck td span{margin-inline-start:.4em}}
 .screen-points{display:flex;flex-wrap:wrap;gap:1px .8em;font-size:8px;line-height:1.4;border:1px solid #aaa;border-top:0;padding:4px 3px;overflow-wrap:anywhere}
 .screen-points span{white-space:nowrap}
-.screen-points .screen-combination{max-width:100%;white-space:normal}
-.screen-combination b{margin-inline-end:.35em}
+.screen-combinations{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:1px .8em;flex-basis:100%;margin:2px 0 0;padding-top:2px;border-top:1px solid #ddd}
+.screen-combinations dt{font-weight:700}
+.screen-combinations dd{margin:0;white-space:pre-line}
+.report-insights .report-combination{white-space:pre-line}
 .screen-elements table{font-size:9px}.screen-elements table th:first-child{width:14%}.screen-elements table th:nth-child(2){width:22%}
 .screen-elements>p{font-size:8px;line-height:1.35;margin:3px 0 0;color:#555}
 .screen-advice{border:1px solid #aaa}.screen-advice h2{border:0;border-bottom:1px solid #aaa}
@@ -392,12 +394,12 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 <div><dt>生年中殺</dt><dd id="reportYearExclusion">未算出</dd></div>
 <div><dt>生日中殺</dt><dd id="reportDayExclusion">未算出</dd></div>
 <div><dt>日座中殺</dt><dd id="reportSeatedExclusion">未算出</dd></div>
-<div><dt>宿命大半会</dt><dd id="reportDaihankai">未算出</dd></div>
-<div><dt>干合</dt><dd id="reportStemCombine">未算出</dd></div>
-<div><dt>支合</dt><dd id="reportBranchCombine">未算出</dd></div>
-<div><dt>方合</dt><dd id="reportDirectionalCombine">未算出</dd></div>
-<div><dt>律音</dt><dd id="reportRepeatedPillar">未算出</dd></div>
-<div><dt>納音</dt><dd id="reportNacchin">未算出</dd></div>
+<div><dt>宿命大半会</dt><dd class="report-combination" id="reportDaihankai">未算出</dd></div>
+<div><dt>干合</dt><dd class="report-combination" id="reportStemCombine">未算出</dd></div>
+<div><dt>支合</dt><dd class="report-combination" id="reportBranchCombine">未算出</dd></div>
+<div><dt>方合</dt><dd class="report-combination" id="reportDirectionalCombine">未算出</dd></div>
+<div><dt>律音</dt><dd class="report-combination" id="reportRepeatedPillar">未算出</dd></div>
+<div><dt>納音</dt><dd class="report-combination" id="reportNacchin">未算出</dd></div>
 <div><dt>通根</dt><dd id="reportRoot">未算出</dd></div>
 <div><dt>身強・身弱</dt><dd id="reportStrength">未算出</dd></div></dl>
 <p class="insight-caption">大半会は年・月・日の三柱、他の合と律音は四柱を照合。方合は三支がそろった場合。身強・身弱は簡易判定です。</p></section>
@@ -664,13 +666,13 @@ function renderNatalInsights(c){
  $("reportYearExclusion").textContent=(v.yearExclusion?"該当":"該当なし")+"（年支"+c.year.branch+"）";
  $("reportDayExclusion").textContent=(x.dayExclusion?"該当":"該当なし")+"（年柱の天中殺"+x.yearVoid+"／日支"+c.day.branch+"）";
  $("reportSeatedExclusion").textContent=x.seated?"該当（日柱"+c.day.text+"）":"該当なし";
- $("reportDaihankai").textContent=x.daihankai.join("、")||"該当なし";
- $("reportStemCombine").textContent=(x.stemCombines.join("、")||"該当なし")+tail;
- $("reportBranchCombine").textContent=(x.branchCombines.join("、")||"該当なし")+tail;
- $("reportDirectionalCombine").textContent=(x.directions.join("、")||"三支そろう方合なし")+tail;
+ $("reportDaihankai").textContent=x.daihankai.join("\n")||"該当なし";
+ $("reportStemCombine").textContent=(x.stemCombines.join("\n")||"該当なし")+tail;
+ $("reportBranchCombine").textContent=(x.branchCombines.join("\n")||"該当なし")+tail;
+ $("reportDirectionalCombine").textContent=(x.directions.join("\n")||"三支そろう方合なし")+tail;
 
- $("reportRepeatedPillar").textContent=(v.repeats.length?v.repeats.join("、"):"命式内：該当なし")+tail;
- $("reportNacchin").textContent=(x.nacchin.join("、")||"該当なし")+tail;
+ $("reportRepeatedPillar").textContent=(v.repeats.length?v.repeats.join("\n"):"命式内：該当なし")+tail;
+ $("reportNacchin").textContent=(x.nacchin.join("\n")||"該当なし")+tail;
  $("reportRoot").textContent=(v.roots.length?v.roots.map(p=>p.name+p.branch+"［"+p.stems.join("・")+"］").join("、"):"日干と同じ五行の根なし")+tail;
  $("reportStrength").textContent=v.strength+tail;
  $("natalInsightDetails").textContent="【天中殺の採用方式】六甲空亡の二支を基準に、年・月・日・時間の該当する二支だけを対象とします。日干の陰陽による前後への拡張はしません。年は立春、月は節入り、時刻は日本標準時の十二支で区切ります。生日中殺は年柱の天中殺と日支、日座中殺は日柱の甲戌・乙亥を確認。宿命大半会は年・月・日の二柱が同干で、異なる支が同じ三合組に属する場合。干合・支合は四柱間の所定の二干・二支の組、方合は寅卯辰・巳午未・申酉戌・亥子丑の三支が全てそろう場合に表示します。合化成立までは判定していません。生月中殺・生年中殺は日柱から求めた天中殺の支と月支・年支を照合します。律音は同じ干支が命式の複数の柱にあるかを確認します（歳運・大運との律音はここには含めません）。通根は日干と同じ五行が地支の蔵干にあるかを確認します。【身強・身弱】"+v.strengthReason+"判定は"+v.strength+tail+"。日干と同じ五行または日干を生じる五行を支えとし、地支は月支を除く3支、天干は日干を除く3干を数えます。極身強は得令かつ強める地支・天干が各2つ以上。極身弱は得令なしで弱める地支・天干が各2つ以上。身強は得令と地支または天干の支えがそろう場合、もしくは地支・天干の両方に支えがあり合計3つ以上の場合です。残りは身弱とします。運勢エネルギーの合計は別の指標です。";
@@ -782,8 +784,8 @@ function renderScreenReport(c,r){
  let yearRows="";for(let y=year-2;y<=year+9;y++){const g=gz(y-1984),ten=isTenchu(c,g.branch);yearRows+=`<tr class="${ten?"screen-tenchu":""}"><td>${y}</td><td>${g.text}</td><td>${ten?"天中殺":luckMark(c,g)}</td></tr>`;}
  let decadeRows=info&&Math.round(info.startYears*12)>0?'<tr><td>0歳</td><td colspan="2">立運前</td></tr>':"";if(info)for(let i=0;i<DAIUN_PERIOD_COUNT;i++){const g=gz(info.base+(info.forward?1:-1)*(i+1));decadeRows+=`<tr><td>${compactLuckAge(info.startYears+10*i)}</td><td>${g.text}</td><td><strong>${luckMark(c,g).replace("○","◯")}</strong> ${isTenchu(c,g.branch)?"天中殺":star(c.day.stem,g.stem)}</td></tr>`;}
  const root=n.roots.map(p=>p.branch).join("・");
- const combinations=[["大半会",x.daihankai],["干合",x.stemCombines],["支合",x.branchCombines],["方合",x.directions],["律音",n.repeats],["納音",x.nacchin]].map(([label,pairs])=>`<span class="screen-combination"><b>${label}</b>${pairs.join("、")||"なし"}</span>`).join("");
- const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>年柱の天中殺 ${x.yearVoid}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span>${combinations}<span>通根 ${root||"なし"}</span></div></section>`;
+ const combinations=[["大半会",x.daihankai],["干合",x.stemCombines],["支合",x.branchCombines],["方合",x.directions],["律音",n.repeats],["納音",x.nacchin]].map(([label,pairs])=>`<dt>${label}</dt><dd>${pairs.join("\n")||"該当なし"}</dd>`).join("");
+ const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>年柱の天中殺 ${x.yearVoid}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span><span>通根 ${root||"なし"}</span><dl class="screen-combinations">${combinations}</dl></div></section>`;
  const elementRows=Object.entries(counts).map(([e,count])=>{const m=ELEMENT_MATCH[e],a=symbolicAdjustment(c,e);return `<tr><th style="color:${m.ink}">${e} ${count}</th><td>${m.color}／${m.taste}<br><span class="element-body">${m.bodyShort}</span></td><td>${a.text}</td><td>${m.food}${a.mark==="↑"?"（少量の候補）":a.mark==="↓"?"（偏りを控える）":"（適量）"}</td></tr>`}).join("");
  const advice=energy.total>=26?{strength:"自ら動き、仲間を巻き込む力。",care:"予定や役割を抱え込みすぎない。",action:"テーマを絞り、任せる役割と休む時間を決める。"}:energy.total>=15?{strength:"人や環境に合わせ、積み上げる力。",care:"周囲に合わせすぎず、自分の軸を持つ。",action:"良い仲間・習慣を選び、小さな挑戦を続ける。"}:{strength:"細かく感じ取り、深く磨く力。",care:"予定を詰め込みすぎず、自分のペースで。",action:"安心できる仲間と、集中・回復できる時間を作る。"};
  const hours=hourPeriods(c),active=hours.filter(h=>h.suggested).sort((a,b)=>a.start-b.start).map(h=>h.start+"–"+h.end).join("・"),quiet=hours.filter(h=>h.tenchu).map(h=>h.start+"–"+h.end).join("・");
