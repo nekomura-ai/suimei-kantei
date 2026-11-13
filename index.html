@@ -1114,7 +1114,8 @@ function fitCompactScreen(){
  }
  const naturalWidth=1080;
  panel.style.width=naturalWidth+"px";
- const scale=Math.min(1,Math.max(1,frame.clientWidth)/naturalWidth);
+ const targetWidth=Math.min(frame.clientWidth,Math.round(window.innerWidth*0.47));
+ const scale=Math.min(1,Math.max(1,targetWidth)/naturalWidth);
  panel.style.transform="scale("+scale+")";
  stage.style.width=Math.round(naturalWidth*scale)+"px";
  stage.style.height=Math.ceil(panel.offsetHeight*scale)+"px";
