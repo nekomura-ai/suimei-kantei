@@ -397,6 +397,8 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 <div><dt>日座中殺</dt><dd id="reportSeatedExclusion">未算出</dd></div>
 <div><dt>宿命大半会</dt><dd class="report-combination" id="reportDaihankai">未算出</dd></div>
 <div><dt>半会</dt><dd class="report-combination" id="reportHalfCombinations">未算出</dd></div>
+<div><dt>三合会局</dt><dd class="report-combination" id="reportThreeHarmonies">未算出</dd></div>
+<div><dt>冲（対冲）</dt><dd class="report-combination" id="reportClashes">未算出</dd></div>
 <div><dt>干合</dt><dd class="report-combination" id="reportStemCombine">未算出</dd></div>
 <div><dt>支合</dt><dd class="report-combination" id="reportBranchCombine">未算出</dd></div>
 <div><dt>方合</dt><dd class="report-combination" id="reportDirectionalCombine">未算出</dd></div>
@@ -557,10 +559,9 @@ function termCard(t,plain,reading){return `<div class="card"><p><b>${t}</b><br><
 function renderRequestedSections(c){const ps=[["時柱",c.pillars.hour],["日柱",c.pillars.day],["月柱",c.pillars.month],["年柱",c.pillars.year]].filter(x=>x[1]);const texts=ps.map(x=>x[1].text),brs=ps.map(x=>x[1].branch),stemList=ps.map(x=>x[1].stem);$("starDetailCards").innerHTML=ps.map(([name,p])=>termCard(name,"柱は人生の担当領域です。年は家系、月は社会、日は本人と夫婦、時は晩年や子ども縁を見ます。",`干支は <strong>${p.text}</strong>、蔵干は <strong>${p.hidden}</strong>、通変星は <strong>${p.stemStar||"日主"}</strong>、蔵干通変星は <strong>${p.hiddenStar}</strong>、十二運星は <strong>${p.twelve}</strong>。`)).join("")+termCard("日支蔵干","日支は内面・配偶者宮・安心感の癖を読む場所です。ここを間違えると鑑定の芯がずれます。",`日支${c.day.branch}の蔵干は <strong>${c.pillars.day.hidden}</strong>、蔵干通変星は <strong>${c.pillars.day.hiddenStar}</strong>。`);
 const stemComb=[["甲","己","甲己干合"],["乙","庚","乙庚干合"],["丙","辛","丙辛干合"],["丁","壬","丁壬干合"],["戊","癸","戊癸干合"]].filter(([a,b])=>stemList.includes(a)&&stemList.includes(b)).map(x=>x[2]);
 const branchComb=[["子","丑","子丑支合"],["寅","亥","寅亥支合"],["卯","戌","卯戌支合"],["辰","酉","辰酉支合"],["巳","申","巳申支合"],["午","未","午未支合"]].filter(([a,b])=>brs.includes(a)&&brs.includes(b)).map(x=>x[2]);
-const clash=[["子","午","子午冲"],["丑","未","丑未冲"],["寅","申","寅申冲"],["卯","酉","卯酉冲"],["辰","戌","辰戌冲"],["巳","亥","巳亥冲"]].filter(([a,b])=>brs.includes(a)&&brs.includes(b)).map(x=>x[2]);
+const {clashes:clash,halfCombinations:half,threeHarmonies}=extendedNatal(c);
 const harm=[["子","未","子未害"],["丑","午","丑午害"],["寅","巳","寅巳害"],["卯","辰","卯辰害"],["申","亥","申亥害"],["酉","戌","酉戌害"]].filter(([a,b])=>brs.includes(a)&&brs.includes(b)).map(x=>x[2]);
 const punish=[["子","卯","子卯刑"],["寅","巳","寅巳刑"],["巳","申","巳申刑"],["丑","戌","丑戌刑"],["戌","未","戌未刑"],["辰","辰","自刑"],["午","午","自刑"],["酉","酉","自刑"],["亥","亥","自刑"]].filter(([a,b])=>a===b?brs.filter(x=>x===a).length>1:brs.includes(a)&&brs.includes(b)).map(x=>x[2]);
-const half=extendedNatal(c).halfCombinations,threeHarmonies=THREE_HARMONIES.filter(g=>g.slice(0,3).every(b=>brs.includes(b))).map(g=>g.slice(0,3).join("")+"（"+g[3]+"局）");
 $("relationDetailCards").innerHTML=[termCard("干合","天干同士が結びつき、考え方・才能・人間関係の化学反応を起こす見方です。",stemComb.join("・")||"目立つ干合なし"),termCard("支合","地支同士が結びつき、現実面の縁・協力関係・安心感を作る見方です。",branchComb.join("・")||"目立つ支合なし"),termCard("冲","地支同士がぶつかり、変化・移動・刺激・衝突として出やすい見方です。",clash.join("・")||"目立つ冲なし"),termCard("刑","こじれ・癖・内側の葛藤として出やすい見方です。悪いだけでなく専門性にもなります。",punish.join("・")||"目立つ刑なし"),termCard("害","見えにくい不一致・気疲れ・すれ違いを読む見方です。",harm.join("・")||"目立つ害なし"),termCard("半会","三合の組のうち旺支（子・卯・午・酉）を含む二支を確認します。",half.join("、")||"該当なし"),termCard("三合会局","同じ三合の組の三支を確認します。",threeHarmonies.join("、")||"該当なし"),termCard("方合","同じ季節の三支がそろう組み合わせ。合化までは判定しません。",extendedNatal(c).directions.join("・")||"三支そろう方合なし")].join("");
 const tenchuHit=(p)=>p&&isTenchu(c,p.branch)?"該当":"該当なし";const natal=extendedNatal(c);const nichii=natal.resident;
 $("tenchuCards").innerHTML=[termCard("天中殺","運がない時期ではなく、枠を作りすぎず整理・学び・準備に向く領域です。",c.tenchu),termCard("生年中殺","年柱が天中殺に触れる見方。家系・親・社会背景との距離感に出ます。",tenchuHit(c.pillars.year)),termCard("生月中殺","月柱が天中殺に触れる見方。仕事・社会的役割・家系から受ける役目に出ます。",tenchuHit(c.pillars.month)),termCard("生日中殺","年柱から求めた天中殺の二支に日支が入る場合に該当する判定です。",(natal.dayExclusion?"該当":"該当なし")),termCard("日座中殺","日柱が甲戌・乙亥の場合に該当する算命学の判定です。",natal.seated?"該当":"該当なし"),termCard("日居天中殺","日柱そのものに特殊な空亡性を見る考え方です。現実の枠に収まりにくい感性として読みます。",nichii?"該当":"該当なし")].join("");
@@ -606,14 +607,17 @@ function pillarPairLabel(a,b,part){
 }
 function extendedNatal(c){
  const entries=["year","month","day","hour"].filter(k=>c.pillars[k]).map(k=>({key:k,name:PILLAR_NAMES[k],...c.pillars[k]})),birthEntries=entries.filter(p=>p.key!=="hour");
- const stemCombines=[],branchCombines=[],daihankai=[],halfCombinations=[],nacchin=[],stemPairs=[["甲","己"],["乙","庚"],["丙","辛"],["丁","壬"],["戊","癸"]],branchPairs=[["子","丑"],["寅","亥"],["卯","戌"],["辰","酉"],["巳","申"],["午","未"]];
+ const stemCombines=[],branchCombines=[],daihankai=[],halfCombinations=[],clashes=[],nacchin=[],stemPairs=[["甲","己"],["乙","庚"],["丙","辛"],["丁","壬"],["戊","癸"]],branchPairs=[["子","丑"],["寅","亥"],["卯","戌"],["辰","酉"],["巳","申"],["午","未"]];
  for(let i=0;i<entries.length;i++)for(let j=i+1;j<entries.length;j++){
  const a=entries[i],b=entries[j];
  const halfGroup=THREE_HARMONIES.find(([start,center,end])=>
   (a.branch===center&&[start,end].includes(b.branch))||
   (b.branch===center&&[start,end].includes(a.branch)));
  if(halfGroup)halfCombinations.push(pillarPairLabel(a,b,"branch")+"（"+halfGroup[3]+"局）");
- if(a.stem===b.stem&&Math.abs(B.indexOf(a.branch)-B.indexOf(b.branch))===6)nacchin.push(pillarPairLabel(a,b,"text"));
+ if(Math.abs(B.indexOf(a.branch)-B.indexOf(b.branch))===6){
+  clashes.push(pillarPairLabel(a,b,"branch"));
+  if(a.stem===b.stem)nacchin.push(pillarPairLabel(a,b,"text"));
+ }
  if(a.stem!==b.stem&&stemPairs.some(p=>p.includes(a.stem)&&p.includes(b.stem)))stemCombines.push(pillarPairLabel(a,b,"stem"));
  if(a.branch!==b.branch&&branchPairs.some(p=>p.includes(a.branch)&&p.includes(b.branch)))branchCombines.push(pillarPairLabel(a,b,"branch"));
  }
@@ -621,8 +625,14 @@ function extendedNatal(c){
  const a=birthEntries[i],b=birthEntries[j];
  if(a.stem===b.stem&&a.branch!==b.branch&&THREE_HARMONIES.some(g=>g.slice(0,3).includes(a.branch)&&g.slice(0,3).includes(b.branch)))daihankai.push(pillarPairLabel(a,b,"text"));
  }
- const branches=entries.map(p=>p.branch),directions=DIRECTIONAL_GROUPS.filter(g=>g.slice(0,3).every(b=>branches.includes(b))).map(g=>g.slice(0,3).map(branch=>entries.filter(p=>p.branch===branch).map(p=>p.name).join("・")+"「"+branch+"」").join("×")+"（"+g[3]+"方）"),yearVoid=voidBranches(c.year);
- return {dayExclusion:yearVoid.includes(c.day.branch),yearVoid,seated:["甲戌","乙亥"].includes(c.day.text),resident:["甲辰","乙巳"].includes(c.day.text),stemCombines,branchCombines,daihankai,halfCombinations,directions,nacchin};
+ const branches=entries.map(p=>p.branch);
+ const completeGroups=(groups,suffix)=>groups.filter(g=>g.slice(0,3).every(b=>branches.includes(b))).map(g=>{
+  const labels=g.slice(0,3).map(branch=>entries.filter(p=>p.branch===branch).map(p=>p.name).join("・")+"「"+branch+"」");
+  return labels.join("×")+"（"+g[3]+suffix+"）";
+ });
+ const threeHarmonies=completeGroups(THREE_HARMONIES,"局");
+ const directions=completeGroups(DIRECTIONAL_GROUPS,"方"),yearVoid=voidBranches(c.year);
+ return {dayExclusion:yearVoid.includes(c.day.branch),yearVoid,seated:["甲戌","乙亥"].includes(c.day.text),resident:["甲辰","乙巳"].includes(c.day.text),stemCombines,branchCombines,daihankai,halfCombinations,threeHarmonies,clashes,directions,nacchin};
 }
 const HEALTH_HINTS={
  木:{food:"小松菜・ブロッコリー・枝豆",care:"画面を見る合間に目と体を休める"},
@@ -674,6 +684,8 @@ function renderNatalInsights(c){
  $("reportSeatedExclusion").textContent=x.seated?"該当（日柱"+c.day.text+"）":"該当なし";
  $("reportDaihankai").textContent=x.daihankai.join("\n")||"該当なし";
  $("reportHalfCombinations").textContent=(x.halfCombinations.join("\n")||"該当なし")+tail;
+ $("reportThreeHarmonies").textContent=(x.threeHarmonies.join("\n")||"該当なし")+tail;
+ $("reportClashes").textContent=(x.clashes.join("\n")||"該当なし")+tail;
  $("reportStemCombine").textContent=(x.stemCombines.join("\n")||"該当なし")+tail;
  $("reportBranchCombine").textContent=(x.branchCombines.join("\n")||"該当なし")+tail;
  $("reportDirectionalCombine").textContent=(x.directions.join("\n")||"三支そろう方合なし")+tail;
@@ -697,7 +709,7 @@ function clearReport(){
  $("comprehensiveSections").innerHTML="";$("readingCharCount").textContent="約1,000文字・9項目";$("readingBasis").textContent="生年月日を入力すると、9項目の鑑定文を表示します。";
  $("screenPerson").textContent="生年月日を入力してください";$("screenContent").innerHTML='<p class="screen-empty">情報を入力すると、この一枚に鑑定結果を表示します。</p>';
  $("monthLuckTable").innerHTML="";$("hourLuckTable").innerHTML="";$("monthLuckSummary").textContent="生年月日を入力すると表示します。";$("hourLuckSummary").textContent="生年月日を入力すると表示します。";scheduleReportView();
- for(const id of ["reportMonthExclusion","reportYearExclusion","reportDayExclusion","reportSeatedExclusion","reportDaihankai","reportHalfCombinations","reportStemCombine","reportBranchCombine","reportDirectionalCombine","reportRepeatedPillar","reportNacchin","reportRoot","reportStrength"])$(id).textContent="未算出";
+ for(const id of ["reportMonthExclusion","reportYearExclusion","reportDayExclusion","reportSeatedExclusion","reportDaihankai","reportHalfCombinations","reportThreeHarmonies","reportClashes","reportStemCombine","reportBranchCombine","reportDirectionalCombine","reportRepeatedPillar","reportNacchin","reportRoot","reportStrength"])$(id).textContent="未算出";
  $("natalInsightDetails").textContent="命式を入力すると判定根拠を表示します。";
  for(const k of ["hour","day","month","year"])for(const prefix of ["p","h","s","hs","u"])$(prefix+"-"+k).textContent="";
  $("tenchuCell").textContent="";$("yearLuckTable").innerHTML="";$("daiunTable").innerHTML="";
@@ -791,7 +803,7 @@ function renderScreenReport(c,r){
  let yearRows="";for(let y=year-2;y<=year+9;y++){const g=gz(y-1984),ten=isTenchu(c,g.branch);yearRows+=`<tr class="${ten?"screen-tenchu":""}"><td>${y}</td><td>${g.text}</td><td>${ten?"天中殺":luckMark(c,g)}</td></tr>`;}
  let decadeRows=info&&Math.round(info.startYears*12)>0?'<tr><td>0歳</td><td colspan="2">立運前</td></tr>':"";if(info)for(let i=0;i<DAIUN_PERIOD_COUNT;i++){const g=gz(info.base+(info.forward?1:-1)*(i+1));decadeRows+=`<tr><td>${compactLuckAge(info.startYears+10*i)}</td><td>${g.text}</td><td><strong>${luckMark(c,g).replace("○","◯")}</strong> ${isTenchu(c,g.branch)?"天中殺":star(c.day.stem,g.stem)}</td></tr>`;}
  const root=n.roots.map(p=>p.branch).join("・");
- const combinations=[["大半会",x.daihankai],["半会",x.halfCombinations],["干合",x.stemCombines],["支合",x.branchCombines],["方合",x.directions],["律音",n.repeats],["納音",x.nacchin]].map(([label,pairs])=>`<div><dt>${label}</dt><dd>${pairs.join("、")||"該当なし"}</dd></div>`).join("");
+ const combinations=[["大半会",x.daihankai],["半会",x.halfCombinations],["三合会局",x.threeHarmonies],["冲（対冲）",x.clashes],["干合",x.stemCombines],["支合",x.branchCombines],["方合",x.directions],["律音",n.repeats],["納音",x.nacchin]].map(([label,pairs])=>`<div><dt>${label}</dt><dd>${pairs.join("、")||"該当なし"}</dd></div>`).join("");
  const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>年柱の天中殺 ${x.yearVoid}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span><span>通根 ${root||"なし"}</span><dl class="screen-combinations">${combinations}</dl></div></section>`;
  const elementRows=Object.entries(counts).map(([e,count])=>{const m=ELEMENT_MATCH[e],a=symbolicAdjustment(c,e);return `<tr><th style="color:${m.ink}">${e} ${count}</th><td>${m.color}／${m.taste}<br><span class="element-body">${m.bodyShort}</span></td><td>${a.text}</td><td>${m.food}${a.mark==="↑"?"（少量の候補）":a.mark==="↓"?"（偏りを控える）":"（適量）"}</td></tr>`}).join("");
  const advice=energy.total>=26?{strength:"自ら動き、仲間を巻き込む力。",care:"予定や役割を抱え込みすぎない。",action:"テーマを絞り、任せる役割と休む時間を決める。"}:energy.total>=15?{strength:"人や環境に合わせ、積み上げる力。",care:"周囲に合わせすぎず、自分の軸を持つ。",action:"良い仲間・習慣を選び、小さな挑戦を続ける。"}:{strength:"細かく感じ取り、深く磨く力。",care:"予定を詰め込みすぎず、自分のペースで。",action:"安心できる仲間と、集中・回復できる時間を作る。"};
