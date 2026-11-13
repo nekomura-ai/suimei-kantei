@@ -259,6 +259,8 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 @media print{.screen-month-luck td span{margin-inline-start:.4em}}
 .screen-points{display:flex;flex-wrap:wrap;gap:1px .8em;font-size:8px;line-height:1.4;border:1px solid #aaa;border-top:0;padding:4px 3px;overflow-wrap:anywhere}
 .screen-points span{white-space:nowrap}
+.screen-points .screen-combination{max-width:100%;white-space:normal}
+.screen-combination b{margin-inline-end:.35em}
 .screen-elements table{font-size:9px}.screen-elements table th:first-child{width:14%}.screen-elements table th:nth-child(2){width:22%}
 .screen-elements>p{font-size:8px;line-height:1.35;margin:3px 0 0;color:#555}
 .screen-advice{border:1px solid #aaa}.screen-advice h2{border:0;border-bottom:1px solid #aaa}
@@ -395,6 +397,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 <div><dt>支合</dt><dd id="reportBranchCombine">未算出</dd></div>
 <div><dt>方合</dt><dd id="reportDirectionalCombine">未算出</dd></div>
 <div><dt>律音</dt><dd id="reportRepeatedPillar">未算出</dd></div>
+<div><dt>納音</dt><dd id="reportNacchin">未算出</dd></div>
 <div><dt>通根</dt><dd id="reportRoot">未算出</dd></div>
 <div><dt>身強・身弱</dt><dd id="reportStrength">未算出</dd></div></dl>
 <p class="insight-caption">大半会は年・月・日の三柱、他の合と律音は四柱を照合。方合は三支がそろった場合。身強・身弱は簡易判定です。</p></section>
@@ -557,8 +560,8 @@ const half=[["申","子","辰","申子辰の半会・三合水局"],["亥","卯"
 $("relationDetailCards").innerHTML=[termCard("干合","天干同士が結びつき、考え方・才能・人間関係の化学反応を起こす見方です。",stemComb.join("・")||"目立つ干合なし"),termCard("支合","地支同士が結びつき、現実面の縁・協力関係・安心感を作る見方です。",branchComb.join("・")||"目立つ支合なし"),termCard("冲","地支同士がぶつかり、変化・移動・刺激・衝突として出やすい見方です。",clash.join("・")||"目立つ冲なし"),termCard("刑","こじれ・癖・内側の葛藤として出やすい見方です。悪いだけでなく専門性にもなります。",punish.join("・")||"目立つ刑なし"),termCard("害","見えにくい不一致・気疲れ・すれ違いを読む見方です。",harm.join("・")||"目立つ害なし"),termCard("半会・三合","同じ三合の組に属する支が二つ以上あるかを確認します。",half.join("・")||"目立つ半会・三合なし"),termCard("方合","同じ季節の三支がそろう組み合わせ。合化までは判定しません。",extendedNatal(c).directions.join("・")||"三支そろう方合なし")].join("");
 const tenchuHit=(p)=>p&&isTenchu(c,p.branch)?"該当":"該当なし";const natal=extendedNatal(c);const nichii=natal.resident;
 $("tenchuCards").innerHTML=[termCard("天中殺","運がない時期ではなく、枠を作りすぎず整理・学び・準備に向く領域です。",c.tenchu),termCard("生年中殺","年柱が天中殺に触れる見方。家系・親・社会背景との距離感に出ます。",tenchuHit(c.pillars.year)),termCard("生月中殺","月柱が天中殺に触れる見方。仕事・社会的役割・家系から受ける役目に出ます。",tenchuHit(c.pillars.month)),termCard("生日中殺","年柱から求めた天中殺の二支に日支が入る場合に該当する判定です。",(natal.dayExclusion?"該当":"該当なし")),termCard("日座中殺","日柱が甲戌・乙亥の場合に該当する算命学の判定です。",natal.seated?"該当":"該当なし"),termCard("日居天中殺","日柱そのものに特殊な空亡性を見る考え方です。現実の枠に収まりにくい感性として読みます。",nichii?"該当":"該当なし")].join("");
-const abnormalList=["甲戌","乙亥","丙戌","丁亥","戊戌","己亥","庚子","辛亥","壬子","癸亥"],kaigo=["庚辰","庚戌","壬辰","戊戌"],hassen=ps.filter(([,p])=>p.index>=48&&p.index<=59).map(([,p])=>p.text),ritsu=texts.filter((x,i)=>texts.indexOf(x)!==i),nacchin=clash.length?clash.join("・"):"大運・歳運との照合で確認",daihan=extendedNatal(c).daihankai;
-$("specialCards").innerHTML=[termCard("異常干支","普通の枠に収まりにくい感性・特殊能力・こだわりの強さを見る干支群です。",texts.filter(x=>abnormalList.includes(x)).join("・")||"該当なし"),termCard("魁罡","強い意志・勝負勘・極端さが出やすい特殊干支です。重複表示はせず一度だけ出します。",texts.filter(x=>kaigo.includes(x)).filter((x,i,a)=>a.indexOf(x)===i).join("・")||"該当なし"),termCard("吉凶神殺星","命式に付く補助的な星。性格や出来事の出方を補足します。",$("shinsatsu").textContent),termCard("律音","同じ干支が重なる現象。強調・再現・同じテーマの反復として読みます。",ritsu.length?ritsu.join("・"):"命式内では目立たず。大運・歳運との一致も確認対象。"),termCard("納音","干支が反対方向に響く現象。切り替え・反転・価値観の転換として読みます。",nacchin),termCard("八専干支","特定の干支群に入り、同じ質が濃く出やすい状態です。",hassen.join("・")||"該当なし"),termCard("八相局","算命学寄りの用語。五行の偏りや局の成立を大きな宿命構造として見ます。","参考確認"),termCard("宿命大半会","算命学寄りの用語。広がり・発展・人を巻き込む力として読みます。",daihan.join("・")||"該当なし（同干かつ三合組の二支で照合）")].join("");
+const abnormalList=["甲戌","乙亥","丙戌","丁亥","戊戌","己亥","庚子","辛亥","壬子","癸亥"],kaigo=["庚辰","庚戌","壬辰","戊戌"],hassen=ps.filter(([,p])=>p.index>=48&&p.index<=59).map(([,p])=>p.text),ritsu=texts.filter((x,i)=>texts.indexOf(x)!==i),nacchin=extendedNatal(c).nacchin.join("、")||"命式内：該当なし",daihan=extendedNatal(c).daihankai;
+$("specialCards").innerHTML=[termCard("異常干支","普通の枠に収まりにくい感性・特殊能力・こだわりの強さを見る干支群です。",texts.filter(x=>abnormalList.includes(x)).join("・")||"該当なし"),termCard("魁罡","強い意志・勝負勘・極端さが出やすい特殊干支です。重複表示はせず一度だけ出します。",texts.filter(x=>kaigo.includes(x)).filter((x,i,a)=>a.indexOf(x)===i).join("・")||"該当なし"),termCard("吉凶神殺星","命式に付く補助的な星。性格や出来事の出方を補足します。",$("shinsatsu").textContent),termCard("律音","同じ干支が重なる現象。強調・再現・同じテーマの反復として読みます。",ritsu.length?ritsu.join("・"):"命式内では目立たず。大運・歳運との一致も確認対象。"),termCard("納音","天干が同じで、地支が冲になる組み合わせです。",nacchin),termCard("八専干支","特定の干支群に入り、同じ質が濃く出やすい状態です。",hassen.join("・")||"該当なし"),termCard("八相局","算命学寄りの用語。五行の偏りや局の成立を大きな宿命構造として見ます。","参考確認"),termCard("宿命大半会","算命学寄りの用語。広がり・発展・人を巻き込む力として読みます。",daihan.join("・")||"該当なし（同干かつ三合組の二支で照合）")].join("");
 $("kakyokuCards").innerHTML=[termCard("旺相死囚休","五行が季節からどれくらい力をもらえるかを見る判断です。",$("seasonState").textContent),termCard("格局","命式の型。社会でどの才能を中心に使うかを見る骨格です。",$("kakyoku").textContent),termCard("用神","命式の偏りを整えるために大事にしたい五行・働きです。",$("kakyokuNote").textContent),termCard("守護神","人生のバランスを守る助けになる五行です。",$("guardian").textContent+"。"+$("guardianNote").textContent),termCard("通根","天干が地支に根を持つか。才能が現実に根づくかを見る判断です。",$("strengthNote").textContent),termCard("身旺・身強","日主のエネルギーの強弱。強ければ出し方、弱ければ補い方が大切です。",$("strength").textContent)].join("");
 const es=energySummary(c);
 $("energyAdviceCards").innerHTML=[["運勢エネルギーが高い人（26〜36）","行動量、存在感、巻き込み力が強く出ます。人を動かす側に立つほど力を発揮しますが、圧が強くなりやすいので、目的・期限・責任範囲を明確にすると運が整います。"],["運勢エネルギーが平均の人（15〜25）","環境によって伸び方が変わります。良い場に入る、良い習慣を作る、相性の良い人と組むことで安定して成果が出ます。焦って一発勝負に寄せるより、積み上げ型が強いです。"],["運勢エネルギーが低い人（3〜14）","感受性、観察力、深く考える力が出やすいタイプです。無理に前へ出るより、整える、学ぶ、支える、専門性を磨くほど運が太くなります。休むことも戦略です。"],["今回の命式の傾向",`合計は <strong>${es.total}</strong>、分類は <strong>${es.level}</strong>（高い26〜36・平均15〜25・低い3〜14）。${energyAdvice(es.total)}`]].map(([t,b])=>`<div class="card"><p><b>${t}</b>：${b}</p></div>`).join("");}
@@ -594,20 +597,24 @@ const DIRECTIONAL_GROUPS=[["寅","卯","辰","木"],["巳","午","未","火"],["
 // 六甲空亡の二支だけで照合する。日干の陰陽による前後の拡張は採用しない。
 function isTenchu(c,branch){return voidBranches(c.day).split("").includes(branch)}
 function voidBranches(p){return ["戌亥","申酉","午未","辰巳","寅卯","子丑"][Math.floor(pillarIndex(p.stem,p.branch)/10)]}
+function pillarPairLabel(a,b,part){
+ return `${a.name}「${a[part]}」×${b.name}「${b[part]}」`;
+}
 function extendedNatal(c){
  const entries=["year","month","day","hour"].filter(k=>c.pillars[k]).map(k=>({key:k,name:PILLAR_NAMES[k],...c.pillars[k]})),birthEntries=entries.filter(p=>p.key!=="hour");
- const stemCombines=[],branchCombines=[],daihankai=[],stemPairs=[["甲","己"],["乙","庚"],["丙","辛"],["丁","壬"],["戊","癸"]],branchPairs=[["子","丑"],["寅","亥"],["卯","戌"],["辰","酉"],["巳","申"],["午","未"]];
+ const stemCombines=[],branchCombines=[],daihankai=[],nacchin=[],stemPairs=[["甲","己"],["乙","庚"],["丙","辛"],["丁","壬"],["戊","癸"]],branchPairs=[["子","丑"],["寅","亥"],["卯","戌"],["辰","酉"],["巳","申"],["午","未"]];
  for(let i=0;i<entries.length;i++)for(let j=i+1;j<entries.length;j++){
- const a=entries[i],b=entries[j],label=a.name+"・"+b.name;
- if(a.stem!==b.stem&&stemPairs.some(p=>p.includes(a.stem)&&p.includes(b.stem)))stemCombines.push(label+"［"+a.stem+b.stem+"］");
- if(a.branch!==b.branch&&branchPairs.some(p=>p.includes(a.branch)&&p.includes(b.branch)))branchCombines.push(label+"［"+a.branch+b.branch+"］");
+ const a=entries[i],b=entries[j];
+ if(a.stem===b.stem&&Math.abs(B.indexOf(a.branch)-B.indexOf(b.branch))===6)nacchin.push(pillarPairLabel(a,b,"text"));
+ if(a.stem!==b.stem&&stemPairs.some(p=>p.includes(a.stem)&&p.includes(b.stem)))stemCombines.push(pillarPairLabel(a,b,"stem"));
+ if(a.branch!==b.branch&&branchPairs.some(p=>p.includes(a.branch)&&p.includes(b.branch)))branchCombines.push(pillarPairLabel(a,b,"branch"));
  }
  for(let i=0;i<birthEntries.length;i++)for(let j=i+1;j<birthEntries.length;j++){
  const a=birthEntries[i],b=birthEntries[j];
- if(a.stem===b.stem&&a.branch!==b.branch&&THREE_HARMONIES.some(g=>g.slice(0,3).includes(a.branch)&&g.slice(0,3).includes(b.branch)))daihankai.push(a.name+"・"+b.name+"［"+a.text+"／"+b.text+"］");
+ if(a.stem===b.stem&&a.branch!==b.branch&&THREE_HARMONIES.some(g=>g.slice(0,3).includes(a.branch)&&g.slice(0,3).includes(b.branch)))daihankai.push(pillarPairLabel(a,b,"text"));
  }
- const branches=entries.map(p=>p.branch),directions=DIRECTIONAL_GROUPS.filter(g=>g.slice(0,3).every(b=>branches.includes(b))).map(g=>g.slice(0,3).join("")+"（"+g[3]+"）"),yearVoid=voidBranches(c.year);
- return {dayExclusion:yearVoid.includes(c.day.branch),yearVoid,seated:["甲戌","乙亥"].includes(c.day.text),resident:["甲辰","乙巳"].includes(c.day.text),stemCombines,branchCombines,daihankai,directions};
+ const branches=entries.map(p=>p.branch),directions=DIRECTIONAL_GROUPS.filter(g=>g.slice(0,3).every(b=>branches.includes(b))).map(g=>g.slice(0,3).map(branch=>entries.filter(p=>p.branch===branch).map(p=>p.name).join("・")+"「"+branch+"」").join("×")+"（"+g[3]+"方）"),yearVoid=voidBranches(c.year);
+ return {dayExclusion:yearVoid.includes(c.day.branch),yearVoid,seated:["甲戌","乙亥"].includes(c.day.text),resident:["甲辰","乙巳"].includes(c.day.text),stemCombines,branchCombines,daihankai,directions,nacchin};
 }
 const HEALTH_HINTS={
  木:{food:"小松菜・ブロッコリー・枝豆",care:"画面を見る合間に目と体を休める"},
@@ -631,7 +638,7 @@ function natalInsights(c){
  const entries=["year","month","day","hour"].filter(k=>c.pillars[k]).map(k=>({key:k,name:PILLAR_NAMES[k],...c.pillars[k]}));
  const dayElement=EP[c.day.stem][0],seasonElement=EP[c.month.branch][0];
  const roots=entries.map(p=>({...p,stems:ROOT_STEMS[p.branch].filter(stem=>EP[stem][0]===dayElement)})).filter(p=>p.stems.length);
- const repeats=[];for(let i=0;i<entries.length;i++)for(let j=i+1;j<entries.length;j++)if(entries[i].text===entries[j].text)repeats.push(entries[i].name+"・"+entries[j].name+"（"+entries[i].text+"）");
+ const repeats=[];for(let i=0;i<entries.length;i++)for(let j=i+1;j<entries.length;j++)if(entries[i].text===entries[j].text)repeats.push(pillarPairLabel(entries[i],entries[j],"text"));
  const sameSeason=seasonElement===dayElement,seasonFeeds=MAKE[seasonElement]===dayElement;
  const supportStems=entries.filter(p=>p.key!=="day"&&(EP[p.stem][0]===dayElement||MAKE[EP[p.stem][0]]===dayElement));
  let strength="要総合判断";
@@ -652,6 +659,7 @@ function renderNatalInsights(c){
  $("reportDirectionalCombine").textContent=(x.directions.join("、")||"三支そろう方合なし")+tail;
 
  $("reportRepeatedPillar").textContent=(v.repeats.length?v.repeats.join("、"):"命式内：該当なし")+tail;
+ $("reportNacchin").textContent=(x.nacchin.join("、")||"該当なし")+tail;
  $("reportRoot").textContent=(v.roots.length?v.roots.map(p=>p.name+p.branch+"［"+p.stems.join("・")+"］").join("、"):"日干と同じ五行の根なし")+tail;
  $("reportStrength").textContent=v.strength+tail;
  $("natalInsightDetails").textContent="【天中殺の採用方式】六甲空亡の二支を基準に、年・月・日・時間の該当する二支だけを対象とします。日干の陰陽による前後への拡張はしません。年は立春、月は節入り、時刻は日本標準時の十二支で区切ります。生日中殺は年柱の天中殺と日支、日座中殺は日柱の甲戌・乙亥を確認。宿命大半会は年・月・日の二柱が同干で、異なる支が同じ三合組に属する場合。干合・支合は四柱間の所定の二干・二支の組、方合は寅卯辰・巳午未・申酉戌・亥子丑の三支が全てそろう場合に表示します。合化成立までは判定していません。生月中殺・生年中殺は日柱から求めた天中殺の支と月支・年支を照合します。律音は同じ干支が命式の複数の柱にあるかを確認します（歳運・大運との律音はここには含めません）。通根は日干と同じ五行が地支の蔵干にあるかを確認します。"+v.seasonText+"。通根"+v.roots.length+"柱、日干以外の天干の生扶"+v.supportStems.length+"柱から"+v.strength+"としています。月支の同気・生扶と通根がそろう、または2柱以上の通根と天干の生扶がある場合に身強寄り、いずれの支えもない場合に身弱寄り、それ以外は要総合判断とする独自の簡易ルールです。合化・冲・根の深浅・調候・特殊格局は未評価で、最終判定には命式全体の検討が必要です。運勢エネルギーの合計とは別の指標です。";
@@ -669,7 +677,7 @@ function clearReport(){
  $("comprehensiveSections").innerHTML="";$("readingCharCount").textContent="約1,000文字・9項目";$("readingBasis").textContent="生年月日を入力すると、9項目の鑑定文を表示します。";
  $("screenPerson").textContent="生年月日を入力してください";$("screenContent").innerHTML='<p class="screen-empty">情報を入力すると、この一枚に鑑定結果を表示します。</p>';
  $("monthLuckTable").innerHTML="";$("hourLuckTable").innerHTML="";$("monthLuckSummary").textContent="生年月日を入力すると表示します。";$("hourLuckSummary").textContent="生年月日を入力すると表示します。";scheduleReportView();
- for(const id of ["reportMonthExclusion","reportYearExclusion","reportDayExclusion","reportSeatedExclusion","reportDaihankai","reportStemCombine","reportBranchCombine","reportDirectionalCombine","reportRepeatedPillar","reportRoot","reportStrength"])$(id).textContent="未算出";
+ for(const id of ["reportMonthExclusion","reportYearExclusion","reportDayExclusion","reportSeatedExclusion","reportDaihankai","reportStemCombine","reportBranchCombine","reportDirectionalCombine","reportRepeatedPillar","reportNacchin","reportRoot","reportStrength"])$(id).textContent="未算出";
  $("natalInsightDetails").textContent="命式を入力すると判定根拠を表示します。";
  for(const k of ["hour","day","month","year"])for(const prefix of ["p","h","s","hs","u"])$(prefix+"-"+k).textContent="";
  $("tenchuCell").textContent="";$("yearLuckTable").innerHTML="";$("daiunTable").innerHTML="";
@@ -762,8 +770,9 @@ function renderScreenReport(c,r){
  const chart='<table class="screen-chart"><tr><th></th>'+keys.map(k=>"<th>"+k[1]+"</th>").join("")+"</tr>"+chartRows.map(([name,get])=>"<tr><th>"+name+"</th>"+keys.map(([key])=>"<td>"+(c.pillars[key]?get(c.pillars[key]):"—")+"</td>").join("")+"</tr>").join("")+"</table>";
  let yearRows="";for(let y=year-2;y<=year+9;y++){const g=gz(y-1984),ten=isTenchu(c,g.branch);yearRows+=`<tr class="${ten?"screen-tenchu":""}"><td>${y}</td><td>${g.text}</td><td>${ten?"天中殺":luckMark(c,g)}</td></tr>`;}
  let decadeRows=info&&Math.round(info.startYears*12)>0?'<tr><td>0歳</td><td colspan="2">立運前</td></tr>':"";if(info)for(let i=0;i<DAIUN_PERIOD_COUNT;i++){const g=gz(info.base+(info.forward?1:-1)*(i+1));decadeRows+=`<tr><td>${compactLuckAge(info.startYears+10*i)}</td><td>${g.text}</td><td><strong>${luckMark(c,g).replace("○","◯")}</strong> ${isTenchu(c,g.branch)?"天中殺":star(c.day.stem,g.stem)}</td></tr>`;}
- const combine=x.stemCombines.length?"あり":"なし",root=n.roots.map(p=>p.branch).join("・");
- const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>年柱の天中殺 ${x.yearVoid}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span><span>大半会 ${x.daihankai.length?x.daihankai.map(v=>v.split("［")[0].replaceAll("柱","")).join("、"):"なし"}</span><span>干合 ${combine}</span><span>支合 ${yes(!!x.branchCombines.length)}</span><span>方合 ${yes(!!x.directions.length)}</span><span>律音 ${yes(!!n.repeats.length)}</span><span>通根 ${root||"なし"}</span></div></section>`;
+ const root=n.roots.map(p=>p.branch).join("・");
+ const combinations=[["大半会",x.daihankai],["干合",x.stemCombines],["支合",x.branchCombines],["方合",x.directions],["律音",n.repeats],["納音",x.nacchin]].map(([label,pairs])=>`<span class="screen-combination"><b>${label}</b>${pairs.join("、")||"なし"}</span>`).join("");
+ const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>年柱の天中殺 ${x.yearVoid}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span>${combinations}<span>通根 ${root||"なし"}</span></div></section>`;
  const elementRows=Object.entries(counts).map(([e,count])=>{const m=ELEMENT_MATCH[e],a=symbolicAdjustment(c,e);return `<tr><th style="color:${m.ink}">${e} ${count}</th><td>${m.color}／${m.taste}<br><span class="element-body">${m.bodyShort}</span></td><td>${a.text}</td><td>${m.food}${a.mark==="↑"?"（少量の候補）":a.mark==="↓"?"（偏りを控える）":"（適量）"}</td></tr>`}).join("");
  const advice=energy.total>=26?{strength:"自ら動き、仲間を巻き込む力。",care:"予定や役割を抱え込みすぎない。",action:"テーマを絞り、任せる役割と休む時間を決める。"}:energy.total>=15?{strength:"人や環境に合わせ、積み上げる力。",care:"周囲に合わせすぎず、自分の軸を持つ。",action:"良い仲間・習慣を選び、小さな挑戦を続ける。"}:{strength:"細かく感じ取り、深く磨く力。",care:"予定を詰め込みすぎず、自分のペースで。",action:"安心できる仲間と、集中・回復できる時間を作る。"};
  const hours=hourPeriods(c),active=hours.filter(h=>h.suggested).sort((a,b)=>a.start-b.start).map(h=>h.start+"–"+h.end).join("・"),quiet=hours.filter(h=>h.tenchu).map(h=>h.start+"–"+h.end).join("・");
