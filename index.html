@@ -352,6 +352,8 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 
 
 /* 横一枚の鑑定書：宿命と助言を左、運気の流れを右へ。 */
+.screen-swipe-hint{display:none;margin:8px 0 0;font-size:12px;color:#555}
+@media(max-width:600px){.screen-swipe-hint{display:block}}
 .screen-report-frame{width:100%;max-width:1100px;margin:14px auto 0;overflow-x:auto;overscroll-behavior-x:contain}
 .screen-report{width:1080px;max-width:none;height:auto;max-height:none;min-height:0;margin:0;padding:16px 18px;display:block;font-size:12px;line-height:1.45}
 .screen-head{padding-bottom:8px;margin-bottom:8px}
@@ -386,8 +388,9 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 @media(max-width:600px){.screen-report-frame{margin:10px 0}.screen-report{width:1080px}}
 @page landscapeReport{size:A4 landscape;margin:8mm}
 @media print{
- main>.screen-report-frame{display:block!important;page:landscapeReport;width:100%;max-width:none;overflow:visible;margin:0;break-inside:avoid}
- .screen-report-frame .screen-report{page:landscapeReport;width:100%;max-width:none;height:auto;max-height:none;margin:0;padding:0;border:0;display:block;break-inside:avoid}
+ .screen-swipe-hint{display:none!important}
+ main>.screen-report-frame{display:block!important;page:landscapeReport;width:100%;max-width:none;overflow:visible;margin:0;break-inside:auto}
+ .screen-report-frame .screen-report{page:landscapeReport;width:100%;max-width:none;height:auto;max-height:none;margin:0;padding:0;border:0;display:block;break-inside:auto}
  .screen-report-frame .screen-content{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,1fr);gap:3mm}
  .screen-report-frame .screen-natal,.screen-report-frame .screen-fate{gap:1mm}
  .screen-report-frame .screen-half-title{font-size:10pt;padding:1mm 2mm}
@@ -428,6 +431,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 </div><div class="actions"><button id="checkCompatibility" type="button">相性を見る</button><button class="secondary" id="deleteSelected" type="button">選択中を削除</button></div><div class="result" id="compatibilityResult">相手の情報を入れると、命式ベースの相性メモを表示します。</div></section>
 
 
+<p class="screen-swipe-hint">左：宿命・アドバイス　／　右：運命（横にスワイプ）</p>
 <div class="screen-report-frame" role="region" aria-label="横長の鑑定書。左右にスクロールできます" tabindex="0">
 <article class="screen-report" id="screenReport" aria-label="宿命と運命を左右に並べた鑑定書">
 <header class="screen-head"><div><h1>四柱推命鑑定書</h1><p id="screenPerson">生年月日を入力してください</p></div><button class="screen-print" id="printScreen" type="button">印刷</button></header>
