@@ -233,6 +233,15 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 
 
 .full-reading{max-width:1180px;margin:14px auto 0}.full-reading>summary{font-size:13px;cursor:pointer;border:1px solid #bbb;padding:12px;background:#fafafa}
+.natal-star-table{width:100%;border-collapse:collapse;font-size:13px;line-height:1.5}
+.natal-star-table th,.natal-star-table td{border:1px solid #bbb;padding:6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.natal-star-table thead th,.natal-star-table tbody th{background:#f5f4f0}
+.natal-star-table tbody th{width:26%}.natal-star-table small{display:block;color:#555}
+@media print{
+ main>#natalStarAppendix.has-results{display:block!important;page:portraitReport;break-before:page}
+ #natalStarAppendix:not([open])::details-content{content-visibility:visible;height:auto}
+ .natal-star-table{font-size:8pt}.natal-star-table tr{break-inside:avoid}
+}
 .screen-report{box-sizing:border-box;width:100%;max-width:460px;height:auto;max-height:min(820px,calc(100svh - 12px));min-height:0;margin:14px auto 0;padding:9px;border:1px solid #555;background:#fff;color:#222;display:flex;flex-direction:column;font-family:"Yu Gothic",Meiryo,sans-serif;font-size:11px;line-height:1.3;scroll-margin-top:6px}
 .screen-head{display:flex;justify-content:space-between;align-items:flex-start;gap:6px;border-bottom:1px solid #333;padding-bottom:5px;margin-bottom:5px}
 .screen-head h1{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:20px;letter-spacing:.12em;margin:0 0 3px;line-height:1.2}
@@ -373,6 +382,13 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 <p class="reading-footnote">命式に基づく占術上の読み解きです。未来の出来事や相手の気持ち、健康状態を断定するものではありません。</p>
 </section>
 
+<details class="full-reading" id="natalStarAppendix">
+<summary>特殊星・神殺の一覧（34項目）</summary>
+<p class="note" id="natalStarStatus">生年月日を入力すると判定します。</p>
+<div id="natalStarTable"></div>
+<p class="note">神殺は伝統的な鑑定の補助項目です。吉神・凶神の区分は添付資料に合わせています。採用した照合条件は各行で確認できます。</p>
+<p class="note">判定資料：<a href="https://www.asahi-net.or.jp/~LV2K-SGW/4cyu/keisantables.html">吉凶神殺星の対応表</a>、<a href="https://sityuu.com/hosi14/">妨害殺・禄馬貴人</a>、<a href="https://zh.wikisource.org/wiki/淵海子平">『淵海子平』論日刃</a>、<a href="https://www3.kannet.ne.jp/~snk/ippo_index/e/index_c.html">桃花殺・淫欲殺</a>。</p>
+</details>
 <details class="full-reading" id="fullReading"><summary>月運・時間帯・詳しい鑑定を見る</summary>
 
 <div class="report-toolbar"><div><b>縦に読める、四柱推命鑑定書</b><span>スマホの縦画面で、そのまま読める鑑定書です。</span></div><div class="report-view-buttons"><button class="secondary" id="reportFit" type="button" aria-pressed="false">横一枚で見る</button><button class="secondary" id="reportRead" type="button" aria-pressed="true">縦で読む</button><button id="printReport" type="button">印刷・PDF保存</button></div></div>
@@ -445,7 +461,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 <div class="term"><b><a class="term-link" href="./glossary.html#%E6%97%BA%E7%9B%B8%E6%AD%BB%E5%9B%9A%E4%BC%91">旺相休囚死</a></b><span id="seasonState">未算出</span><p class="note" id="seasonStateNote"></p></div>
 <div class="term"><b>干合・支合・冲・刑</b><span id="relations">未算出</span><p class="note">四柱間の作用を表示します。</p></div>
 <div class="term"><b>天中殺・宿命中殺</b><span id="tenchuNote">未算出</span><p class="note" id="tenchuDetail"></p></div>
-<div class="term"><b><a class="term-link" href="./glossary.html#%E5%90%89%E5%87%B6%E7%A5%9E%E6%AE%BA%E6%98%9F">吉凶神殺星</a></b><span id="shinsatsu">未算出</span><p class="note">羊刃・天乙貴人などを簡易表示します。</p></div>
+<div class="term"><b><a class="term-link" href="./glossary.html#%E5%90%89%E5%87%B6%E7%A5%9E%E6%AE%BA%E6%98%9F">吉凶神殺星</a></b><span id="shinsatsu">未算出</span><p class="note">照合条件と該当する柱は「特殊星・神殺の一覧」で確認できます。</p></div>
 <div class="term"><b>律音・納音・八専</b><span id="ritsunon">未算出</span><p class="note" id="ritsunonNote"></p></div>
 <div class="term"><b>八相局・宿命大半会</b><span id="advancedTerms">未算出</span><p class="note">一部は算命学寄りの用語として注記します。</p></div>
 <div class="term"><b><a class="term-link" href="./glossary.html#%E7%95%B0%E5%B8%B8%E5%B9%B2%E6%94%AF">異常干支</a></b><span id="abnormal">未算出</span><p class="note">該当干支がある場合に表示します。</p></div>
@@ -559,7 +575,7 @@ function luckTables(c){
  }
  $("yearLuckTable").innerHTML=yrows;labelDataTable("daiunTable");labelDataTable("yearLuckTable");
 }
-function setAdvanced(c){const ps=[c.pillars.hour,c.pillars.day,c.pillars.month,c.pillars.year].filter(Boolean),texts=ps.map(p=>p.text),brs=ps.map(p=>p.branch);const insight=natalInsights(c);$("strength").textContent=insight.strength+(insight.partial?"（時柱未入力・暫定）":"");$("strengthNote").textContent=insight.strengthReason+"通根："+(insight.roots.map(p=>p.name+p.branch+"［"+p.stems.join("・")+"］").join("、")||"同五行の根なし")+"。合化や調候などを含む精密判定は行っていません。";$("kakyoku").textContent=simplePattern(c);$("kakyokuNote").textContent="月支蔵干の通変星を中心に見る簡易格局です。精密には透干、月令、寒暖燥湿を合わせます。";const climate=climateReading(c);$("guardian").textContent="調候候補 "+climate.candidates;$("guardianNote").textContent=climate.reason+"『窮通宝鑑』系の参考候補です。";$("seasonState").textContent=Object.entries(seasonalElementStates(c)).map(([e,state])=>e+"＝"+state).join("・");$("seasonStateNote").textContent="旺相休囚死は季節に対する五行の勢いを見る判断です。";$("relations").textContent=relation(ps);$("tenchuNote").textContent=c.tenchu;$("tenchuDetail").textContent=`生年中殺・生月中殺・生日中殺は天中殺支と各柱支の接触で確認。日居天中殺は該当干支を別途確認します。`;const abnormal=["甲戌","乙亥","丙戌","丁亥","戊戌","己亥","庚子","辛亥","壬子","癸亥"]; $("abnormal").textContent=texts.filter(x=>abnormal.includes(x)).join("・")||"目立つ該当なし";$("shinsatsu").textContent="羊刃・天乙貴人などは詳細ロジック拡張対象";$("ritsunon").textContent=insight.repeats.length?"命式内の律音："+insight.repeats.join("、"):"命式内の律音：該当なし";$("ritsunonNote").textContent="八専干支は壬子から癸亥までの特定干支群を確認します。";$("advancedTerms").textContent="宿命大半会："+(extendedNatal(c).daihankai.join("、")||"該当なし");}
+function setAdvanced(c){const ps=[c.pillars.hour,c.pillars.day,c.pillars.month,c.pillars.year].filter(Boolean),texts=ps.map(p=>p.text),brs=ps.map(p=>p.branch);const insight=natalInsights(c);$("strength").textContent=insight.strength+(insight.partial?"（時柱未入力・暫定）":"");$("strengthNote").textContent=insight.strengthReason+"通根："+(insight.roots.map(p=>p.name+p.branch+"［"+p.stems.join("・")+"］").join("、")||"同五行の根なし")+"。合化や調候などを含む精密判定は行っていません。";$("kakyoku").textContent=simplePattern(c);$("kakyokuNote").textContent="月支蔵干の通変星を中心に見る簡易格局です。精密には透干、月令、寒暖燥湿を合わせます。";const climate=climateReading(c);$("guardian").textContent="調候候補 "+climate.candidates;$("guardianNote").textContent=climate.reason+"『窮通宝鑑』系の参考候補です。";$("seasonState").textContent=Object.entries(seasonalElementStates(c)).map(([e,state])=>e+"＝"+state).join("・");$("seasonStateNote").textContent="旺相休囚死は季節に対する五行の勢いを見る判断です。";$("relations").textContent=relation(ps);$("tenchuNote").textContent=c.tenchu;$("tenchuDetail").textContent=`生年中殺・生月中殺・生日中殺は天中殺支と各柱支の接触で確認。日居天中殺は該当干支を別途確認します。`;const abnormal=["甲戌","乙亥","丙戌","丁亥","戊戌","己亥","庚子","辛亥","壬子","癸亥"]; $("abnormal").textContent=texts.filter(x=>abnormal.includes(x)).join("・")||"目立つ該当なし";$("ritsunon").textContent=insight.repeats.length?"命式内の律音："+insight.repeats.join("、"):"命式内の律音：該当なし";$("ritsunonNote").textContent="八専干支は壬子から癸亥までの特定干支群を確認します。";$("advancedTerms").textContent="宿命大半会："+(extendedNatal(c).daihankai.join("、")||"該当なし");}
 function termCard(t,plain,reading){return `<div class="card"><p><b>${t}</b><br><span class="note">意味：${plain}</span><br>この命式では：${reading}</p></div>`}
 function renderRequestedSections(c){const ps=[["時柱",c.pillars.hour],["日柱",c.pillars.day],["月柱",c.pillars.month],["年柱",c.pillars.year]].filter(x=>x[1]);const texts=ps.map(x=>x[1].text),brs=ps.map(x=>x[1].branch),stemList=ps.map(x=>x[1].stem);$("starDetailCards").innerHTML=ps.map(([name,p])=>termCard(name,"柱は人生の担当領域です。年は家系、月は社会、日は本人と夫婦、時は晩年や子ども縁を見ます。",`干支は <strong>${p.text}</strong>、蔵干は <strong>${p.hidden}</strong>、通変星は <strong>${p.stemStar||"日主"}</strong>、蔵干通変星は <strong>${p.hiddenStar}</strong>、十二運星は <strong>${p.twelve}</strong>。`)).join("")+termCard("日支蔵干","日支は内面・配偶者宮・安心感の癖を読む場所です。ここを間違えると鑑定の芯がずれます。",`日支${c.day.branch}の蔵干は <strong>${c.pillars.day.hidden}</strong>、蔵干通変星は <strong>${c.pillars.day.hiddenStar}</strong>。`);
 const stemComb=[["甲","己","甲己干合"],["乙","庚","乙庚干合"],["丙","辛","丙辛干合"],["丁","壬","丁壬干合"],["戊","癸","戊癸干合"]].filter(([a,b])=>stemList.includes(a)&&stemList.includes(b)).map(x=>x[2]);
@@ -708,7 +724,78 @@ function renderNatalInsights(c){
  $("natalInsightDetails").textContent="【天中殺の採用方式】六甲空亡の二支を基準に、年・月・日・時間の該当する二支だけを対象とします。日干の陰陽による前後への拡張はしません。年は立春、月は節入り、時刻は日本標準時の十二支で区切ります。生日中殺は年柱の天中殺と日支、日座中殺は日柱の甲戌・乙亥を確認。宿命大半会は年・月・日の二柱が同干で、異なる支が同じ三合組に属する場合。干合・支合は四柱間の所定の二干・二支の組、方合は寅卯辰・巳午未・申酉戌・亥子丑の三支が全てそろう場合に表示します。合化成立までは判定していません。生月中殺・生年中殺は日柱から求めた天中殺の支と月支・年支を照合します。律音は同じ干支が命式の複数の柱にあるかを確認します（歳運・大運との律音はここには含めません）。通根は日干と同じ五行が地支の蔵干にあるかを確認します。【身強・身弱】"+v.strengthReason+"判定は"+v.strength+tail+"。日干と同じ五行または日干を生じる五行を支えとし、地支は月支を除く3支、天干は日干を除く3干を数えます。極身強は得令かつ強める地支・天干が各2つ以上。極身弱は得令なしで弱める地支・天干が各2つ以上。身強は得令と地支または天干の支えがそろう場合、もしくは地支・天干の両方に支えがあり合計3つ以上の場合です。残りは身弱とします。運勢エネルギーの合計は別の指標です。";
 }
 
+// 対応表の並びは日干が甲〜癸、月支・年支・日支が子〜亥。
+const NATAL_STAR_RULES=[
+ ["天徳貴神","吉神","月支","巳庚丁申壬辛亥甲癸寅丙乙","支援や困難の緩和"],
+ ["月徳貴神","吉神","月支","壬庚丙甲壬庚丙甲壬庚丙甲","支援や困難の緩和"],
+ ["天徳合","吉神","月支","申乙壬巳丁丙寅己戊亥辛庚","天徳と合う干支から見る協力の縁"],
+ ["月徳合","吉神","月支","丁乙辛己丁乙辛己丁乙辛己","月徳と合う天干から見る協力の縁"],
+ ["華蓋","","月支","辰丑戌未辰丑戌未辰丑戌未","学問・芸術・精神的な探究"],
+ ["天乙貴神","吉神","日干","丑未 子申 酉亥 酉亥 丑未 子申 丑未 丑午 卯巳 卯巳","援助を受ける縁"],
+ ["大極貴神","吉神","日干","子午 子午 酉卯 酉卯 丑辰未戌 丑辰未戌 寅亥 寅亥 巳申 巳申","困難なときの助力"],
+ ["文昌貴神","吉神","日干","巳午申酉申酉亥子寅卯","学び・文章・表現"],
+ ["福星貴神","吉神","日干","寅丑寅酉申未午巳辰丑","引き立てや機会"],
+ ["天厨貴神","吉神","日干","巳辰巳午巳酉亥子寅卯","衣食住や生活の豊かさ"],
+ ["金与禄","吉神","日干","辰巳未申未申戌亥丑寅","身近な人の支えや生活の基盤"],
+ ["紅艶","","日干","午申寅未辰辰戌酉子申","愛嬌や人を引きつける魅力"],
+ ["羊刃","凶神","日干","卯辰午未午未酉戌子丑","勢いの強さと力の使い方"],
+ ["飛刃","凶神","日干","酉戌子丑子丑卯辰午未","反応の鋭さや衝突への注意"],
+ ["魁罡","","日柱","戊戌 庚戌 庚辰 壬辰","決断力や個性の強さ"],
+ ["駅馬","","年支・日支","寅亥申巳寅亥申巳寅亥申巳","移動・転居・環境の変化"],
+ ["劫殺","凶神","年支・日支","巳寅亥申巳寅亥申巳寅亥申","外部からの変化への対応"],
+ ["咸池","凶神","年支・日支","酉午卯子酉午卯子酉午卯子","社交性や親密な関係の距離感"],
+ ["亡神","","年支・日支","亥申巳寅亥申巳寅亥申巳寅","機転や集中の向け方"],
+ ["禄馬貴人","吉神","日柱","壬午 癸巳","受け継いだ支えや生活の基盤"],
+ ["天官貴人","吉神","日干","未丑寅酉戌卯亥申寅午","役割や引き立ての機会"],
+ ["暗禄","吉神","日干","亥戌申未申未巳辰寅丑","表に見えにくい支援"],
+ ["十干禄","吉神","日干","寅卯巳午巳午申酉亥子","建禄に当たる支。自立や役割の基盤"],
+ ["寡宿","","年支・日支","戌戌丑丑丑辰辰辰未未未戌","自分の時間と身近な関係の距離感"],
+ ["血刃","凶神","年支・日支","戌酉申未午巳辰卯寅丑子亥","危険を伴う場面で慎重さを意識する象意"],
+ ["白虎","凶神","年支・日支","申酉戌亥子丑寅卯辰巳午未","緊張や予期しにくい変化への注意"],
+ ["妨害殺","凶神","日柱","乙卯 乙酉 己卯 己酉 戊子 戊午 辛酉 壬子 壬午 癸巳","親密な関係での行き違い"],
+ ["日刃","凶神","日柱","丙午 戊午 壬子","日柱に表れる強い意志や対人での力加減"],
+ ["桃花殺","","四支","子午卯酉","対人魅力や関係の広がり"],
+ ["淫欲殺","凶神","日柱","甲寅 乙卯 己未 丁巳 庚申 辛卯 戊戌 癸丑","親密な関係での距離感や感情の扱い"],
+ ["囚獄","凶神","年支・日支","午卯子酉午卯子酉午卯子酉","制約やルールとの関わり"],
+ ["流霞殺","","日干","酉戌未申巳午辰卯亥寅","交流の場での節度やペース配分"],
+ ["隔角","","年支・日支","卯卯午午午酉酉酉子子子卯","生地を離れることや遠方との縁"],
+ ["孤辰","","年支・日支","寅寅巳巳巳申申申亥亥亥寅","一人の時間や自分の裁量"]
+];
+function natalStarResult(c,pillars,base,table){
+ if(base==="日柱"){
+  const match=table.split(" ").includes(c.day.text);
+  return {matches:match?["日柱「"+c.day.text+"」"]:[],reason:"日柱を "+table.replaceAll(" ","・")+" と照合"};
+ }
+ if(base==="四支"){
+  const match=[...table].every(branch=>pillars.some(([,p])=>p.branch===branch));
+  return {matches:match?pillars.map(([key,p])=>PILLAR_NAMES[key]+"「"+p.branch+"」"):[],reason:"年・月・日・時支に子・午・卯・酉がそろう"};
+ }
+ const checks=base==="日干"?[["日干",c.day.stem]]:base==="月支"?[["月支",c.month.branch]]:[["年支",c.year.branch],["日支",c.day.branch]];
+ const row=table.includes(" ")?table.split(" "):[...table];
+ const matches=new Set(),reasons=[];
+ for(const [label,value] of checks){
+  const targets=row[(label==="日干"?S:B).indexOf(value)];
+  reasons.push(label+"「"+value+"」→ "+[...targets].join("・"));
+  for(const [key,p] of pillars){
+   const name=PILLAR_NAMES[key];
+   if(base==="年支・日支"&&name.startsWith(label[0]))continue;
+   if(targets.includes(p.stem))matches.add(name+"・天干「"+p.stem+"」");
+   if(targets.includes(p.branch))matches.add(name+"・地支「"+p.branch+"」");
+  }
+ }
+ return {matches:[...matches],reason:reasons.join(" ／ ")};
+}
+function renderNatalStars(c){
+ const pillars=Object.keys(PILLAR_NAMES).filter(key=>c.pillars[key]).map(key=>[key,c.pillars[key]]);
+ const readings=NATAL_STAR_RULES.map(([name,kind,base,table,meaning])=>({name,kind,meaning,...natalStarResult(c,pillars,base,table)}));
+ const found=readings.filter(r=>r.matches.length);
+ $("shinsatsu").textContent=found.map(r=>r.name).join("・")||"該当なし";
+ $("natalStarAppendix").classList?.add("has-results");
+ $("natalStarStatus").textContent="該当 "+found.length+"／"+readings.length+"項目"+(c.pillars.hour?"":"（時柱未入力・暫定）");
+ $("natalStarTable").innerHTML=`<table class="natal-star-table"><thead><tr><th scope="col">特殊星</th><th scope="col">該当する柱・判定根拠</th></tr></thead><tbody>${readings.map(r=>`<tr><th scope="row">${r.name}${r.kind?"<small>"+r.kind+"</small>":""}</th><td><strong>${r.matches.join(" ／ ")||"該当なし"}</strong><small>${r.reason}</small><small>${r.meaning}</small></td></tr>`).join("")}</tbody></table>`;
+}
 function renderReportExtras(c,r){
+ renderNatalStars(c);
  renderComprehensiveReading(c);
  renderScreenReport(c,r);
  renderNatalInsights(c);
@@ -717,6 +804,7 @@ function renderReportExtras(c,r){
  renderEnergyGuidance(c);renderManualMemo(r.memo);
 }
 function clearReport(){
+ $("natalStarTable").innerHTML="";$("natalStarStatus").textContent="生年月日を入力すると判定します。";$("natalStarAppendix").classList?.remove("has-results");$("shinsatsu").textContent="未算出";
  $("comprehensiveSections").innerHTML="";$("readingCharCount").textContent="約1,000文字・9項目";$("readingBasis").textContent="生年月日を入力すると、9項目の鑑定文を表示します。";
  $("screenPerson").textContent="生年月日を入力してください";$("screenContent").innerHTML='<p class="screen-empty">情報を入力すると、この一枚に鑑定結果を表示します。</p>';
  $("monthLuckTable").innerHTML="";$("hourLuckTable").innerHTML="";$("monthLuckSummary").textContent="生年月日を入力すると表示します。";$("hourLuckSummary").textContent="生年月日を入力すると表示します。";scheduleReportView();
@@ -880,7 +968,7 @@ function renderScreenReport(c,r){
  const root=n.roots.map(p=>p.branch).join("・");
  const combinations=[["大半会",x.daihankai],["半会",x.halfCombinations],["三合会局",x.threeHarmonies],["冲（対冲）",x.clashes],["干合",x.stemCombines],["支合",x.branchCombines],["方合",x.directions],["律音",n.repeats],["納音",x.nacchin]].map(([label,pairs])=>`<div><dt>${label}</dt><dd>${pairs.join("、")||"該当なし"}</dd></div>`).join("");
  const [virtue,virtueCombine]=monthlyVirtues(c),climate=climateReading(c);
- const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>年柱の天中殺 ${x.yearVoid}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span><span>通根 ${root||"なし"}</span><span class="screen-pattern">格局（簡易） ${simplePattern(c)}</span><dl class="screen-combinations">${combinations}<div><dt>月徳</dt><dd>${virtue}</dd></div><div><dt>月徳合</dt><dd>${virtueCombine}</dd></div><div><dt>調候候補</dt><dd>${climate.candidates}（${c.day.stem}日・${c.month.branch}月）</dd></div></dl></div></section>`;
+ const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>年柱の天中殺 ${x.yearVoid}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span><span>通根 ${root||"なし"}</span><span class="screen-pattern">格局（簡易） ${simplePattern(c)}</span><dl class="screen-combinations">${combinations}<div><dt>月徳</dt><dd>${virtue}</dd></div><div><dt>月徳合</dt><dd>${virtueCombine}</dd></div><div><dt>調候候補</dt><dd>${climate.candidates}（${c.day.stem}日・${c.month.branch}月）</dd></div></dl><span class="screen-pattern">特殊星・神殺 ${$("shinsatsu").textContent}</span></div></section>`;
  const seasonStates=seasonalElementStates(c);
  const elementRows=Object.entries(counts).map(([e,count])=>{const m=ELEMENT_MATCH[e],a=symbolicAdjustment(c,e);return `<tr><th style="color:${m.ink}">${e} ${count}</th><td>${seasonStates[e]}</td><td>${m.color}／${m.taste}<br><span class="element-body">${m.bodyShort}</span></td><td>${a.text}</td><td>${m.food}${a.mark==="↑"?"（少量の候補）":a.mark==="↓"?"（偏りを控える）":"（適量）"}</td></tr>`}).join("");
  const advice=energy.total>=26?{strength:"自ら動き、仲間を巻き込む力。",care:"予定や役割を抱え込みすぎない。",action:"テーマを絞り、任せる役割と休む時間を決める。"}:energy.total>=15?{strength:"人や環境に合わせ、積み上げる力。",care:"周囲に合わせすぎず、自分の軸を持つ。",action:"良い仲間・習慣を選び、小さな挑戦を続ける。"}:{strength:"細かく感じ取り、深く磨く力。",care:"予定を詰め込みすぎず、自分のペースで。",action:"安心できる仲間と、集中・回復できる時間を作る。"};
