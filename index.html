@@ -439,6 +439,21 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
  .screen-elements table{font-size:10px}
  .screen-advice>p{font-size:12px}
 }
+
+/* 横長の紙面を縮小して端まで表示し、縦画面は一列で読む。 */
+.screen-report-stage{position:relative;margin:0 auto}
+.screen-report{transform-origin:top left}
+@media screen and (min-width:651px){
+ .screen-report{width:1080px;max-width:none}
+}
+@media screen and (max-width:650px){
+ .screen-report-stage{width:100%;height:auto}
+ .screen-report{width:100%;max-width:none;transform:none}
+}
+@media print{
+ .screen-report-frame .screen-report-stage{width:100%!important;height:auto!important}
+ .screen-report-frame .screen-report{width:100%!important;transform:none!important}
+}
 </style>
 </head>
 <body>
@@ -461,11 +476,11 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 </div><div class="actions"><button id="checkCompatibility" type="button">相性を見る</button><button class="secondary" id="deleteSelected" type="button">選択中を削除</button></div><div class="result" id="compatibilityResult">相手の情報を入れると、命式ベースの相性メモを表示します。</div></section>
 
 
-<div class="screen-report-frame" role="region" aria-label="宿命と運命の鑑定書">
-<article class="screen-report" id="screenReport" aria-label="宿命と運命を左右に並べた鑑定書">
+<div class="screen-report-frame" id="screenReportFrame" role="region" aria-label="宿命と運命の鑑定書">
+<div class="screen-report-stage" id="screenReportStage"><article class="screen-report" id="screenReport" aria-label="宿命と運命を左右に並べた鑑定書">
 <header class="screen-head"><div><h1>四柱推命鑑定書</h1><p id="screenPerson">生年月日を入力してください</p></div><button class="screen-print" id="printScreen" type="button">印刷</button></header>
 <div class="screen-content" id="screenContent"><p class="screen-empty">情報を入力して「鑑定に反映」を押すと、この一枚に命式・運勢・アドバイスを表示します。</p></div>
-</article></div>
+</article></div></div>
 
 <section class="comprehensive-reading" id="comprehensiveReading" aria-label="九項目の総合鑑定">
 <header class="comprehensive-heading"><div><h2>総合鑑定</h2><p>命式から読む、持ち味とこれからの活かし方</p></div><span id="readingCharCount">約1,000文字・9項目</span></header>
@@ -1089,14 +1104,22 @@ $("printScreen").onclick=()=>{if(build(current()))window.print()};
 
 
 function fitCompactScreen(){
- const panel=$("screenReport"),content=$("screenContent");
- if(!panel?.getBoundingClientRect||!content?.getBoundingClientRect)return;
+ const panel=$("screenReport"),stage=$("screenReportStage"),frame=$("screenReportFrame");
+ if(!panel?.style||!stage?.style||!frame)return;
  panel.setAttribute("data-density","normal");
- const over=()=>content.getBoundingClientRect().bottom>panel.getBoundingClientRect().bottom-6||panel.scrollHeight>panel.clientHeight+2;
- if(over())panel.setAttribute("data-density","compact");
- if(over())panel.setAttribute("data-density","dense");
+ if(window.matchMedia?.("(max-width:650px)").matches){
+  panel.style.width="100%";panel.style.transform="none";
+  stage.style.width="100%";stage.style.height="auto";
+  return;
+ }
+ const naturalWidth=1080;
+ panel.style.width=naturalWidth+"px";
+ const scale=Math.min(1,Math.max(1,frame.clientWidth)/naturalWidth);
+ panel.style.transform="scale("+scale+")";
+ stage.style.width=Math.round(naturalWidth*scale)+"px";
+ stage.style.height=Math.ceil(panel.offsetHeight*scale)+"px";
 }
-function scheduleCompactScreen(){if(typeof requestAnimationFrame==="function")requestAnimationFrame(fitCompactScreen);}
+function scheduleCompactScreen(){if(typeof requestAnimationFrame==="function")requestAnimationFrame(fitCompactScreen);else fitCompactScreen();}
 window.addEventListener?.("resize",scheduleCompactScreen);
 window.visualViewport?.addEventListener?.("resize",scheduleCompactScreen);
 
