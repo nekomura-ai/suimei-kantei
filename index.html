@@ -263,6 +263,8 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 .screen-month-luck td span{display:inline-block;margin-inline-start:.25em;white-space:nowrap}
 .screen-month-luck h2 small{display:block;font-size:.8em;font-weight:400}
 .screen-twins>section:nth-child(n+2) h2{white-space:nowrap;letter-spacing:-.04em}
+.screen-year-luck th:first-child{width:26%}
+.screen-year-luck th:nth-child(2){width:20%}
 .screen-twins>section:last-child th:first-child{width:43%}
 .screen-twins>section:last-child th:nth-child(2){width:20%}
 @media print{.screen-month-luck td span{margin-inline-start:.4em}}
@@ -568,10 +570,10 @@ function luckTables(c){
  $("daiunTable").innerHTML=rows;
  const now=Number(new Intl.DateTimeFormat("en",{timeZone:"Asia/Tokyo",year:"numeric"}).format(new Date()));
  const themes={比肩:"自分の軸・独立心",劫財:"仲間・協力と分担",食神:"楽しみ・表現・育成",傷官:"感性・技術・見直し",偏財:"交流・ご縁の広がり",正財:"信用・日々の積み重ね",偏官:"行動・責任・挑戦",正官:"役割・信頼・秩序",偏印:"発想・研究・学び直し",印綬:"学び・知識・支え"};
- let yrows="<tr><th>年</th><th>干支</th><th>通変星</th><th>運気</th><th>天中殺</th><th>テーマ</th></tr>";
+ let yrows="<tr><th>年</th><th>干支</th><th>通変星</th><th>運気</th><th>天中殺</th><th>十二運</th><th>テーマ</th></tr>";
  for(let y=now-2;y<=now+9;y++){
  const g=gz(y-1984),st=star(c.day.stem,g.stem),ten=isTenchu(c,g.branch),mark=luckMark(c,g);
- yrows+=`<tr${ten?' class="year-tenchu"':""}><td>${y}</td><td>${g.text}</td><td>${st}</td><td>${mark}</td><td>${ten?"天中殺":"—"}</td><td>${ten?"準備・勉強・貢献":themes[st]}</td></tr>`;
+ yrows+=`<tr${ten?' class="year-tenchu"':""}><td>${y}</td><td>${g.text}</td><td>${st}</td><td>${mark}</td><td>${ten?"天中殺":"—"}</td><td>${TW[c.day.stem][g.branch]}</td><td>${ten?"準備・勉強・貢献":themes[st]}</td></tr>`;
  }
  $("yearLuckTable").innerHTML=yrows;labelDataTable("daiunTable");labelDataTable("yearLuckTable");
 }
@@ -877,7 +879,7 @@ function simplePattern(c){
  const {hidden,hiddenStar}=c.pillars.month;
  return `${hiddenStar}格傾向（月支「${c.month.branch}」の蔵干「${hidden}」）`;
 }
-function monthlyStars(c,pillar){
+function periodStars(c,pillar){
  return star(c.day.stem,pillar.stem)+"・"+TW[c.day.stem][pillar.branch];
 }
 const MONTHLY_HARMS=["子未","丑午","寅巳","卯辰","申亥","酉戌"];
@@ -920,7 +922,7 @@ function renderTimingGuide(c){
   const branch=p.pillar.branch,{mark,tenchu,details}=monthlyBranchLuck(c,branch),current=now>=p.start.ms&&now<p.end.ms;
   const labels=[`<strong>${mark}</strong>`,...details];
   if(tenchu)labels.push("<strong>天中殺</strong>");
-  return `<tr class="${tenchu?"tenchu-period":""} ${current?"current-period":""}"><td>${p.month===1?"翌":""}${p.month}月期</td><td>${formatSetsu(p.start.ms)}〜<br>${formatSetsu(p.end.ms)}</td><td>${p.pillar.text}</td><td>${monthlyStars(c,p.pillar)}</td><td>${labels.join(" ／ ")}</td></tr>`;
+  return `<tr class="${tenchu?"tenchu-period":""} ${current?"current-period":""}"><td>${p.month===1?"翌":""}${p.month}月期</td><td>${formatSetsu(p.start.ms)}〜<br>${formatSetsu(p.end.ms)}</td><td>${p.pillar.text}</td><td>${periodStars(c,p.pillar)}</td><td>${labels.join(" ／ ")}</td></tr>`;
  }).join("");
  labelDataTable("monthLuckTable");
  }
@@ -963,8 +965,8 @@ function renderScreenReport(c,r){
  const keys=[["hour","時柱"],["day","日柱"],["month","月柱"],["year","年柱"]];
  const chartRows=[["天干",p=>pillarCharacter(p.stem)],["地支",p=>pillarCharacter(p.branch)],["蔵干",p=>p.hidden],["通変星",p=>p.stemStar||"日主"],["蔵干星",p=>p.hiddenStar],["十二運",p=>p.twelve]];
  const chart='<table class="screen-chart"><tr><th></th>'+keys.map(k=>"<th>"+k[1]+"</th>").join("")+"</tr>"+chartRows.map(([name,get])=>"<tr><th>"+name+"</th>"+keys.map(([key])=>"<td>"+(c.pillars[key]?get(c.pillars[key]):"—")+"</td>").join("")+"</tr>").join("")+"</table>";
- let yearRows="";for(let y=year-2;y<=year+9;y++){const g=gz(y-1984),ten=isTenchu(c,g.branch);yearRows+=`<tr class="${ten?"screen-tenchu":""}"><td>${y}</td><td>${g.text}</td><td>${ten?"天中殺":luckMark(c,g)}</td></tr>`;}
- let decadeRows=info&&Math.round(info.startYears*12)>0?'<tr><td>0歳</td><td colspan="2">立運前</td></tr>':"";if(info)for(let i=0;i<DAIUN_PERIOD_COUNT;i++){const g=gz(info.base+(info.forward?1:-1)*(i+1));decadeRows+=`<tr><td>${compactLuckAge(info.startYears+10*i)}</td><td>${g.text}</td><td><strong>${luckMark(c,g).replace("○","◯")}</strong> ${isTenchu(c,g.branch)?"天中殺":star(c.day.stem,g.stem)}</td></tr>`;}
+ let yearRows="";for(let y=year-2;y<=year+9;y++){const g=gz(y-1984),ten=isTenchu(c,g.branch);yearRows+=`<tr class="${ten?"screen-tenchu":""}"><td>${y}</td><td>${g.text}</td><td>${ten?"天中殺":luckMark(c,g)}<br>${periodStars(c,g)}</td></tr>`;}
+ let decadeRows=info&&Math.round(info.startYears*12)>0?'<tr><td>0歳</td><td colspan="2">立運前</td></tr>':"";if(info)for(let i=0;i<DAIUN_PERIOD_COUNT;i++){const g=gz(info.base+(info.forward?1:-1)*(i+1));decadeRows+=`<tr><td>${compactLuckAge(info.startYears+10*i)}</td><td>${g.text}</td><td><strong>${luckMark(c,g).replace("○","◯")}</strong>${isTenchu(c,g.branch)?" 天中殺":""}<br>${periodStars(c,g)}</td></tr>`;}
  const root=n.roots.map(p=>p.branch).join("・");
  const combinations=[["大半会",x.daihankai],["半会",x.halfCombinations],["三合会局",x.threeHarmonies],["冲（対冲）",x.clashes],["干合",x.stemCombines],["支合",x.branchCombines],["方合",x.directions],["律音",n.repeats],["納音",x.nacchin]].map(([label,pairs])=>`<div><dt>${label}</dt><dd>${pairs.join("、")||"該当なし"}</dd></div>`).join("");
  const [virtue,virtueCombine]=monthlyVirtues(c),climate=climateReading(c);
@@ -979,14 +981,14 @@ function renderScreenReport(c,r){
   const {mark,tenchu,details}=monthlyBranchLuck(c,pillar.branch);
   const notes=[...details];
   if(tenchu)notes.push("天中殺");
-  return `<tr class="${tenchu?"screen-tenchu":""}"><td>${month===1?"翌":""}${month}月</td><td><strong>${mark}</strong>${notes.map(note=>`<span>${note}</span>`).join("")}<br>${monthlyStars(c,pillar)}</td></tr>`;
+  return `<tr class="${tenchu?"screen-tenchu":""}"><td>${month===1?"翌":""}${month}月</td><td><strong>${mark}</strong>${notes.map(note=>`<span>${note}</span>`).join("")}<br>${periodStars(c,pillar)}</td></tr>`;
  }).join("");
  const currentMonth=monthPeriods(year).find(p=>Date.now()>=p.start.ms&&Date.now()<p.end.ms);
  $("screenContent").innerHTML=chart+`<div class="screen-meta"><span>天中殺 <b>${c.tenchu}</b>〈二支〉</span><span>エネルギー <b>${energy.total}</b>（${energy.level}）</span><span>${n.strength}${n.partial?"（暫定）":""}</span></div>
  ${points}
  <div class="screen-twins">
  <section class="screen-month-luck"><h2>毎月の運気/天中殺<small>${monthYear}年・地支のみで計算</small></h2><table><tr><th>月期</th><th>運気・通変星・十二運</th></tr>${monthRows}</table></section>
- <section><h2>歳運 ${year-2}–${year+9}</h2><table><tr><th>年</th><th>干支</th><th>目安</th></tr>${yearRows}</table></section>
+ <section class="screen-year-luck"><h2>歳運 ${year-2}–${year+9}</h2><table><tr><th>年</th><th>干支</th><th>運気・星</th></tr>${yearRows}</table></section>
  <section><h2>大運 ${info?(info.forward?"順行":"逆行"):"性別未選択"}</h2><table><tr><th>開始</th><th>干支</th><th>運気・星</th></tr>${decadeRows||'<tr><td colspan="3">性別を選択してください</td></tr>'}</table></section></div>
  <section class="screen-elements"><h2>五行・色・味・身体対応と取り入れ方</h2><table><tr><th>五行数</th><th>旺相休囚死</th><th>色・味／身体</th><th>配色の目安</th><th>食材の例</th></tr>${elementRows}</table><p>増減は単純な五行数による色・食材選びの占術的ヒント。身体対応は伝統的分類で診断ではありません。</p></section>
  <section class="screen-advice"><h2>エネルギー ${energy.total} からのアドバイス</h2><p><b>強み</b> ${advice.strength}<br><b>注意</b> ${advice.care}<br><b>活用</b> ${advice.action}</p><p id="screenMemo" class="screen-memo"></p></section>
