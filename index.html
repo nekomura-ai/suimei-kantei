@@ -429,7 +429,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 <p class="timing-summary" id="hourLuckSummary">生年月日を入力すると表示します。</p>
 <p class="timing-note">天中殺の時間は、準備・勉強・貢献に充てる提案です。深夜は睡眠・休息を優先してください。時間帯の吉凶は成果や失敗を決めるものではありません。</p>
 <div class="timing-table-wrap"><table class="data-table" id="hourLuckTable"></table></div>
-<details class="calculation-detail"><summary>月運・時間帯ガイドの見方</summary><p class="note">天中殺は二支方式です。年は二年、月は二か月、日は十二日周期の二日、時間は二つの刻（合計四時間）を対象とし、日干の陰陽による前後の拡張はしません。</p><p class="note">毎月の運気は、巡る地支と命式の年支・月支・日支を照らし、日支・月支との支合は各＋2、年支との支合は＋1、冲は各−1、天中殺は−2とする簡易目安です。合計2点以上は◎、0〜1点は◯、−1点は△、−2点以下は×です。加減点が一つもない月には「平常」と表示します。通変星は日干と月の天干、十二運は日干と月の地支から求め、運気の採点とは別に表示します。表では日支・月支との関係を表示します。日本標準時で扱い、期間の終わりの時刻は次の月に属します。時間帯ガイドは定時法の十二支を使い、本人の天中殺の二支にあたる時間を準備・勉強・貢献向けとします。活動候補は7〜21時の天中殺以外の時間帯から、日干に対する十二運の点数が高い順に3枠を選んだ独自の簡易目安です。毎日変わる日運・時柱を精密に計算したものではありません。体調や生活リズム、現実の予定を優先して使ってください。</p><p class="note">時刻の参考：<a href="https://eco.mtk.nao.ac.jp/koyomi/wiki/BDBDC6F3BBD9.html" target="_blank" rel="noopener">国立天文台「十二支」</a></p></details>
+<details class="calculation-detail"><summary>月運・時間帯ガイドの見方</summary><p class="note">天中殺は二支方式です。年は二年、月は二か月、日は十二日周期の二日、時間は二つの刻（合計四時間）を対象とし、日干の陰陽による前後の拡張はしません。</p><p class="note">毎月の運気は、巡る地支と命式の年支・月支・日支を照らし、日支・月支との支合は各＋2、年支との支合は＋1、冲は各−1、天中殺は−2とする簡易目安です。合計2点以上は◎、0〜1点は◯、−1点は△、−2点以下は×です。加減点も表示対象の関係もない月には「平常」と表示します。日支・月支との刑・自刑・害・破は注記です。子卯や寅巳申・丑戌未の二支を刑、辰午酉亥の同支を自刑とします。月の地支と命式の地支で寅巳申または丑戌未が揃うと「三刑」と表示します。刑・自刑・三刑・害・破の加減点は0です。通変星は日干と月の天干、十二運は日干と月の地支から求め、運気の採点とは別に表示します。表では日支・月支との関係を表示します。日本標準時で扱い、期間の終わりの時刻は次の月に属します。時間帯ガイドは定時法の十二支を使い、本人の天中殺の二支にあたる時間を準備・勉強・貢献向けとします。活動候補は7〜21時の天中殺以外の時間帯から、日干に対する十二運の点数が高い順に3枠を選んだ独自の簡易目安です。毎日変わる日運・時柱を精密に計算したものではありません。体調や生活リズム、現実の予定を優先して使ってください。</p><p class="note">時刻の参考：<a href="https://eco.mtk.nao.ac.jp/koyomi/wiki/BDBDC6F3BBD9.html" target="_blank" rel="noopener">国立天文台「十二支」</a></p></details>
 </section>
 
 <div class="copy" id="essenceCopy">生年月日を入力すると<span class="red">命式が自動生成</span>されます</div>
@@ -748,16 +748,28 @@ function simplePattern(c){
 function monthlyStars(c,pillar){
  return star(c.day.stem,pillar.stem)+"・"+TW[c.day.stem][pillar.branch];
 }
+const MONTHLY_HARMS=["子未","丑午","寅巳","卯辰","申亥","酉戌"];
+const MONTHLY_BREAKS=["子酉","丑辰","寅亥","卯午","巳申","未戌"];
+const MONTHLY_PUNISHMENT_GROUPS=["寅巳申","丑戌未"];
 function monthlyBranchLuck(c,branch){
  const relations=[["日支",c.day.branch,2],["月支",c.month.branch,2],["年支",c.year.branch,1]].map(([label,natal,weight])=>{
   const pair=relation([{branch:natal},{branch}]);
   const kind=pair.endsWith("支合")?"支合":pair.endsWith("冲")?"冲":"";
-  return {points:kind==="支合"?weight:kind==="冲"?-1:0,description:kind?`${label}「${natal}」と${kind}`:""};
+  const matches=pairs=>natal!==branch&&pairs.some(pair=>pair.includes(natal)&&pair.includes(branch));
+  const labels=kind?[kind]:[];
+  if(natal===branch&&"辰午酉亥".includes(branch))labels.push("自刑");
+  if(matches(["子卯",...MONTHLY_PUNISHMENT_GROUPS]))labels.push("刑");
+  if(matches(MONTHLY_HARMS))labels.push("害");
+  if(matches(MONTHLY_BREAKS))labels.push("破");
+  return {points:kind==="支合"?weight:kind==="冲"?-1:0,description:labels.length?`${label}「${natal}」と${labels.join("・")}`:""};
  });
  const tenchu=isTenchu(c,branch);
  const score=relations.reduce((total,r)=>total+r.points,0)-2*Number(tenchu);
  const details=relations.slice(0,2).map(r=>r.description).filter(Boolean);
- if(!tenchu&&relations.every(r=>r.points===0))details.push("平常");
+ const natalBranches=Object.values(c.pillars).filter(Boolean).map(p=>p.branch);
+ const completedGroup=MONTHLY_PUNISHMENT_GROUPS.find(group=>group.includes(branch)&&[...group].every(b=>b===branch||natalBranches.includes(b)));
+ if(completedGroup)details.push("三刑（"+[...completedGroup].join("・")+"）");
+ if(!tenchu&&!details.length&&relations.every(r=>r.points===0))details.push("平常");
  return {mark:score>=2?"◎":score>=0?"◯":score===-1?"△":"×",tenchu,details};
 }
 const HOUR_WINDOWS=B.map((branch,i)=>({branch,start:i===0?23:i*2-1,end:i===0?1:i*2+1,label:i===0?"23:00〜翌01:00":String(i*2-1).padStart(2,"0")+":00〜"+String(i*2+1).padStart(2,"0")+":00"}));
