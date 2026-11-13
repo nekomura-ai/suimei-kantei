@@ -259,9 +259,10 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 @media print{.screen-month-luck td span{margin-inline-start:.4em}}
 .screen-points{display:flex;flex-wrap:wrap;gap:1px .8em;font-size:8px;line-height:1.4;border:1px solid #aaa;border-top:0;padding:4px 3px;overflow-wrap:anywhere}
 .screen-points span{white-space:nowrap}
-.screen-combinations{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:1px .8em;flex-basis:100%;margin:2px 0 0;padding-top:2px;border-top:1px solid #ddd}
-.screen-combinations dt{font-weight:700}
-.screen-combinations dd{margin:0;white-space:pre-line}
+.screen-combinations{display:flex;flex-wrap:wrap;gap:1px .8em;flex-basis:100%;margin:2px 0 0;padding-top:2px;border-top:1px solid #ddd}
+.screen-combinations>div{max-width:100%}
+.screen-combinations dt,.screen-combinations dd{display:inline;margin:0}
+.screen-combinations dt{font-weight:700;margin-inline-end:.35em}
 .report-insights .report-combination{white-space:pre-line}
 .screen-elements table{font-size:9px}.screen-elements table th:first-child{width:14%}.screen-elements table th:nth-child(2){width:22%}
 .screen-elements>p{font-size:8px;line-height:1.35;margin:3px 0 0;color:#555}
@@ -784,7 +785,7 @@ function renderScreenReport(c,r){
  let yearRows="";for(let y=year-2;y<=year+9;y++){const g=gz(y-1984),ten=isTenchu(c,g.branch);yearRows+=`<tr class="${ten?"screen-tenchu":""}"><td>${y}</td><td>${g.text}</td><td>${ten?"天中殺":luckMark(c,g)}</td></tr>`;}
  let decadeRows=info&&Math.round(info.startYears*12)>0?'<tr><td>0歳</td><td colspan="2">立運前</td></tr>':"";if(info)for(let i=0;i<DAIUN_PERIOD_COUNT;i++){const g=gz(info.base+(info.forward?1:-1)*(i+1));decadeRows+=`<tr><td>${compactLuckAge(info.startYears+10*i)}</td><td>${g.text}</td><td><strong>${luckMark(c,g).replace("○","◯")}</strong> ${isTenchu(c,g.branch)?"天中殺":star(c.day.stem,g.stem)}</td></tr>`;}
  const root=n.roots.map(p=>p.branch).join("・");
- const combinations=[["大半会",x.daihankai],["干合",x.stemCombines],["支合",x.branchCombines],["方合",x.directions],["律音",n.repeats],["納音",x.nacchin]].map(([label,pairs])=>`<dt>${label}</dt><dd>${pairs.join("\n")||"該当なし"}</dd>`).join("");
+ const combinations=[["大半会",x.daihankai],["干合",x.stemCombines],["支合",x.branchCombines],["方合",x.directions],["律音",n.repeats],["納音",x.nacchin]].map(([label,pairs])=>`<div><dt>${label}</dt><dd>${pairs.join("、")||"該当なし"}</dd></div>`).join("");
  const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>年柱の天中殺 ${x.yearVoid}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span><span>通根 ${root||"なし"}</span><dl class="screen-combinations">${combinations}</dl></div></section>`;
  const elementRows=Object.entries(counts).map(([e,count])=>{const m=ELEMENT_MATCH[e],a=symbolicAdjustment(c,e);return `<tr><th style="color:${m.ink}">${e} ${count}</th><td>${m.color}／${m.taste}<br><span class="element-body">${m.bodyShort}</span></td><td>${a.text}</td><td>${m.food}${a.mark==="↑"?"（少量の候補）":a.mark==="↓"?"（偏りを控える）":"（適量）"}</td></tr>`}).join("");
  const advice=energy.total>=26?{strength:"自ら動き、仲間を巻き込む力。",care:"予定や役割を抱え込みすぎない。",action:"テーマを絞り、任せる役割と休む時間を決める。"}:energy.total>=15?{strength:"人や環境に合わせ、積み上げる力。",care:"周囲に合わせすぎず、自分の軸を持つ。",action:"良い仲間・習慣を選び、小さな挑戦を続ける。"}:{strength:"細かく感じ取り、深く磨く力。",care:"予定を詰め込みすぎず、自分のペースで。",action:"安心できる仲間と、集中・回復できる時間を作る。"};
