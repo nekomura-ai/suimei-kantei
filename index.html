@@ -457,6 +457,8 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 
 /* 鑑定書は左右の余白まで使う。 */
 .screen-report-frame{max-width:none}
+
+.screen-points .screen-exclusions{display:inline-flex;gap:.8em;max-width:100%}
 </style>
 </head>
 <body>
@@ -1072,13 +1074,13 @@ function renderScreenReport(c,r){
  $("screenPerson").textContent=(r.name?r.name+" 様 ／ ":"")+r.date.replaceAll("-","/")+(r.time?" "+r.time:"")+" ／ "+(r.gender||"性別未選択");
  const keys=[["hour","時柱"],["day","日柱"],["month","月柱"],["year","年柱"]];
  const chartRows=[["天干",p=>pillarCharacter(p.stem)],["地支",p=>pillarCharacter(p.branch)],["蔵干",p=>p.hidden],["通変星",p=>p.stemStar||"日主"],["蔵干星",p=>p.hiddenStar],["十二運",p=>p.twelve]];
- const chart='<table class="screen-chart"><tr><th></th>'+keys.map(k=>"<th>"+k[1]+"</th>").join("")+"</tr>"+chartRows.map(([name,get])=>"<tr><th>"+name+"</th>"+keys.map(([key])=>"<td>"+(c.pillars[key]?get(c.pillars[key]):"—")+"</td>").join("")+"</tr>").join("")+"</table>";
+ const chart='<table class="screen-chart"><tr><th>宿命</th>'+keys.map(k=>"<th>"+k[1]+"</th>").join("")+"</tr>"+chartRows.map(([name,get])=>"<tr><th>"+name+"</th>"+keys.map(([key])=>"<td>"+(c.pillars[key]?get(c.pillars[key]):"—")+"</td>").join("")+"</tr>").join("")+"</table>";
  let yearRows="";for(let y=year-2;y<=year+9;y++){const g=gz(y-1984),ten=isTenchu(c,g.branch);yearRows+=`<tr class="${ten?"screen-tenchu":""}"><td>${y}</td><td>${g.text}</td><td>${ten?"天中殺":luckMark(c,g)} ${periodStars(c,g)}</td></tr>`;}
  let decadeRows=info&&Math.round(info.startYears*12)>0?'<tr><td>0歳</td><td colspan="2">立運前</td></tr>':"";if(info)for(let i=0;i<DAIUN_PERIOD_COUNT;i++){const g=gz(info.base+(info.forward?1:-1)*(i+1));decadeRows+=`<tr><td>${compactLuckAge(info.startYears+10*i)}</td><td>${g.text}</td><td><strong>${luckMark(c,g).replace("○","◯")}</strong>${isTenchu(c,g.branch)?" 天中殺":""} ${periodStars(c,g)}</td></tr>`;}
  const root=n.roots.map(p=>p.branch).join("・");
  const combinations=[["大半会",x.daihankai],["半会",x.halfCombinations],["三合会局",x.threeHarmonies],["冲（対冲）",x.clashes],["干合",x.stemCombines],["支合",x.branchCombines],["方合",x.directions],["律音",n.repeats],["納音",x.nacchin]].map(([label,pairs])=>`<div><dt>${label}</dt><dd>${pairs.join("、")||"該当なし"}</dd></div>`).join("");
  const [virtue,virtueCombine]=monthlyVirtues(c),climate=climateReading(c);
- const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>年柱の天中殺 ${x.yearVoid}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span><span>通根 ${root||"なし"}</span><span class="screen-pattern">格局（簡易） ${simplePattern(c)}</span><dl class="screen-combinations">${combinations}<div><dt>月徳</dt><dd>${virtue}</dd></div><div><dt>月徳合</dt><dd>${virtueCombine}</dd></div><div><dt>調候候補</dt><dd>${climate.candidates}（${c.day.stem}日・${c.month.branch}月）</dd></div></dl><span class="screen-pattern">特殊星・神殺 ${$("shinsatsu").textContent}</span></div></section>`;
+ const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span class="screen-exclusions"><span>生日中殺 ${yes(x.dayExclusion)}</span><span>年柱の天中殺 ${x.yearVoid}</span></span><span>日座中殺 ${yes(x.seated)}</span><span>通根 ${root||"なし"}</span><span class="screen-pattern">格局（簡易） ${simplePattern(c)}</span><dl class="screen-combinations">${combinations}<div><dt>月徳</dt><dd>${virtue}</dd></div><div><dt>月徳合</dt><dd>${virtueCombine}</dd></div><div><dt>調候候補</dt><dd>${climate.candidates}（${c.day.stem}日・${c.month.branch}月）</dd></div></dl><span class="screen-pattern">特殊星・神殺 ${$("shinsatsu").textContent}</span></div></section>`;
  const seasonStates=seasonalElementStates(c);
  const elementRows=Object.entries(counts).map(([e,count])=>{const m=ELEMENT_MATCH[e],a=symbolicAdjustment(c,e);return `<tr><th style="color:${m.ink}">${e} ${count}</th><td>${seasonStates[e]}</td><td>${m.color}／${m.taste}<br><span class="element-body">${m.bodyShort}</span></td><td>${a.text}</td><td>${m.food}${a.mark==="↑"?"（少量の候補）":a.mark==="↓"?"（偏りを控える）":"（適量）"}</td></tr>`}).join("");
  const advice=energy.total>=26?{strength:"自ら動き、仲間を巻き込む力。",care:"予定や役割を抱え込みすぎない。",action:"テーマを絞り、任せる役割と休む時間を決める。"}:energy.total>=15?{strength:"人や環境に合わせ、積み上げる力。",care:"周囲に合わせすぎず、自分の軸を持つ。",action:"良い仲間・習慣を選び、小さな挑戦を続ける。"}:{strength:"細かく感じ取り、深く磨く力。",care:"予定を詰め込みすぎず、自分のペースで。",action:"安心できる仲間と、集中・回復できる時間を作る。"};
@@ -1092,7 +1094,7 @@ function renderScreenReport(c,r){
   return `<tr class="${tenchu?"screen-tenchu":""}"><td>${month===1?"翌":""}${month}月</td><td><strong>${mark}</strong>${notes.map(note=>`<span>${note}</span>`).join("")} ${periodStars(c,pillar)}</td></tr>`;
  }).join("");
  const currentMonth=monthPeriods(year).find(p=>Date.now()>=p.start.ms&&Date.now()<p.end.ms);
- $("screenContent").innerHTML=`<div class="screen-natal"><h2 class="screen-half-title">宿命・持ち味</h2>`+chart+`<div class="screen-meta"><span>天中殺 <b>${c.tenchu}</b>〈二支〉</span><span>エネルギー <b>${energy.total}</b>（${energy.level}）</span><span>${n.strength}${n.partial?"（暫定）":""}</span></div>
+ $("screenContent").innerHTML=`<div class="screen-natal">`+chart+`<div class="screen-meta"><span>天中殺 <b>${c.tenchu}</b>〈二支〉</span><span>エネルギー <b>${energy.total}</b>（${energy.level}）</span><span>${n.strength}${n.partial?"（暫定）":""}</span></div>
  ${points}
  <section class="screen-elements"><h2>五行・色・味・身体対応と取り入れ方</h2><table><tr><th>五行数</th><th>旺相休囚死</th><th>色・味／身体</th><th>配色の目安</th><th>食材の例</th></tr>${elementRows}</table><p>増減は単純な五行数による色・食材選びの占術的ヒント。身体対応は伝統的分類で診断ではありません。</p></section>
  <section class="screen-advice"><h2>エネルギー ${energy.total} からのアドバイス</h2><p><b>強み</b> ${advice.strength}<br><b>注意</b> ${advice.care}<br><b>活用</b> ${advice.action}</p><p id="screenMemo" class="screen-memo"></p></section>
