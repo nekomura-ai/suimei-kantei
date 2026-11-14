@@ -255,7 +255,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 .screen-chart th:first-child{width:17%}
 .screen-report h2{font-size:10px;line-height:1.3;letter-spacing:0;margin:0;background:#f5f4f0;border:1px solid #aaa;border-bottom:0;padding:3px 5px}
 .screen-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:3px;font-size:9px;border-top:1px solid #777;border-bottom:1px solid #777;padding:3px 0}
-.screen-meta b{font-size:12px}.screen-twins{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr) minmax(0,1.2fr);gap:6px;flex:1;min-height:min-content}
+.screen-meta b{font-size:12px}.screen-void-pair{display:inline-flex;align-items:baseline;gap:.7em;white-space:nowrap}.screen-twins{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr) minmax(0,1.2fr);gap:6px;flex:1;min-height:min-content}
 .screen-twins section{min-width:0}.screen-twins table{font-size:9px}.screen-twins th,.screen-twins td{height:12px;padding:1px}
 .screen-tenchu td{background:#f8f0de;font-weight:700}
 .screen-month-luck th:first-child{width:26%;white-space:nowrap}
@@ -1101,7 +1101,7 @@ function renderScreenReport(c,r){
  const combinations=[["大半会〈算命学〉",x.daihankai],["半会",x.halfCombinations],["三合会局",x.threeHarmonies],["冲（対冲）",x.clashes],["干合",x.stemCombines],["支合",x.branchCombines],["方合",x.directions],["律音",n.repeats],["納音",x.nacchin]].map(([label,pairs])=>`<div><dt>${label}</dt><dd>${pairs.join("、")||"該当なし"}</dd></div>`).join("");
  const [virtue,virtueCombine]=monthlyVirtues(c),climate=climateReading(c);
  const activeStars=natalStarReadings(c).filter(r=>r.matches.length);
- const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span class="screen-exclusions"><span>生日中殺 ${yes(x.dayExclusion)}</span><span>年柱の天中殺 ${x.yearVoid}</span></span><span>日座中殺 ${yes(x.seated)}</span><span>通根 ${root||"なし"}</span><span class="screen-pattern">格局（簡易） ${simplePattern(c)}</span><dl class="screen-combinations">${combinations}<div><dt>月徳</dt><dd>${virtue}</dd></div><div><dt>月徳合</dt><dd>${virtueCombine}</dd></div><div><dt>調候候補</dt><dd>${climate.candidates}（${c.day.stem}日・${c.month.branch}月）</dd></div></dl><div class="screen-star-guide"><b>特殊星・神殺の読み方</b><div class="screen-star-list">${activeStars.map(r=>`<span><strong>${r.name}</strong>：${r.meaning}</span>`).join("")||"該当なし"}</div><small>命式を読む補助のヒントです。星の名前だけで吉凶は決まりません。</small></div></div></section>`;
+ const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span><span>通根 ${root||"なし"}</span><span class="screen-pattern">格局（簡易） ${simplePattern(c)}</span><dl class="screen-combinations">${combinations}<div><dt>月徳</dt><dd>${virtue}</dd></div><div><dt>月徳合</dt><dd>${virtueCombine}</dd></div><div><dt>調候候補</dt><dd>${climate.candidates}（${c.day.stem}日・${c.month.branch}月）</dd></div></dl><div class="screen-star-guide"><b>特殊星・神殺の読み方</b><div class="screen-star-list">${activeStars.map(r=>`<span><strong>${r.name}</strong>：${r.meaning}</span>`).join("")||"該当なし"}</div><small>命式を読む補助のヒントです。星の名前だけで吉凶は決まりません。</small></div></div></section>`;
  const seasonStates=seasonalElementStates(c);
  const elementRows=Object.entries(counts).map(([e,count])=>{const m=ELEMENT_MATCH[e],a=symbolicAdjustment(c,e);return `<tr><th style="color:${m.ink}">${e} ${count}</th><td>${seasonStates[e]}</td><td>${m.color}／${m.taste} <span class="element-body">${m.bodyShort}</span></td><td>${a.text}</td><td>${m.food}${a.mark==="↑"?"（少量の候補）":a.mark==="↓"?"（偏りを控える）":"（適量）"}</td></tr>`}).join("");
  const seasonRelation=n.seasonText==="月支の五行が日干と同じ"?"季節の後押しがあります":n.seasonText==="月支の五行が日干を生じる"?"季節から支えを受けます":"月支の季節は日干を直接は支えません";
@@ -1116,7 +1116,7 @@ function renderScreenReport(c,r){
   return `<tr class="${tenchu?"screen-tenchu":""}"><td>${month===1?"翌":""}${month}月</td><td><strong>${mark}</strong>${notes.map(note=>`<span>${note}</span>`).join("")} ${periodStars(c,pillar)}</td></tr>`;
  }).join("");
  const currentMonth=monthPeriods(year).find(p=>Date.now()>=p.start.ms&&Date.now()<p.end.ms);
- $("screenContent").innerHTML=`<div class="screen-natal">`+chart+`<div class="screen-meta"><span>天中殺 <b>${c.tenchu}</b>〈二支〉</span><span>エネルギー <b>${energy.total}</b>（${energy.level}）</span><span>${n.strength}${n.partial?"（暫定）":""}</span></div>
+ $("screenContent").innerHTML=`<div class="screen-natal">`+chart+`<div class="screen-meta"><span class="screen-void-pair"><span>日柱の天中殺 <b>${c.tenchu}</b>〈二支〉</span><span>年柱の天中殺 <b>${x.yearVoid}</b>〈二支〉</span></span><span>エネルギー <b>${energy.total}</b>（${energy.level}）</span><span>${n.strength}${n.partial?"（暫定）":""}</span></div>
  ${points}
  <section class="screen-elements"><h2>五行・色・味・身体対応と取り入れ方</h2><table><tr><th>五行数</th><th>旺相休囚死</th><th>色・味／身体</th><th>配色の目安</th><th>食材の例</th></tr>${elementRows}</table><p>増減は単純な五行数による色・食材選びの占術的ヒント。身体対応は伝統的分類で診断ではありません。</p></section>
  <footer class="screen-timing"><p>活動候補 ${active}時 ／ 天中殺 ${quiet}時</p><p>${currentMonth?"今月 "+currentMonth.pillar.text+" ／ ":""}天中殺は準備・勉強・貢献。深夜は休息を優先。</p><small>天中殺：二支方式（前後拡張なし）。占術上の目安で、五行から病気は判定しません。</small></footer></div>
