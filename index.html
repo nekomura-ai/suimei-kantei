@@ -356,8 +356,8 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 @media(max-width:600px){.screen-swipe-hint{display:block}}
 .screen-report-frame{width:100%;max-width:1100px;margin:14px auto 0;overflow-x:auto;overscroll-behavior-x:contain}
 .screen-report{width:1080px;max-width:none;height:auto;max-height:none;min-height:0;margin:0;padding:16px 18px;display:block;font-size:12px;line-height:1.45}
-.screen-head{padding-bottom:8px;margin-bottom:8px}
-.screen-head h1{font-size:27px}.screen-head p{font-size:12px}.screen-print{font-size:11px;padding:6px 10px}
+.screen-head{padding-bottom:8px;margin-bottom:8px;align-items:center;gap:14px}
+.screen-head h1{font-size:27px;margin:0;flex:none;white-space:nowrap}.screen-head p{font-size:12px;text-align:right;margin-left:auto;max-width:55%;line-height:1.4}.screen-print{font-size:11px;padding:6px 10px;flex:none}
 .screen-content{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,1fr);gap:16px;align-items:start}
 .screen-natal,.screen-fate{min-width:0;display:flex;flex-direction:column;gap:7px}
 .screen-report .screen-half-title{font-size:15px;letter-spacing:.08em;padding:5px 8px;border:1px solid #777;background:#eee}
@@ -428,6 +428,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 }
 @media screen and (max-width:650px){
  .screen-report{padding:12px 10px}
+ .screen-head{gap:6px}.screen-head h1{font-size:clamp(16px,4.4vw,20px);letter-spacing:.02em}.screen-head p{font-size:9px;max-width:none}.screen-print{font-size:9px;padding:4px 5px}
  .screen-content{display:flex;flex-direction:column;gap:14px}
  .screen-natal,.screen-fate{width:100%}
  .screen-report .screen-half-title{font-size:15px}
@@ -500,7 +501,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 
 <div class="screen-report-frame" id="screenReportFrame" role="region" aria-label="宿命と運命の鑑定書">
 <div class="screen-report-stage" id="screenReportStage"><article class="screen-report" id="screenReport" aria-label="宿命と運命を左右に並べた鑑定書">
-<header class="screen-head"><div><h1>四柱推命鑑定書</h1><p id="screenPerson">生年月日を入力してください</p></div><button class="screen-print" id="printScreen" type="button">印刷</button></header>
+<header class="screen-head"><h1>四柱推命鑑定書</h1><p id="screenPerson">生年月日を入力してください</p><button class="screen-print" id="printScreen" type="button">印刷</button></header>
 <div class="screen-content" id="screenContent"><p class="screen-empty">情報を入力して「鑑定に反映」を押すと、この一枚に命式・運勢・アドバイスを表示します。</p></div>
 </article></div></div>
 
