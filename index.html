@@ -8,7 +8,7 @@
 :root{--ink:#222;--muted:#666;--blue:#1680d3;--red:#b93425;--soft:#f7f7f7}
 *{box-sizing:border-box}body{margin:0;background:#fff;color:var(--ink);font-family:"Yu Gothic",Meiryo,sans-serif}
 main{width:min(900px,100% - 28px);margin:auto;padding:22px 0 70px}.system{border:1px solid #ddd;background:#fafafa;padding:14px;margin-bottom:18px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.full{grid-column:1/-1}label{display:grid;gap:5px;font-size:12px;font-weight:700;color:#666}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.birth-time-field>span{display:block;margin-bottom:5px;font-size:12px;font-weight:700;color:#666}.birth-time-controls{display:flex;gap:7px}.birth-time-controls select{width:50%;min-width:0}.birth-time-controls select:disabled{color:#888;background:#f5f5f5}.full{grid-column:1/-1}label{display:grid;gap:5px;font-size:12px;font-weight:700;color:#666}
 input,select,textarea{font:inherit;padding:10px;border:1px solid #ccc;background:#fff}textarea{min-height:78px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 button{background:#222;color:#fff;border:0;padding:10px 13px;font-weight:700}.secondary{background:#fff;color:#222;border:1px solid #222}
 .result{border-left:3px solid #222;background:var(--soft);padding:10px;margin-top:10px;line-height:1.7}.saved-item{display:block;width:100%;text-align:left;margin:7px 0;padding:10px;border:1px solid #ccc;background:#fff;color:#222}
@@ -485,7 +485,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 <label>名前<input id="clientName" placeholder="例：山田太郎"></label>
 <label>性別<select id="clientGender"><option value="" selected>未選択</option><option>男性</option><option>女性</option><option>その他</option></select></label>
 <label>生年月日<input id="birthDate" type="date"></label>
-<label>出生時刻<input id="birthTime" type="time"></label>
+<div class="birth-time-field"><span>出生時刻</span><div class="birth-time-controls"><select id="birthHour" aria-label="出生時刻の時"><option value="">不明</option></select><select id="birthMinute" aria-label="出生時刻の分" disabled></select><input id="birthTime" type="hidden"></div></div>
 <label class="full">出生地（都道府県選択）<select id="birthPlace"><option value="" selected>都道府県を選択</option></select></label>
 <label class="full">鑑定メモ<textarea id="readingMemo" placeholder="相談内容、メモ、次回見るポイント"></textarea></label>
 </div><div class="actions"><button id="applyReading" type="button">鑑定に反映</button><button id="saveReading" type="button">保存</button><button class="secondary" id="clearForm" type="button">入力を戻す</button></div><div id="savedReadings"></div><div class="result" id="systemNotice">生年月日を入力すると命式表と解説が連動します。</div></section>
@@ -610,6 +610,26 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 const $=id=>document.getElementById(id),storageKey="suimei-reading-records";let selectedId=null;
 const PREFS=[['北海道',25],['青森県',23],['岩手県',25],['宮城県',23],['秋田県',20],['山形県',21],['福島県',22],['茨城県',22],['栃木県',20],['群馬県',16],['埼玉県',19],['千葉県',20],['東京都',19],['神奈川県',19],['新潟県',16],['富山県',9],['石川県',7],['福井県',5],['山梨県',14],['長野県',13],['岐阜県',7],['静岡県',14],['愛知県',8],['三重県',6],['滋賀県',3],['京都府',3],['大阪府',2],['兵庫県',0],['奈良県',3],['和歌山県',1],['鳥取県',-3],['島根県',-8],['岡山県',-4],['広島県',-10],['山口県',-14],['徳島県',-2],['香川県',-4],['愛媛県',-9],['高知県',-6],['福岡県',-18],['佐賀県',-19],['長崎県',-21],['熊本県',-17],['大分県',-14],['宮崎県',-14],['鹿児島県',-18],['沖縄県',-29]];
 function addPrefs(id){PREFS.forEach(([n,v])=>{const o=document.createElement("option");o.value=`${n} 時差${v>0?"+":""}${v}分`;o.textContent=o.value;$(id).appendChild(o)})}addPrefs("birthPlace");addPrefs("partnerPlace");
+function setBirthTimeControls(time=""){
+ const match=/^(\d{2}):(\d{2})$/.exec(time);
+ const hour=match?match[1]:"";
+ $("birthHour").value=hour;
+ $("birthMinute").disabled=!hour;
+ $("birthMinute").value=match?match[2]:"00";
+ $("birthTime").value=hour?hour+":"+$("birthMinute").value:"";
+}
+function initBirthTimeControls(){
+ for(let h=0;h<24;h++){const option=document.createElement("option");option.value=String(h).padStart(2,"0");option.textContent=option.value+"時";$("birthHour").appendChild(option)}
+ for(let m=0;m<60;m++){const option=document.createElement("option");option.value=String(m).padStart(2,"0");option.textContent=option.value+"分";$("birthMinute").appendChild(option)}
+ setBirthTimeControls();
+ for(const id of ["birthHour","birthMinute"])$(id).addEventListener("change",()=>{
+  const hour=$("birthHour").value;
+  $("birthMinute").disabled=!hour;
+  $("birthTime").value=hour?hour+":"+$("birthMinute").value:"";
+  applyReading();
+ });
+}
+initBirthTimeControls();
 const S=["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"],B=["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
 const EP={甲:["木","+"],乙:["木","-"],丙:["火","+"],丁:["火","-"],戊:["土","+"],己:["土","-"],庚:["金","+"],辛:["金","-"],壬:["水","+"],癸:["水","-"],子:["水","+"],丑:["土","-"],寅:["木","+"],卯:["木","-"],辰:["土","+"],巳:["火","-"],午:["火","+"],未:["土","-"],申:["金","+"],酉:["金","-"],戌:["土","+"],亥:["水","-"]};
 const MAKE={木:"火",火:"土",土:"金",金:"水",水:"木"},CUT={木:"土",火:"金",土:"水",金:"木",水:"火"};
@@ -1194,7 +1214,7 @@ function renderComprehensiveReading(c){
  $("comprehensiveSections").innerHTML=rows.map((r,i)=>`<section class="reading-topic"><h3><span>${String(i+1).padStart(2,"0")}</span>${r.title}</h3><p>${r.text}</p></section>`).join("");
 }
 
-function records(){try{return JSON.parse(localStorage.getItem(storageKey)||"[]")}catch{return[]}}function saveRecords(v){localStorage.setItem(storageKey,JSON.stringify(v))}function renderSaved(){const box=$("savedReadings");box.innerHTML="";const list=records();if(!list.length){box.innerHTML="<p>保存された鑑定はまだありません。</p>";return}list.forEach(r=>{const b=document.createElement("button");b.className="saved-item";b.type="button";b.textContent=`${r.name||"無記名"} 様 / ${fmt(r.date)} ${r.time||""}`;b.onclick=()=>{selectedId=r.id;$("clientName").value=r.name||"";$("clientGender").value=r.gender||"";$("birthDate").value=r.date||"";$("birthTime").value=r.time||"";$("birthPlace").value=r.place||"";$("readingMemo").value=r.memo||"";applyReading();renderSaved()};box.appendChild(b)})}function saveReading(){const r=current(),next=records().filter(x=>x.id!==r.id);next.unshift(r);saveRecords(next.slice(0,20));selectedId=r.id;renderSaved();$("systemNotice").textContent="鑑定結果とメモを保存しました。"}function resetForm(){selectedId=null;["clientName","birthDate","birthTime","birthPlace","readingMemo","partnerName","partnerDate","partnerTime","partnerPlace"].forEach(id=>$(id).value="");$("clientGender").value="";$("partnerGender").value="未指定";applyReading();renderSaved()}function deleteSelected(){if(!selectedId)return;saveRecords(records().filter(x=>x.id!==selectedId));selectedId=null;renderSaved()}function compatibilityAdvice(){const r=current(),c=build(r),p=$("partnerName").value.trim()||"相手",pd=$("partnerDate").value,pp=$("partnerPlace").value;$("compatibilityResult").innerHTML=c?`<b>${r.name||"あなた"}さん × ${p}さん</b><br>${p}さんは${pd?fmt(pd)+"生まれ":"生年月日未入力"}${pp?`・${pp}`:""}。<br>${r.name||"あなた"}さんは日干${c.day.stem}・月支${c.month.branch}。相性では、相手が安心して話せる余白を作るほど安定します。`:"まず本人の生年月日を入力してください。"}
+function records(){try{return JSON.parse(localStorage.getItem(storageKey)||"[]")}catch{return[]}}function saveRecords(v){localStorage.setItem(storageKey,JSON.stringify(v))}function renderSaved(){const box=$("savedReadings");box.innerHTML="";const list=records();if(!list.length){box.innerHTML="<p>保存された鑑定はまだありません。</p>";return}list.forEach(r=>{const b=document.createElement("button");b.className="saved-item";b.type="button";b.textContent=`${r.name||"無記名"} 様 / ${fmt(r.date)} ${r.time||""}`;b.onclick=()=>{selectedId=r.id;$("clientName").value=r.name||"";$("clientGender").value=r.gender||"";$("birthDate").value=r.date||"";setBirthTimeControls(r.time||"");$("birthPlace").value=r.place||"";$("readingMemo").value=r.memo||"";applyReading();renderSaved()};box.appendChild(b)})}function saveReading(){const r=current(),next=records().filter(x=>x.id!==r.id);next.unshift(r);saveRecords(next.slice(0,20));selectedId=r.id;renderSaved();$("systemNotice").textContent="鑑定結果とメモを保存しました。"}function resetForm(){selectedId=null;["clientName","birthDate","birthTime","birthPlace","readingMemo","partnerName","partnerDate","partnerTime","partnerPlace"].forEach(id=>$(id).value="");$("clientGender").value="";$("partnerGender").value="未指定";setBirthTimeControls();applyReading();renderSaved()}function deleteSelected(){if(!selectedId)return;saveRecords(records().filter(x=>x.id!==selectedId));selectedId=null;renderSaved()}function compatibilityAdvice(){const r=current(),c=build(r),p=$("partnerName").value.trim()||"相手",pd=$("partnerDate").value,pp=$("partnerPlace").value;$("compatibilityResult").innerHTML=c?`<b>${r.name||"あなた"}さん × ${p}さん</b><br>${p}さんは${pd?fmt(pd)+"生まれ":"生年月日未入力"}${pp?`・${pp}`:""}。<br>${r.name||"あなた"}さんは日干${c.day.stem}・月支${c.month.branch}。相性では、相手が安心して話せる余白を作るほど安定します。`:"まず本人の生年月日を入力してください。"}
 ["clientName","clientGender","birthDate","birthTime","birthPlace"].forEach(id=>["input","change"].forEach(ev=>$(id).addEventListener(ev,applyReading)));$("applyReading").onclick=()=>{applyReading();if(build(current()))$("screenReport").scrollIntoView?.({behavior:"instant",block:"start"})};$("saveReading").onclick=saveReading;$("clearForm").onclick=resetForm;$("deleteSelected").onclick=deleteSelected;$("checkCompatibility").onclick=compatibilityAdvice;renderSaved();applyReading();
 </script>
 </body>
