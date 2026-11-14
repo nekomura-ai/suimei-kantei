@@ -258,7 +258,9 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 .screen-meta b{font-size:12px}.screen-void-pair{display:inline-flex;align-items:baseline;gap:.7em;white-space:nowrap}.screen-twins{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr) minmax(0,1.2fr);gap:6px;flex:1;min-height:min-content}
 .screen-twins section{min-width:0}.screen-twins table{font-size:9px}.screen-twins th,.screen-twins td{height:12px;padding:1px}
 .screen-tenchu td{background:#f8f0de;font-weight:700}
-.screen-month-luck th:first-child{width:26%;white-space:nowrap}
+.screen-month-luck th:first-child{width:12%;white-space:nowrap}.screen-month-luck td:first-child{white-space:nowrap}
+.screen-year-tabs{display:flex;gap:4px;margin:4px 0}.screen-year-tabs button{flex:1;border:1px solid #aaa;background:#fff;color:#222;padding:2px 4px;font-size:10px;line-height:1.3}.screen-year-tabs button[aria-pressed="true"]{background:#e9e5da;border-color:#777;font-weight:700}
+@media print{.screen-year-tabs{display:none}}
 .screen-month-luck td:last-child{text-align:left}
 .screen-month-luck td span{display:inline-block;margin-inline-start:.25em;white-space:nowrap}
 .screen-month-luck h2 small{display:block;font-size:.8em;font-weight:400}
@@ -1150,11 +1152,12 @@ function renderScreenReport(c,r){
  <section class="screen-elements"><h2>五行・色・味・身体対応と取り入れ方</h2><table><tr><th>五行数</th><th>旺相休囚死</th><th>色・味／身体</th><th>配色の目安</th><th>食材の例</th></tr>${elementRows}</table></section>
  <footer class="screen-timing"><p>活動候補 ${active}時 ／ 天中殺 ${quiet}時</p><p>${currentMonth?"今月 "+currentMonth.pillar.text+" ／ ":""}天中殺は準備・勉強・貢献。深夜は休息を優先。</p><small>天中殺：二支方式（前後拡張なし）。占術上の目安で、五行から病気は判定しません。</small></footer></div>
  <div class="screen-fate"><section class="screen-advice screen-natal-advice"><h2>命式全体からのアドバイス</h2><p>${natalAdvice}</p><p id="screenMemo" class="screen-memo"></p></section><div class="screen-twins">
- <section class="screen-month-luck"><h2>毎月の運気/天中殺<small>${monthYear}年・地支のみで計算</small></h2><table><tr><th>月期</th><th>運気・通変星・十二運</th></tr>${monthRows}</table></section>
+ <section class="screen-month-luck"><h2>毎月の運気/天中殺<small>${monthYear}年・地支のみで計算</small></h2><div class="screen-year-tabs" role="group" aria-label="月運の年を切り替える">${[year,year+1,year+2].map((y,i)=>`<button type="button" data-month-year="${y}" aria-pressed="${monthYear===y}">${i===0?"今年":i===1?"来年":"再来年"} ${y}</button>`).join("")}</div><table><tr><th>月期</th><th>運気・通変星・十二運</th></tr>${monthRows}</table></section>
  <section class="screen-year-luck"><h2>歳運 ${year-2}–${year+9}</h2><table><tr><th>年</th><th>干支</th><th>運気・星</th></tr>${yearRows}</table></section>
  <section><h2>大運 ${info?(info.forward?"順行":"逆行"):"性別未選択"}</h2><table><tr><th>開始</th><th>干支</th><th>運気・星</th></tr>${decadeRows||'<tr><td colspan="3">性別を選択してください</td></tr>'}</table></section></div></div>`;
  $("screenMemo").textContent=r.memo?"メモ："+r.memo:"";scheduleCompactScreen();
 }
+$("screenContent").addEventListener("click",event=>{const button=event.target.closest?.("[data-month-year]");if(!button||!$("screenContent").contains(button))return;$("luckYear").value=button.dataset.monthYear;const r=current(),c=build(r);if(c){renderTimingGuide(c);renderScreenReport(c,r);}});
 $("printScreen").onclick=()=>{if(build(current()))window.print()};
 
 
