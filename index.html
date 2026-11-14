@@ -1092,7 +1092,7 @@ function symbolicAdjustment(c,e){const v=elementOverview(c),n=v.counts[e],max=Ma
 function compactLuckAge(years){const months=Math.round(years*12);return Math.floor(months/12)+"歳"+(months%12?months%12+"か月":"")}
 function renderScreenReport(c,r){
  const n=natalInsights(c),x=extendedNatal(c),energy=energySummary(c),counts=elementCounts(c),info=daiunInfo(c),year=currentJstYear(),yes=b=>b?"あり":"なし";
- $("screenPerson").textContent=(r.name?r.name+" 様 ／ ":"")+r.date.replaceAll("-","/")+(r.time?" "+r.time:"")+" ／ "+(r.gender||"性別未選択");
+ $("screenPerson").textContent=(r.name?r.name+" 様 ／ ":"")+r.date.replaceAll("-","/")+(r.time?" "+r.time:"")+(r.place?" ／ "+r.place:"")+" ／ "+(r.gender||"性別未選択");
  const keys=[["hour","時柱"],["day","日柱"],["month","月柱"],["year","年柱"]];
  const chartRows=[["天干",p=>pillarCharacter(p.stem)],["地支",p=>pillarCharacter(p.branch)],["蔵干",p=>p.hidden],["通変星",p=>p.stemStar||"日主"],["蔵干星",p=>p.hiddenStar],["十二運",p=>p.twelve]];
  const chart='<table class="screen-chart"><tr><th>宿命</th>'+keys.map(k=>"<th>"+k[1]+"</th>").join("")+"</tr>"+chartRows.map(([name,get])=>"<tr><th>"+name+"</th>"+keys.map(([key])=>"<td>"+(c.pillars[key]?get(c.pillars[key]):"—")+"</td>").join("")+"</tr>").join("")+"</table>";
