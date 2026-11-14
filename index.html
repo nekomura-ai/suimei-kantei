@@ -362,12 +362,12 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 .screen-content{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,1fr);gap:16px;align-items:start}
 .screen-natal,.screen-fate{min-width:0;display:flex;flex-direction:column;gap:7px}
 .screen-report .screen-half-title{font-size:15px;letter-spacing:.08em;padding:5px 8px;border:1px solid #777;background:#eee}
-.screen-chart{font-size:14px}.screen-report th,.screen-report td{padding:3px 4px;line-height:1.4}
+.screen-chart{font-size:12px}.screen-report th,.screen-report td{padding:3px 4px;line-height:1.4}
 .screen-report th{font-size:11px}.screen-report h2{font-size:13px;padding:5px 7px}
 .screen-meta{font-size:11px;gap:5px;padding:5px 0}.screen-meta b{font-size:15px}
 .screen-points{font-size:10px;line-height:1.55;padding:6px;gap:3px .8em}
 .screen-elements table{font-size:10px}.screen-elements .element-body{font-size:9px}
-.screen-elements>p{font-size:9px}.screen-advice>p{font-size:12px;line-height:1.6;margin:6px}
+.screen-elements>p{font-size:9px}.screen-advice>p{font-size:11px;line-height:1.5;margin:6px}
 .screen-advice b{width:31px}.screen-natal-advice>p{font-size:11px;line-height:1.45;margin:4px 7px}.screen-natal-advice .screen-memo{max-height:none;overflow:visible;font-size:10px}.screen-timing{font-size:10px}.screen-timing small{font-size:9px}
 .screen-twins{display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:none}
 .screen-twins section{min-width:0}.screen-twins table{font-size:11px}
@@ -384,7 +384,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 .screen-report[data-density="compact"] .screen-twins table,.screen-report[data-density="dense"] .screen-twins table{font-size:11px}
 .screen-report[data-density="compact"] .screen-twins td,.screen-report[data-density="compact"] .screen-twins th,.screen-report[data-density="dense"] .screen-twins td,.screen-report[data-density="dense"] .screen-twins th{height:auto}
 .screen-report[data-density="compact"] .screen-points,.screen-report[data-density="dense"] .screen-points{font-size:10px;line-height:1.55;padding:6px}
-.screen-report[data-density="compact"] .screen-advice>p,.screen-report[data-density="dense"] .screen-advice>p{font-size:12px;line-height:1.6;margin:6px}
+.screen-report[data-density="compact"] .screen-advice>p,.screen-report[data-density="dense"] .screen-advice>p{font-size:11px;line-height:1.5;margin:6px}
 .screen-report[data-density="compact"] h2,.screen-report[data-density="dense"] h2{font-size:13px;padding:5px 7px}
 @media(max-width:600px){.screen-report-frame{margin:10px 0}.screen-report{width:1080px}}
 @page landscapeReport{size:A4 landscape;margin:8mm}
@@ -413,7 +413,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 
 /* 画面幅を超えない鑑定書。横画面は左右、縦画面は読み順に並べる。 */
 .screen-report-frame{overflow-x:visible;max-width:1100px}
-.screen-report{width:100%;max-width:1100px}
+.screen-report{width:100%;max-width:1100px;aspect-ratio:297 / 210}
 @media screen and (max-width:900px){
  .screen-report{padding:12px}
  .screen-content{gap:10px}
@@ -428,7 +428,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
  .screen-advice>p{font-size:11px}
 }
 @media screen and (max-width:650px){
- .screen-report{padding:12px 10px}
+ .screen-report{padding:12px 10px;aspect-ratio:auto}
  .screen-head{gap:6px}.screen-head h1{font-size:clamp(16px,4.4vw,20px);letter-spacing:.02em}.screen-head p{font-size:9px;max-width:none}.screen-print{font-size:9px;padding:4px 5px}
  .screen-content{display:flex;flex-direction:column;gap:14px}
  .screen-natal,.screen-fate{width:100%}
@@ -464,12 +464,12 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 
 .screen-star-guide{flex-basis:100%;border-top:1px solid #ddd;margin-top:3px;padding-top:5px;white-space:normal}
 .screen-star-guide>b{font-size:10px}
-.screen-star-list{display:flex;flex-wrap:wrap;gap:1px .8em;margin:2px 0;font-size:8.5px;line-height:1.4}
-.screen-star-list span{white-space:normal}
+.screen-star-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 9px;margin:3px 0;font-size:10px;line-height:1.35}
+.screen-star-list span{white-space:normal;min-width:0}
 .screen-star-list strong{font-weight:700}
 .screen-star-guide small{font-size:8px;color:#666;line-height:1.4;display:block}
 @media screen and (max-width:650px){
- .screen-star-list{font-size:10px}
+ .screen-star-list{font-size:10px;grid-template-columns:1fr 1fr}
  .screen-star-guide>b{font-size:12px}
  .screen-star-guide small{font-size:10px}
 }
@@ -934,6 +934,42 @@ function natalStarResult(c,pillars,base,table){
  }
  return {matches:[...matches],reason:reasons.join(" ／ ")};
 }
+const SCREEN_STAR_SUMMARIES={
+ "天徳貴神": "助言を受け、対立を和らげる",
+ "月徳貴神": "協力を得て問題を穏やかに整える",
+ "天徳合": "仲介や助けを受け、協力して進める",
+ "月徳合": "話し合いで協力関係をつくる",
+ "華蓋": "研究・芸術などを深く探究する",
+ "天乙貴神": "困ったとき支援者に相談できる",
+ "大極貴神": "知恵や周囲の助けを活かす",
+ "文昌貴神": "学びを整理し、文章や言葉で伝える",
+ "福星貴神": "引き立てや機会を行動に変える",
+ "天厨貴神": "衣食住やもてなしを大切にする",
+ "金与禄": "身近な支えと暮らしの基盤を育てる",
+ "紅艶": "愛嬌と魅力。好意の距離感も大切に",
+ "羊刃": "強い意志と行動力。衝突には注意",
+ "飛刃": "反応の鋭さ。言動の力加減を意識",
+ "魁罡": "独立心と決断力を対話に活かす",
+ "駅馬": "移動や変化に適応する力",
+ "劫殺": "予定外の変化に柔軟に備える",
+ "咸池": "交流での魅力と親密さの距離感",
+ "亡神": "情報を整理し、集中先を選ぶ",
+ "禄馬貴人": "暮らしを支える縁や基盤を活かす",
+ "天官貴人": "任された役割に信頼で応える",
+ "暗禄": "見えにくい支えや経験を活かす",
+ "十干禄": "自立と仕事の土台を築く",
+ "寡宿": "親しい人とも一人の時間を確保",
+ "血刃": "安全確認を促す印。けがの予言ではない",
+ "白虎": "変化に備える印。事故の予言ではない",
+ "妨害殺": "期待や約束を言葉で確かめる",
+ "日刃": "強い意志と相手への配慮を両立",
+ "桃花殺": "対人魅力を信頼づくりに活かす",
+ "淫欲殺": "親密さと互いの境界を尊重する",
+ "囚獄": "契約やルールを丁寧に確認する",
+ "流霞殺": "交流で流されず自分のペースを守る",
+ "隔角": "遠方との縁を環境選びの参考に",
+ "孤辰": "つながりを保ち一人の時間を活かす"
+};
 function natalStarReadings(c){
  const pillars=Object.keys(PILLAR_NAMES).filter(key=>c.pillars[key]).map(key=>[key,c.pillars[key]]);
  return NATAL_STAR_RULES.map(([name,kind,base,table,meaning])=>({name,kind,meaning,...natalStarResult(c,pillars,base,table)}));
@@ -1121,7 +1157,7 @@ function renderScreenReport(c,r){
  const combinations=[["大半会〈算命学〉",x.daihankai],["半会",x.halfCombinations],["三合会局",x.threeHarmonies],["冲（対冲）",x.clashes],["干合",x.stemCombines],["支合",x.branchCombines],["方合",x.directions],["律音",n.repeats],["納音",x.nacchin]].map(([label,pairs])=>`<div><dt>${label}</dt><dd>${pairs.join("、")||"該当なし"}</dd></div>`).join("");
  const [virtue,virtueCombine]=monthlyVirtues(c);
  const activeStars=natalStarReadings(c).filter(r=>r.matches.length);
- const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span><span>通根 ${root||"なし"}</span><span class="screen-pattern">格局（簡易） ${simplePattern(c)}</span><dl class="screen-combinations">${combinations}<div><dt>月徳</dt><dd>${virtue}</dd></div><div><dt>月徳合</dt><dd>${virtueCombine}</dd></div></dl><div class="screen-star-guide"><b>特殊星・神殺の読み方</b><div class="screen-star-list">${activeStars.map(r=>`<span><strong>${r.name}</strong>：${r.meaning}</span>`).join("")||"該当なし"}</div></div></div></section>`;
+ const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span><span>通根 ${root||"なし"}</span><span class="screen-pattern">格局（簡易） ${simplePattern(c)}</span><dl class="screen-combinations">${combinations}<div><dt>月徳</dt><dd>${virtue}</dd></div><div><dt>月徳合</dt><dd>${virtueCombine}</dd></div></dl><div class="screen-star-guide"><b>特殊星・神殺の読み方</b><div class="screen-star-list">${activeStars.map(r=>`<span><strong>${r.name}</strong>：${SCREEN_STAR_SUMMARIES[r.name]||r.meaning}</span>`).join("")||"該当なし"}</div></div></div></section>`;
  const seasonStates=seasonalElementStates(c);
  const elementRows=Object.entries(counts).map(([e,count])=>{const m=ELEMENT_MATCH[e],a=symbolicAdjustment(c,e);return `<tr><th style="color:${m.ink}">${e} ${count}</th><td>${seasonStates[e]}</td><td>${m.color}／${m.taste} <span class="element-body">${m.bodyShort}</span></td><td>${a.text}</td><td>${m.food}${a.mark==="↑"?"（少量の候補）":a.mark==="↓"?"（偏りを控える）":"（適量）"}</td></tr>`}).join("");
  const dayElement=EP[c.day.stem][0],monthElement=EP[c.month.branch][0];
