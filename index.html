@@ -478,6 +478,13 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
  .screen-star-guide>b{font-size:7pt}
  .screen-star-guide small{font-size:6pt}
 }
+/* 横長紙面では行運表を同じ文字基準にそろえ、下端のはみ出しを防ぐ。 */
+@media screen and (min-width:651px){
+ .screen-fate .screen-month-luck th,.screen-fate .screen-month-luck td{font-size:10.5px;line-height:1.2;padding:1px 2px}
+ .screen-fate .screen-twins>section:not(.screen-month-luck) th,.screen-fate .screen-twins>section:not(.screen-month-luck) td{font-size:10.5px;line-height:1.2;padding:1px 2px}
+ .screen-fate .screen-twins>section:not(.screen-month-luck) h2{font-size:12px;padding:3px 5px}
+}
+
 </style>
 </head>
 <body>
