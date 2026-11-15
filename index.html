@@ -790,18 +790,10 @@ function voidBranches(p){return ["戌亥","申酉","午未","辰巳","寅卯","�
 function pillarPairLabel(a,b,part){
  return `${a.name}「${a[part]}」×${b.name}「${b[part]}」`;
 }
-const TENCHU_THEMES={
- "戌亥":"家系や既存の枠との距離を工夫し、理念を自分の行動につなぐ象意です",
- "申酉":"仕事と身近な関係のバランスを自分なりに築く象意です",
- "午未":"目下や後進への伝え方、継承の形を自分で選ぶ象意です",
- "辰巳":"既定の型から離れ、考えを現実の行動に移す象意です",
- "寅卯":"仲間や仕事の場を自分に合う形で築く象意です",
- "子丑":"親や目上から受け継ぐ形にとらわれず、自分の基盤を築く象意です"
-};
 const TENCHU_XUN=["甲子旬","甲戌旬","甲申旬","甲午旬","甲辰旬","甲寅旬"];
 function dayVoidMeaning(c){
  const pair=c.tenchu;
- return `日柱「${c.day.text}」は${TENCHU_XUN[Math.floor(c.day.index/10)]}で、余る二支は${pair.split("").join("・")}。算命学では${TENCHU_THEMES[pair]}。`;
+ return `日柱「${c.day.text}」は${TENCHU_XUN[Math.floor(c.day.index/10)]}。十干と十二支を十組ずつ数えると、${pair.split("").join("・")}が組に入らず、空亡（天中殺）の二支になります。`;
 }
 function extendedNatal(c){
  const entries=["year","month","day","hour"].filter(k=>c.pillars[k]).map(k=>({key:k,name:PILLAR_NAMES[k],...c.pillars[k]})),birthEntries=entries.filter(p=>p.key!=="hour");
