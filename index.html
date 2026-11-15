@@ -654,9 +654,9 @@ function fmt(s){if(!s)return"";const[y,m,d]=s.split("-");return`${y}年 ${m}月 
 function monthP(d,ys){
  const ms=jstInstant(d),start=surroundingSetsu(ms).previous,br=start.branch;
  const order=["寅","卯","辰","巳","午","未","申","酉","戌","亥","子","丑"],first={甲:2,己:2,乙:4,庚:4,丙:6,辛:6,丁:8,壬:8,戊:0,癸:0}[ys],stem=S[(first+order.indexOf(br))%10];
- return {...gz(pillarIndex(stem,br)),days:Math.floor((ms+JST_MS)/DAY_MS)-Math.floor((start.ms+JST_MS)/DAY_MS)+1};
+ return {...gz(pillarIndex(stem,br)),days:Math.max(0,(ms-start.ms)/DAY_MS)};
 }
-function dayP(d){return gz(jdn(d)+49)}function hourP(time,ds){if(!time)return null;const[h,m=0]=time.split(":").map(Number),dec=h+m/60,br=dec>=23||dec<1?"子":B[Math.floor((dec+1)/2)%12],first={甲:0,己:0,乙:2,庚:2,丙:4,辛:4,丁:6,壬:6,戊:8,癸:8}[ds],stem=S[(first+B.indexOf(br))%10];return{stem,branch:br,text:stem+br}}function hs(br,days){return(HIDDEN[br].find(x=>days<=x[0])||HIDDEN[br][HIDDEN[br].length-1])[1]}function star(ds,ts){if(!ts)return"";const[de,dp]=EP[ds],[te,tp]=EP[ts],same=dp===tp;if(de===te)return same?"比肩":"劫財";if(MAKE[de]===te)return same?"食神":"傷官";if(CUT[de]===te)return same?"偏財":"正財";if(CUT[te]===de)return same?"偏官":"正官";return same?"偏印":"印綬"}
+function dayP(d){return gz(jdn(d)+49)}function hourP(time,ds){if(!time)return null;const[h,m=0]=time.split(":").map(Number),dec=h+m/60,br=dec>=23||dec<1?"子":B[Math.floor((dec+1)/2)%12],first={甲:0,己:0,乙:2,庚:2,丙:4,辛:4,丁:6,壬:6,戊:8,癸:8}[ds],stem=S[(first+B.indexOf(br))%10];return{stem,branch:br,text:stem+br}}function hs(br,days){return(HIDDEN[br].find(x=>days<x[0])||HIDDEN[br][HIDDEN[br].length-1])[1]}function star(ds,ts){if(!ts)return"";const[de,dp]=EP[ds],[te,tp]=EP[ts],same=dp===tp;if(de===te)return same?"比肩":"劫財";if(MAKE[de]===te)return same?"食神":"傷官";if(CUT[de]===te)return same?"偏財":"正財";if(CUT[te]===de)return same?"偏官":"正官";return same?"偏印":"印綬"}
 
 // 節入りは太陽の視黄経を数値的に解いて求める（Meeus / NOAA系の近似式）。
 // 固定日や端数処理を使わず、3日=1年・1日=4か月で満年齢に換算。
@@ -882,7 +882,7 @@ function renderNatalInsights(c){
  const [virtue,virtueCombine]=monthlyVirtues(c);
  $("reportMonthVirtue").textContent=virtue+tail;
  $("reportMonthVirtueCombine").textContent=virtueCombine+tail;
- $("natalInsightDetails").textContent="【天中殺の採用方式】六甲空亡の二支を基準に、年・月・日・時間の該当する二支だけを対象とします。日干の陰陽による前後への拡張はしません。年は立春、月は節入り、時刻は日本標準時の十二支で区切ります。生日中殺は年柱の天中殺と日支、日座中殺は日柱の甲戌・乙亥を確認。宿命大半会は年・月・日の二柱が同干で、異なる支が同じ三合組に属する場合。干合・支合は四柱間の所定の二干・二支の組、方合は寅卯辰・巳午未・申酉戌・亥子丑の三支が全てそろう場合に表示します。合化成立までは判定していません。生月中殺・生年中殺は日柱から求めた天中殺の支と月支・年支を照合します。律音は同じ干支が命式の複数の柱にあるかを確認します（歳運・大運との律音はここには含めません）。通根は日干と同じ五行が地支の蔵干にあるかを確認します。【身強・身弱】"+v.strengthReason+"判定は"+v.strength+tail+"。日干と同じ五行または日干を生じる五行を支えとし、地支は月支を除く3支、天干は日干を除く3干を数えます。極身強は得令かつ強める地支・天干が各2つ以上。極身弱は得令なしで弱める地支・天干が各2つ以上。身強は得令と地支または天干の支えがそろう場合、もしくは地支・天干の両方に支えがあり合計3つ以上の場合です。残りは身弱とします。運勢エネルギーの合計は別の指標です。";
+ $("natalInsightDetails").textContent="【天中殺の採用方式】六甲空亡の二支を基準に、年・月・日・時間の該当する二支だけを対象とします。日干の陰陽による前後への拡張はしません。年は立春、月は節入り、時刻は日本標準時の十二支で区切ります。生日中殺は年柱の天中殺と日支、日座中殺は日柱の甲戌・乙亥を確認。宿命大半会は年・月・日の二柱が同干で、異なる支が同じ三合組に属する場合。干合・支合は四柱間の所定の二干・二支の組、方合は寅卯辰・巳午未・申酉戌・亥子丑の三支が全てそろう場合に表示します。合化成立までは判定していません。生月中殺・生年中殺は日柱から求めた天中殺の支と月支・年支を照合します。律音は同じ干支が命式の複数の柱にあるかを確認します（歳運・大運との律音はここには含めません）。通根は日干と同じ五行が地支の蔵干にあるかを確認します。【身強・身弱】"+v.strengthReason+"判定は"+v.strength+tail+"。日干と同じ五行または日干を生じる五行を支えとし、地支は月支を除く3支、天干は日干を除く3干を数えます。極身強は得令かつ強める地支・天干が各2つ以上。極身弱は得令なしで弱める地支・天干が各2つ以上。身強は得令と地支または天干の支えがそろう場合、もしくは地支・天干の両方に支えがあり合計3つ以上の場合です。残りは身弱とします。運勢エネルギーの合計は別の指標です。【蔵干の時間判定】節入り時刻から出生時刻までの経過時間を24時間単位で計算し、月律蔵干早見表の整数日境界で切り替えます。出生時刻不明の場合は12:00を仮定した暫定表示です。古典原図の「分」単位は未採用です。";
 }
 
 // 対応表の並びは日干が甲〜癸、月支・年支・日支が子〜亥。
@@ -1159,7 +1159,7 @@ function symbolicAdjustment(c,e){const v=elementOverview(c),n=v.counts[e],max=Ma
 function compactLuckAge(years){const months=Math.round(years*12);return Math.floor(months/12)+"歳"+(months%12?months%12+"か月":"")}
 function renderScreenReport(c,r){
  const n=natalInsights(c),x=extendedNatal(c),energy=energySummary(c),counts=elementCounts(c),info=daiunInfo(c),year=currentJstYear(),yes=b=>b?"あり":"なし";
- $("screenPerson").textContent=(r.name?r.name+" 様 ／ ":"")+r.date.replaceAll("-","/")+(r.time?" "+r.time:"")+(r.place?" ／ "+r.place:"")+" ／ "+(r.gender||"性別未選択");
+ $("screenPerson").textContent=(r.name?r.name+" 様 ／ ":"")+r.date.replaceAll("-","/")+(r.time?" "+r.time:" 出生時刻不明（蔵干は12:00仮定）")+(r.place?" ／ "+r.place:"")+" ／ "+(r.gender||"性別未選択");
  const keys=[["hour","時柱"],["day","日柱"],["month","月柱"],["year","年柱"]];
  const chartRows=[["天干",p=>pillarCharacter(p.stem)],["地支",p=>pillarCharacter(p.branch)],["蔵干",p=>p.hidden],["通変星",p=>p.stemStar||"日主"],["蔵干星",p=>p.hiddenStar],["十二運",p=>p.twelve]];
  const chart='<table class="screen-chart"><tr><th>宿命</th>'+keys.map(k=>"<th>"+k[1]+"</th>").join("")+"</tr>"+chartRows.map(([name,get])=>"<tr><th>"+name+"</th>"+keys.map(([key])=>"<td>"+(c.pillars[key]?get(c.pillars[key]):"—")+"</td>").join("")+"</tr>").join("")+"</table>";
