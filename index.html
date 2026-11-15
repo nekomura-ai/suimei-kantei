@@ -801,7 +801,7 @@ const TENCHU_THEMES={
 const TENCHU_XUN=["甲子旬","甲戌旬","甲申旬","甲午旬","甲辰旬","甲寅旬"];
 function dayVoidMeaning(c){
  const pair=c.tenchu;
- return `日柱「${c.day.text}」は${TENCHU_XUN[Math.floor(c.day.index/10)]}で、余る二支は${pair.split("").join("・")}。算命学では${TENCHU_THEMES[pair]}。この二支が巡る年・月は、予定や判断を見直す目安とし、吉凶を決めつけません。`;
+ return `日柱「${c.day.text}」は${TENCHU_XUN[Math.floor(c.day.index/10)]}で、余る二支は${pair.split("").join("・")}。算命学では${TENCHU_THEMES[pair]}。`;
 }
 function extendedNatal(c){
  const entries=["year","month","day","hour"].filter(k=>c.pillars[k]).map(k=>({key:k,name:PILLAR_NAMES[k],...c.pillars[k]})),birthEntries=entries.filter(p=>p.key!=="hour");
