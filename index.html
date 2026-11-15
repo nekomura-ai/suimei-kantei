@@ -458,8 +458,11 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
  .screen-report-frame .screen-report{width:100%!important;transform:none!important}
 }
 
-/* 鑑定書は左右の余白まで使う。 */
+/* 横向きの画面では鑑定書だけを本文幅から広げ、画面の余白を使う。 */
 .screen-report-frame{max-width:none}
+@media screen and (min-width:901px){
+ .screen-report-frame{width:calc(100vw - 28px);margin-left:calc(50% - 50vw + 14px);margin-right:0}
+}
 
 .screen-points .screen-exclusions{display:inline-flex;gap:.8em;max-width:100%}
 
