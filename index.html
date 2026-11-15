@@ -272,6 +272,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 .screen-points{display:flex;flex-wrap:wrap;gap:1px .8em;font-size:8px;line-height:1.4;border:1px solid #aaa;border-top:0;padding:4px 3px;overflow-wrap:anywhere}
 .screen-points span{white-space:nowrap}
 .screen-points .screen-pattern{white-space:normal}
+.screen-tenchu-meaning{flex-basis:100%;margin:2px 0;line-height:1.45;white-space:normal}.screen-tenchu-meaning b{font-weight:700}
 .screen-combinations{display:flex;flex-wrap:wrap;gap:1px .8em;flex-basis:100%;margin:2px 0 0;padding-top:2px;border-top:1px solid #ddd}
 .screen-combinations>div{max-width:100%}
 .screen-combinations dt,.screen-combinations dd{display:inline;margin:0}
@@ -554,6 +555,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 <dl><div><dt>生月中殺</dt><dd id="reportMonthExclusion">未算出</dd></div>
 <div><dt>生年中殺</dt><dd id="reportYearExclusion">未算出</dd></div>
 <div><dt>生日中殺</dt><dd id="reportDayExclusion">未算出</dd></div>
+<div><dt>日柱の天中殺（二支）</dt><dd id="reportDayVoidMeaning">未算出</dd></div>
 <div><dt>日座中殺</dt><dd id="reportSeatedExclusion">未算出</dd></div>
 <div><dt>大半会〈算命学〉</dt><dd class="report-combination" id="reportDaihankai">未算出</dd></div>
 <div><dt>半会</dt><dd class="report-combination" id="reportHalfCombinations">未算出</dd></div>
@@ -788,6 +790,19 @@ function voidBranches(p){return ["戌亥","申酉","午未","辰巳","寅卯","�
 function pillarPairLabel(a,b,part){
  return `${a.name}「${a[part]}」×${b.name}「${b[part]}」`;
 }
+const TENCHU_THEMES={
+ "戌亥":"家系や既存の枠との距離を工夫し、理念を自分の行動につなぐ象意です",
+ "申酉":"仕事と身近な関係のバランスを自分なりに築く象意です",
+ "午未":"目下や後進への伝え方、継承の形を自分で選ぶ象意です",
+ "辰巳":"既定の型から離れ、考えを現実の行動に移す象意です",
+ "寅卯":"仲間や仕事の場を自分に合う形で築く象意です",
+ "子丑":"親や目上から受け継ぐ形にとらわれず、自分の基盤を築く象意です"
+};
+const TENCHU_XUN=["甲子旬","甲戌旬","甲申旬","甲午旬","甲辰旬","甲寅旬"];
+function dayVoidMeaning(c){
+ const pair=c.tenchu;
+ return `日柱「${c.day.text}」は${TENCHU_XUN[Math.floor(c.day.index/10)]}で、余る二支は${pair.split("").join("・")}。算命学では${TENCHU_THEMES[pair]}。この二支が巡る年・月は、予定や判断を見直す目安とし、吉凶を決めつけません。`;
+}
 function extendedNatal(c){
  const entries=["year","month","day","hour"].filter(k=>c.pillars[k]).map(k=>({key:k,name:PILLAR_NAMES[k],...c.pillars[k]})),birthEntries=entries.filter(p=>p.key!=="hour");
  const stemCombines=[],branchCombines=[],daihankai=[],halfCombinations=[],clashes=[],nacchin=[],stemPairs=[["甲","己"],["乙","庚"],["丙","辛"],["丁","壬"],["戊","癸"]],branchPairs=[["子","丑"],["寅","亥"],["卯","戌"],["辰","酉"],["巳","申"],["午","未"]];
@@ -865,6 +880,7 @@ function renderNatalInsights(c){
  $("reportMonthExclusion").textContent=(v.monthExclusion?"該当":"該当なし")+"（月支"+c.month.branch+"／天中殺"+c.tenchu+"）";
  $("reportYearExclusion").textContent=(v.yearExclusion?"該当":"該当なし")+"（年支"+c.year.branch+"）";
  $("reportDayExclusion").textContent=(x.dayExclusion?"該当":"該当なし")+"（年柱の天中殺"+x.yearVoid+"／日支"+c.day.branch+"）";
+ $("reportDayVoidMeaning").textContent=dayVoidMeaning(c);
  $("reportSeatedExclusion").textContent=x.seated?"該当（日柱"+c.day.text+"）":"該当なし";
  $("reportDaihankai").textContent=x.daihankai.join("\n")||"該当なし";
  $("reportHalfCombinations").textContent=(x.halfCombinations.join("\n")||"該当なし")+tail;
@@ -1008,7 +1024,7 @@ function clearReport(){
  $("comprehensiveSections").innerHTML="";$("readingCharCount").textContent="約1,000文字・9項目";$("readingBasis").textContent="生年月日を入力すると、9項目の鑑定文を表示します。";
  $("screenPerson").textContent="生年月日を入力してください";$("screenContent").innerHTML='<p class="screen-empty">情報を入力すると、この一枚に鑑定結果を表示します。</p>';
  $("monthLuckTable").innerHTML="";$("hourLuckTable").innerHTML="";$("monthLuckSummary").textContent="生年月日を入力すると表示します。";$("hourLuckSummary").textContent="生年月日を入力すると表示します。";scheduleReportView();
- for(const id of ["reportMonthExclusion","reportYearExclusion","reportDayExclusion","reportSeatedExclusion","reportDaihankai","reportHalfCombinations","reportThreeHarmonies","reportClashes","reportStemCombine","reportBranchCombine","reportDirectionalCombine","reportRepeatedPillar","reportNacchin","reportRoot","reportPattern","reportMonthVirtue","reportMonthVirtueCombine","reportStrength"])$(id).textContent="未算出";
+ for(const id of ["reportMonthExclusion","reportYearExclusion","reportDayExclusion","reportDayVoidMeaning","reportSeatedExclusion","reportDaihankai","reportHalfCombinations","reportThreeHarmonies","reportClashes","reportStemCombine","reportBranchCombine","reportDirectionalCombine","reportRepeatedPillar","reportNacchin","reportRoot","reportPattern","reportMonthVirtue","reportMonthVirtueCombine","reportStrength"])$(id).textContent="未算出";
  $("natalInsightDetails").textContent="命式を入力すると判定根拠を表示します。";
  for(const k of ["hour","day","month","year"])for(const prefix of ["p","h","s","hs","u"])$(prefix+"-"+k).textContent="";
  $("tenchuCell").textContent="";$("yearLuckTable").innerHTML="";$("daiunTable").innerHTML="";
@@ -1169,7 +1185,7 @@ function renderScreenReport(c,r){
  const combinations=[["大半会〈算命学〉",x.daihankai],["半会",x.halfCombinations],["三合会局",x.threeHarmonies],["冲（対冲）",x.clashes],["干合",x.stemCombines],["支合",x.branchCombines],["方合",x.directions],["律音",n.repeats],["納音",x.nacchin]].map(([label,pairs])=>`<div><dt>${label}</dt><dd>${pairs.join("、")||"該当なし"}</dd></div>`).join("");
  const [virtue,virtueCombine]=monthlyVirtues(c);
  const activeStars=natalStarReadings(c).filter(r=>r.matches.length);
- const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span><span>通根 ${root||"なし"}</span><span class="screen-pattern">格局（簡易） ${simplePattern(c)}</span><dl class="screen-combinations">${combinations}<div><dt>月徳</dt><dd>${virtue}</dd></div><div><dt>月徳合</dt><dd>${virtueCombine}</dd></div></dl><div class="screen-star-guide"><b>特殊星・神殺の読み方</b><div class="screen-star-list">${activeStars.map(r=>`<span><strong>${r.name}</strong>：${SCREEN_STAR_SUMMARIES[r.name]||r.meaning}</span>`).join("")||"該当なし"}</div></div></div></section>`;
+ const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span><span>通根 ${root||"なし"}</span><span class="screen-pattern">格局（簡易） ${simplePattern(c)}</span><div class="screen-tenchu-meaning"><b>日柱の天中殺・${c.tenchu}：</b>${dayVoidMeaning(c)}</div><dl class="screen-combinations">${combinations}<div><dt>月徳</dt><dd>${virtue}</dd></div><div><dt>月徳合</dt><dd>${virtueCombine}</dd></div></dl><div class="screen-star-guide"><b>特殊星・神殺の読み方</b><div class="screen-star-list">${activeStars.map(r=>`<span><strong>${r.name}</strong>：${SCREEN_STAR_SUMMARIES[r.name]||r.meaning}</span>`).join("")||"該当なし"}</div></div></div></section>`;
  const seasonStates=seasonalElementStates(c);
  const elementRows=Object.entries(counts).map(([e,count])=>{const m=ELEMENT_MATCH[e],a=symbolicAdjustment(c,e);return `<tr><th style="color:${m.ink}">${e} ${count}</th><td>${seasonStates[e]}</td><td>${m.color}／${m.taste} <span class="element-body">${m.bodyShort}</span></td><td>${a.text}</td><td>${m.food}${a.mark==="↑"?"（少量の候補）":a.mark==="↓"?"（偏りを控える）":"（適量）"}</td></tr>`}).join("");
  const dayElement=EP[c.day.stem][0],monthElement=EP[c.month.branch][0];
