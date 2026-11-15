@@ -463,6 +463,9 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 @media screen and (min-width:901px){
  .screen-report-frame{width:calc(100vw - 28px);margin-left:calc(50% - 50vw + 14px);margin-right:0}
 }
+@media screen and (min-width:651px){
+ .screen-report{aspect-ratio:auto}
+}
 
 .screen-points .screen-exclusions{display:inline-flex;gap:.8em;max-width:100%}
 
@@ -1227,12 +1230,20 @@ function fitCompactScreen(){
  const panel=$("screenReport"),stage=$("screenReportStage"),frame=$("screenReportFrame");
  if(!panel?.style||!stage?.style||!frame)return;
  panel.setAttribute("data-density","normal");
+ frame.style.width="";frame.style.marginLeft="";frame.style.marginRight="";
  if(window.matchMedia?.("(max-width:650px)").matches){
   panel.style.width="100%";panel.style.transform="none";
   stage.style.width="100%";stage.style.height="auto";
   return;
  }
- const naturalWidth=1080;
+ // 拡大・縮小したモバイル画面では、見えている幅を紙面に使う。
+ const viewport=window.visualViewport,visibleWidth=viewport?.width||window.innerWidth;
+ if(visibleWidth>window.innerWidth+32){
+  frame.style.width=Math.floor(visibleWidth-28)+"px";
+  frame.style.marginLeft=Math.round((viewport.offsetLeft||0)+14-frame.parentElement.getBoundingClientRect().left)+"px";
+  frame.style.marginRight="0";
+ }
+ const naturalWidth=Math.min(1600,Math.max(1080,Math.round(frame.clientWidth/1.22)));
  panel.style.width=naturalWidth+"px";
  const scale=Math.max(1,frame.clientWidth)/naturalWidth;
  panel.style.transform="scale("+scale+")";
