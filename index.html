@@ -1190,6 +1190,7 @@ function renderScreenReport(c,r){
   `命式全体の簡易判定は${n.strength}。日干と同じ五行が地支の蔵干に見つかるのは${n.roots.length}柱です${n.partial?"（時柱未入力のため暫定）":""}。`,
   `月柱の蔵干通変星「${c.pillars.month.hiddenStar}」が示す${SOCIAL_READING[c.pillars.month.hiddenStar]}を、仕事や活動で発揮する軸にしましょう。`,
   `日支の蔵干通変星「${c.pillars.day.hiddenStar}」が示す${INNER_READING[c.pillars.day.hiddenStar]}を大切に。相手と役割や距離感を言葉で確かめましょう。`,
+  `日干の得意な判断と月支が示す社会での役割を分けて考え、引き受けることを言葉にして周囲と共有しましょう。月に一度、進めたことと負担になったことを振り返り、続ける活動を選び直すと持ち味を活かしやすくなります。`,
   `${useStrength}。まずは今週の役割を一つ決め、小さく試して振り返りましょう。`
  ].join("");
  const hours=hourPeriods(c),active=hours.filter(h=>h.suggested).sort((a,b)=>a.start-b.start).map(h=>h.start+"–"+h.end).join("・"),quiet=hours.filter(h=>h.tenchu).map(h=>h.start+"–"+h.end).join("・");
