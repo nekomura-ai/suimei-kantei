@@ -654,7 +654,7 @@ function fmt(s){if(!s)return"";const[y,m,d]=s.split("-");return`${y}年 ${m}月 
 function monthP(d,ys){
  const ms=jstInstant(d),start=surroundingSetsu(ms).previous,br=start.branch;
  const order=["寅","卯","辰","巳","午","未","申","酉","戌","亥","子","丑"],first={甲:2,己:2,乙:4,庚:4,丙:6,辛:6,丁:8,壬:8,戊:0,癸:0}[ys],stem=S[(first+order.indexOf(br))%10];
- return {...gz(pillarIndex(stem,br)),days:Math.max(0,Math.floor((ms-start.ms)/DAY_MS))};
+ return {...gz(pillarIndex(stem,br)),days:Math.floor((ms+JST_MS)/DAY_MS)-Math.floor((start.ms+JST_MS)/DAY_MS)+1};
 }
 function dayP(d){return gz(jdn(d)+49)}function hourP(time,ds){if(!time)return null;const[h,m=0]=time.split(":").map(Number),dec=h+m/60,br=dec>=23||dec<1?"子":B[Math.floor((dec+1)/2)%12],first={甲:0,己:0,乙:2,庚:2,丙:4,辛:4,丁:6,壬:6,戊:8,癸:8}[ds],stem=S[(first+B.indexOf(br))%10];return{stem,branch:br,text:stem+br}}function hs(br,days){return(HIDDEN[br].find(x=>days<=x[0])||HIDDEN[br][HIDDEN[br].length-1])[1]}function star(ds,ts){if(!ts)return"";const[de,dp]=EP[ds],[te,tp]=EP[ts],same=dp===tp;if(de===te)return same?"比肩":"劫財";if(MAKE[de]===te)return same?"食神":"傷官";if(CUT[de]===te)return same?"偏財":"正財";if(CUT[te]===de)return same?"偏官":"正官";return same?"偏印":"印綬"}
 
