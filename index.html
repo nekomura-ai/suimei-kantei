@@ -263,6 +263,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 .screen-month-luck td:last-child{text-align:left}
 .screen-month-luck td span{display:inline;margin-inline-start:.25em;white-space:normal}
 .screen-month-luck h2 small{display:block;font-size:.8em;font-weight:400}
+.screen-month-ganzhi{white-space:nowrap;font-weight:700}
 .screen-twins>section:nth-child(n+2) h2{white-space:nowrap;letter-spacing:-.04em}
 .screen-year-reason,.annual-reason{display:block;line-height:1.25;font-size:.82em;font-weight:400;overflow-wrap:anywhere}.screen-year-reason{margin-top:1px;color:#444}
 .screen-year-luck th:first-child{width:26%}
@@ -1266,7 +1267,7 @@ function renderScreenReport(c,r){
   const {mark,tenchu,details}=monthlyBranchLuck(c,pillar.branch);
   const notes=[...details];
   if(tenchu)notes.push("天中殺");
-  return `<td class="${tenchu?"screen-tenchu-cell":""}"><strong>${mark}</strong>${notes.map(note=>`<span>${note}</span>`).join("")} ${periodStars(c,pillar)}</td>`;
+  return `<td class="${tenchu?"screen-tenchu-cell":""}"><b class="screen-month-ganzhi">${pillar.text}</b> <strong>${mark}</strong>${notes.map(note=>`<span>${note}</span>`).join("")} ${periodStars(c,pillar)}</td>`;
  }).join("")}</tr>`).join("");
  const currentMonth=monthPeriods(year).find(p=>Date.now()>=p.start.ms&&Date.now()<p.end.ms);
  $("screenContent").innerHTML=`<div class="screen-natal">`+chart+`<div class="screen-meta"><span class="screen-void-pair"><span>日柱の天中殺 <b>${c.tenchu}</b>〈二支〉</span><span>年柱の天中殺 <b>${x.yearVoid}</b>〈二支〉</span></span><span>エネルギー <b>${energy.total}</b>（${energy.level}）</span><span>${n.strength}${n.partial?"（暫定）":""}</span></div>
