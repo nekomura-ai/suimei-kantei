@@ -520,6 +520,25 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
  .screen-year-luck td:last-child{white-space:nowrap;text-align:left}
  .screen-year-reason{display:inline;white-space:nowrap;font-size:6pt;margin-left:.2em}
 }
+/* 左欄の余白を食材の例に配分し、各食材を一行で読む。 */
+@media screen and (min-width:651px){
+ .screen-elements table{table-layout:fixed}
+ .screen-elements table th:first-child{width:12%}
+ .screen-elements table th:nth-child(2){width:14%}
+ .screen-elements table th:nth-child(3){width:19%}
+ .screen-elements table th:nth-child(4){width:17%}
+ .screen-elements table th:nth-child(5){width:38%}
+ .screen-elements table td:last-child{white-space:nowrap}
+}
+@media print{
+ .screen-report-frame .screen-elements table{table-layout:fixed}
+ .screen-report-frame .screen-elements table th:first-child{width:12%}
+ .screen-report-frame .screen-elements table th:nth-child(2){width:14%}
+ .screen-report-frame .screen-elements table th:nth-child(3){width:19%}
+ .screen-report-frame .screen-elements table th:nth-child(4){width:17%}
+ .screen-report-frame .screen-elements table th:nth-child(5){width:38%}
+ .screen-report-frame .screen-elements table td:last-child{white-space:nowrap}
+}
 </style>
 </head>
 <body>
@@ -1261,7 +1280,7 @@ function renderScreenReport(c,r){
  const combinations=[["大半会〈算命学〉",x.daihankai],["半会",x.halfCombinations],["三合会局",x.threeHarmonies],["冲（対冲）",x.clashes],["干合",x.stemCombines],["支合",x.branchCombines],["方合",x.directions],["律音",n.repeats],["納音",x.nacchin]].map(([label,pairs])=>`<div><dt>${label}</dt><dd>${pairs.join("、")||"該当なし"}</dd></div>`).join("");
  const [virtue,virtueCombine]=monthlyVirtues(c);
  const activeStars=natalStarReadings(c).filter(r=>r.matches.length);
- const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span><span>通根 ${root||"なし"}</span><span class="screen-pattern">格局（簡易） ${simplePattern(c)}</span><div class="screen-tenchu-meaning"><b>日柱の天中殺：</b>${dayVoidMeaning(c)}</div><dl class="screen-combinations">${combinations}<div><dt>月徳</dt><dd>${virtue}</dd></div><div><dt>月徳合</dt><dd>${virtueCombine}</dd></div></dl><div class="screen-star-guide"><b>特殊星・神殺の読み方</b><div class="screen-star-list">${activeStars.map(r=>`<span><strong>${r.name}</strong>：${SCREEN_STAR_SUMMARIES[r.name]||r.meaning}</span>`).join("")||"該当なし"}</div></div></div></section>`;
+ const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span><span>通根 ${root||"なし"}</span><span class="screen-pattern">格局（簡易） ${simplePattern(c)}</span><div class="screen-tenchu-meaning"><b>日柱の天中殺：</b>${dayVoidMeaning(c)}</div><dl class="screen-combinations">${combinations}<div><dt>月徳</dt><dd>${virtue}</dd></div><div><dt>月徳合</dt><dd>${virtueCombine}</dd></div></dl><div class="screen-star-guide"><b>持っている特殊星の意味</b><div class="screen-star-list">${activeStars.map(r=>`<span><strong>${r.name}</strong>：${SCREEN_STAR_SUMMARIES[r.name]||r.meaning}</span>`).join("")||"該当なし"}</div></div></div></section>`;
  const seasonStates=seasonalElementStates(c);
  const elementRows=Object.entries(counts).map(([e,count])=>{const m=ELEMENT_MATCH[e],a=symbolicAdjustment(c,e);return `<tr><th style="color:${m.ink}">${e} ${count}</th><td>${seasonStates[e]}</td><td>${m.color}／${m.taste} <span class="element-body">${m.bodyShort}</span></td><td>${a.text}</td><td>${m.food}${a.mark==="↑"?"（少量の候補）":a.mark==="↓"?"（偏りを控える）":"（適量）"}</td></tr>`}).join("");
  const dayElement=EP[c.day.stem][0],monthElement=EP[c.month.branch][0];
