@@ -499,6 +499,27 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
  .screen-natal .screen-elements h2{padding:3px 5px}
 }
 
+/* 歳運の根拠を横一列で読み、右側に運気表の幅を確保する。 */
+@media screen and (min-width:651px){
+ .screen-content{grid-template-columns:minmax(0,42fr) minmax(0,58fr)}
+ .screen-twins{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr)}
+ .screen-year-luck th:first-child{width:15%}
+ .screen-year-luck th:nth-child(2){width:13%}
+ .screen-year-luck td:last-child{text-align:left;white-space:nowrap;overflow-wrap:normal}
+ .screen-year-reason{display:inline;white-space:nowrap;overflow-wrap:normal;font-size:8px;margin-left:.2em}
+}
+@media screen and (max-width:650px){
+ .screen-year-luck td:last-child{white-space:normal}
+ .screen-year-reason{display:block;white-space:normal}
+}
+@media print{
+ .screen-report-frame .screen-content{grid-template-columns:minmax(0,42fr) minmax(0,58fr)}
+ .screen-report-frame .screen-twins{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr)}
+ .screen-year-luck th:first-child{width:15%}
+ .screen-year-luck th:nth-child(2){width:13%}
+ .screen-year-luck td:last-child{white-space:nowrap;text-align:left}
+ .screen-year-reason{display:inline;white-space:nowrap;font-size:6pt;margin-left:.2em}
+}
 </style>
 </head>
 <body>
@@ -759,7 +780,7 @@ function annualFortune(c,g,year){
  const decadeReason=decade?`大運${decade.text}の支と年支${g.branch}は${decadeContact.label||"目立つ関係なし"}（年央）`:"大運未算出";
  const briefNatal=contacts.length?contacts.map(x=>`${x.name.slice(0,1)}${x.branch}:${x.label==="支合"?"合":x.label}`).join("・"):"日月:平";
  const briefDecade=decade?`運${decade.text}:${decadeContact.label==="支合"?"合":decadeContact.label||"平"}`:"運:未算";
- const shortReason=`干${g.stem}${element}:${favorable?"喜":"忌"}／${briefNatal}／${briefDecade}`;
+ const shortReason=`干${g.stem}${element}${favorable?"喜":"忌"}・${briefNatal.replaceAll(":","").replaceAll("支合","合")}・${briefDecade.replace(":","")}`;
  return {mark,ten,shortReason,reason:[stemReason,natalReason,decadeReason,...(ten?["天中殺"]:[])].join("／")};
 }
 function luckAdvice(mark,starName,tenchu){if(tenchu)return "天中殺は準備・勉強・貢献を中心に。振り返りや、人を支える活動に使いましょう。";if(mark==="◎")return starName+"を活かし、追い風を使いやすい時。提案、発信、勝負、良縁づくりを具体的に進めましょう。";if(mark==="○")return starName+"が巡るので、準備してきたことを現実に乗せる時。人との約束を守り、小さく実行しましょう。";if(mark==="△")return starName+"のテーマが出るため、焦らず調整する時。衝突を避け、学び直しと体制づくりに使いましょう。";return starName+"のテーマで負荷が出やすい時。無理な拡大は控え、守り・整理・健康管理を優先しましょう。"}
