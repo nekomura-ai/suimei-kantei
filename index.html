@@ -539,6 +539,16 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
  .screen-report-frame .screen-elements table th:nth-child(5){width:38%}
  .screen-report-frame .screen-elements table td:last-child{white-space:nowrap}
 }
+.screen-type-meaning{font-size:10px;line-height:1.35}
+.screen-type-meaning>div{margin-top:2px}
+.screen-type-meaning strong{margin-right:.4em}
+.screen-glossary-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px 15px}
+.screen-glossary-list>div{display:flex;gap:.6em;border-bottom:1px solid #ddd;padding:4px 0}
+.screen-glossary-list b{min-width:3em;font-weight:500}
+.screen-glossary-list .is-present b{font-weight:800}
+.screen-glossary p{line-height:1.5}
+@media screen and (max-width:650px){.screen-glossary-list{grid-template-columns:1fr}}
+@media print{.screen-type-meaning{font-size:6.5pt}.screen-glossary{display:none}}
 </style>
 </head>
 <body>
@@ -631,6 +641,7 @@ body[data-report-view="portrait"] .timing-guide,body[data-report-view="portrait"
 </div></div>
 <footer class="report-footer"><span>四柱推命鑑定システム</span><span>自分を知り、これからの選択へ。</span></footer>
 </article></div></div>
+<details class="calculation-detail screen-glossary"><summary>通変星・十二運の意味を見る</summary><div id="screenStarGlossary">生年月日を入力すると表示します。</div></details>
 <details class="calculation-detail"><summary>立運・命式の判定根拠を見る</summary><p class="note" id="natalInsightDetails">命式を入力すると判定根拠を表示します。</p><p class="note" id="daiunNote">大運は日本標準時の出生日時と節入り時刻から計算します。</p><p class="note">月徳・月徳合は出生月支に対応する天干を各柱で照合します。出典：<a href="https://www.donglishuzhai.net/chapter/12775.html">『淵海子平』論月徳貴人</a>・<a href="https://www.shidianguji.com/zh/book/SK1610/chapter/1kf5v6v49rvad">『三命通会』論天月徳</a>。調候候補は<a href="https://uranairenai.com/shichusuimei-guardian/">『窮通宝鑑』系の対照表</a>を参照し、庚日・酉月は<a href="https://tool.shixingji.club/library/qiongtongbaojian">「八月庚金」</a>の補助の丙も表示します。</p><p class="note">食事の参考：<a href="https://www.maff.go.jp/j/syokuiku/shishinn.html" target="_blank" rel="noopener">農林水産省「食生活指針」</a>。五行別の食材は、色や食品の種類を広げるための例です。病気の予防・治療効果を五行から判断したものではありません。</p><p class="note">身体配当の参考：<a href="https://www.kotaro.co.jp/kampo/kiso/gozo/" target="_blank" rel="noopener">小太郎漢方製薬「生命活動の5本柱・五臓」</a>。伝統的な五臓・五官・五体の分類として掲載しています。</p></details>
 
 <section class="timing-guide" id="timingGuide" aria-label="月ごとと一日の過ごし方">
@@ -1117,7 +1128,7 @@ function renderReportExtras(c,r){
 function clearReport(){
  $("natalStarTable").innerHTML="";$("natalStarStatus").textContent="生年月日を入力すると判定します。";$("natalStarAppendix").classList?.remove("has-results");$("shinsatsu").textContent="未算出";
  $("comprehensiveSections").innerHTML="";$("readingCharCount").textContent="約1,000文字・9項目";$("readingBasis").textContent="生年月日を入力すると、9項目の鑑定文を表示します。";
- $("screenPerson").textContent="生年月日を入力してください";$("screenContent").innerHTML='<p class="screen-empty">情報を入力すると、この一枚に鑑定結果を表示します。</p>';
+ $("screenStarGlossary").textContent="生年月日を入力すると表示します。";$("screenPerson").textContent="生年月日を入力してください";$("screenContent").innerHTML='<p class="screen-empty">情報を入力すると、この一枚に鑑定結果を表示します。</p>';
  $("monthLuckTable").innerHTML="";$("hourLuckTable").innerHTML="";$("monthLuckSummary").textContent="生年月日を入力すると表示します。";$("hourLuckSummary").textContent="生年月日を入力すると表示します。";scheduleReportView();
  for(const id of ["reportMonthExclusion","reportYearExclusion","reportDayExclusion","reportDayVoidMeaning","reportSeatedExclusion","reportDaihankai","reportHalfCombinations","reportThreeHarmonies","reportClashes","reportStemCombine","reportBranchCombine","reportDirectionalCombine","reportRepeatedPillar","reportNacchin","reportRoot","reportPattern","reportMonthVirtue","reportMonthVirtueCombine","reportStrength"])$(id).textContent="未算出";
  $("natalInsightDetails").textContent="命式を入力すると判定根拠を表示します。";
@@ -1268,6 +1279,18 @@ $("luckYear").value=String(currentJstYear());$("luckYear").addEventListener("inp
 const ELEMENT_MATCH={木:{organs:"肝・胆",sense:"目",parts:"筋・爪",bodyShort:"肝／目・筋",color:"青・緑",taste:"酸",ink:"#28724b",food:"青菜・柑橘"},火:{organs:"心・小腸",sense:"舌",parts:"血脈",bodyShort:"心／舌・脈",color:"赤",taste:"苦",ink:"#aa382c",food:"ゴーヤ・春菊"},土:{organs:"脾・胃",sense:"口",parts:"肌肉・唇",bodyShort:"脾／口・肌肉",color:"黄",taste:"甘",ink:"#8a690f",food:"かぼちゃ・いも"},金:{organs:"肺・大腸",sense:"鼻",parts:"皮膚・毛",bodyShort:"肺／鼻・皮膚",color:"白",taste:"辛",ink:"#5e6770",food:"大根・ねぎ"},水:{organs:"腎・膀胱",sense:"耳",parts:"骨・髪",bodyShort:"腎／耳・骨",color:"黒",taste:"鹹",ink:"#294e72",food:"魚・海藻"}};
 function symbolicAdjustment(c,e){const v=elementOverview(c),n=v.counts[e],max=Math.max(...Object.values(v.counts)),min=Math.min(...Object.values(v.counts));if(max===min)return {mark:"→",text:"色：今のまま",food:"食材は偏らず"};if(n===min)return {mark:"↑",text:"色：取り入れる",food:e==="水"?"塩分を増やさず魚・海藻を適量":e==="土"?"菓子でなく芋などを適量":ELEMENT_MATCH[e].food+"を少量の候補に"};if(n===max)return {mark:"↓",text:"色：控えめ",food:"同じ食材に偏らない"};return {mark:"→",text:"色：今のまま",food:"食材は偏らず"};}
 function compactLuckAge(years){const months=Math.round(years*12);return Math.floor(months/12)+"歳"+(months%12?months%12+"か月":"")}
+const SCREEN_TEN_GOD_MEANINGS={
+ 比肩:"自分の判断で進める力。周囲との役割分担も大切",劫財:"人と組み、目標へ動かす力。相手の意思も確かめる",食神:"楽しみを形にし、安心感を広げる力",傷官:"違和感に気づき、技術や言葉で改善する力",偏財:"人との接点を広げ、機会をつなぐ力",正財:"約束を守り、信用と成果を積み重ねる力",偏官:"変化に向き合い、決断して動く力",正官:"責任と秩序を整え、信頼を育てる力",偏印:"異なる視点を結び、新しい方法を探す力",印綬:"学びを蓄え、人に伝え育てる力"
+};
+const SCREEN_TWELVE_MEANINGS={
+ 長生:"新しい環境で学び、育ち始める勢い",沐浴:"好奇心から試し、変化を取り込む勢い",冠帯:"自分の考えを外へ示し、経験を広げる勢い",建禄:"自立して着実に形にする勢い",帝旺:"自分の力で大きく前へ進める勢い",衰:"経験を活かし、力の使い方を選ぶ時期",病:"感受性を活かし、観察を深める状態",死:"内省し、考えを熟成させる状態",墓:"蓄えた経験を整理して残す状態",絶:"古い形を手放し、新しい方向を探す状態",胎:"可能性を温め、発想を育てる状態",養:"支えを受けながら、力を育てる状態"
+};
+function screenStarGlossary(c){
+ const ten=Object.values(c.pillars).filter(Boolean).flatMap(p=>[p.stemStar,p.hiddenStar]).filter(x=>x&&x!=="日主");
+ const twelve=Object.values(c.pillars).filter(Boolean).map(p=>p.twelve).filter(Boolean);
+ const list=(dictionary,active)=>Object.entries(dictionary).map(([name,meaning])=>`<div class="${active.includes(name)?"is-present":""}"><b>${name}</b><span>${meaning}</span></div>`).join("");
+ return `<p>太字は命式に現れた星です。通変星は日干から見た天干・蔵干との関係、十二運は日干と各地支の組み合わせです。いずれも一つだけで性格・職業・恋愛を決めません。「病・死・絶」は病気・死亡・不幸の予告ではありません。</p><h3>通変星</h3><div class="screen-glossary-list">${list(SCREEN_TEN_GOD_MEANINGS,ten)}</div><h3>十二運</h3><div class="screen-glossary-list">${list(SCREEN_TWELVE_MEANINGS,twelve)}</div>`;
+}
 function renderScreenReport(c,r){
  const n=natalInsights(c),x=extendedNatal(c),energy=energySummary(c),counts=elementCounts(c),info=daiunInfo(c),year=currentJstYear(),yes=b=>b?"あり":"なし";
  $("screenPerson").textContent=(r.name?r.name+" 様 ／ ":"")+r.date.replaceAll("-","/")+(r.time?" "+r.time:" 出生時刻不明（蔵干は12:00仮定）")+(r.place?" ／ "+r.place:"")+" ／ "+(r.gender||"性別未選択");
@@ -1280,7 +1303,7 @@ function renderScreenReport(c,r){
  const combinations=[["大半会〈算命学〉",x.daihankai],["半会",x.halfCombinations],["三合会局",x.threeHarmonies],["冲（対冲）",x.clashes],["干合",x.stemCombines],["支合",x.branchCombines],["方合",x.directions],["律音",n.repeats],["納音",x.nacchin]].map(([label,pairs])=>`<div><dt>${label}</dt><dd>${pairs.join("、")||"該当なし"}</dd></div>`).join("");
  const [virtue,virtueCombine]=monthlyVirtues(c);
  const activeStars=natalStarReadings(c).filter(r=>r.matches.length);
- const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span><span>通根 ${root||"なし"}</span><span class="screen-pattern">格局（簡易） ${simplePattern(c)}</span><div class="screen-tenchu-meaning"><b>日柱の天中殺：</b>${dayVoidMeaning(c)}</div><dl class="screen-combinations">${combinations}<div><dt>月徳</dt><dd>${virtue}</dd></div><div><dt>月徳合</dt><dd>${virtueCombine}</dd></div></dl><div class="screen-star-guide"><b>持っている特殊星の意味</b><div class="screen-star-list">${activeStars.map(r=>`<span><strong>${r.name}</strong>：${SCREEN_STAR_SUMMARIES[r.name]||r.meaning}</span>`).join("")||"該当なし"}</div></div></div></section>`;
+ const points=`<section><h2>命式のポイント</h2><div class="screen-points"><span>生年中殺 ${yes(n.yearExclusion)}</span><span>生月中殺 ${yes(n.monthExclusion)}</span><span>生日中殺 ${yes(x.dayExclusion)}</span><span>日座中殺 ${yes(x.seated)}</span><span>通根 ${root||"なし"}</span><span class="screen-pattern">格局（簡易） ${simplePattern(c)}</span><div class="screen-tenchu-meaning"><b>日柱の天中殺：</b>${dayVoidMeaning(c)}</div><dl class="screen-combinations">${combinations}<div><dt>月徳</dt><dd>${virtue}</dd></div><div><dt>月徳合</dt><dd>${virtueCombine}</dd></div></dl><div class="screen-star-guide screen-type-meaning"><b>命式に出た通変星・十二運</b><div><strong>通変星</strong> 月柱の蔵干「${c.pillars.month.hiddenStar}」：${SCREEN_TEN_GOD_MEANINGS[c.pillars.month.hiddenStar]} ／ 日柱の蔵干「${c.pillars.day.hiddenStar}」：${SCREEN_TEN_GOD_MEANINGS[c.pillars.day.hiddenStar]}</div><div><strong>十二運</strong> 月柱「${c.pillars.month.twelve}」：${SCREEN_TWELVE_MEANINGS[c.pillars.month.twelve]} ／ 日柱「${c.pillars.day.twelve}」：${SCREEN_TWELVE_MEANINGS[c.pillars.day.twelve]}</div></div><div class="screen-star-guide"><b>持っている特殊星の意味</b><div class="screen-star-list">${activeStars.map(r=>`<span><strong>${r.name}</strong>：${SCREEN_STAR_SUMMARIES[r.name]||r.meaning}</span>`).join("")||"該当なし"}</div></div></div></section>`;
  const seasonStates=seasonalElementStates(c);
  const elementRows=Object.entries(counts).map(([e,count])=>{const m=ELEMENT_MATCH[e],a=symbolicAdjustment(c,e);return `<tr><th style="color:${m.ink}">${e} ${count}</th><td>${seasonStates[e]}</td><td>${m.color}／${m.taste} <span class="element-body">${m.bodyShort}</span></td><td>${a.text}</td><td>${m.food}${a.mark==="↑"?"（少量の候補）":a.mark==="↓"?"（偏りを控える）":"（適量）"}</td></tr>`}).join("");
  const dayElement=EP[c.day.stem][0],monthElement=EP[c.month.branch][0];
@@ -1318,7 +1341,7 @@ function renderScreenReport(c,r){
  <section class="screen-month-luck"><h2>毎月の運気/天中殺<small>${monthYears[0]}–${monthYears[2]}年・地支のみで計算</small></h2><table><tr><th>月期</th>${monthYears.map(y=>`<th>${y}年</th>`).join("")}</tr>${monthRows}</table></section>
  <section class="screen-year-luck"><h2>歳運 ${year-2}–${year+9} <small>喜忌は簡易判定</small></h2><table><tr><th>年</th><th>干支</th><th>運気・星</th></tr>${yearRows}</table></section>
  <section><h2>大運 ${info?(info.forward?"順行":"逆行"):"性別未選択"}</h2><table><tr><th>開始</th><th>干支</th><th>運気・星</th></tr>${decadeRows||'<tr><td colspan="3">性別を選択してください</td></tr>'}</table></section></div></div>`;
- $("screenMemo").textContent=r.memo?"メモ："+r.memo:"";scheduleCompactScreen();
+ $("screenMemo").textContent=r.memo?"メモ："+r.memo:"";$("screenStarGlossary").innerHTML=screenStarGlossary(c);scheduleCompactScreen();
 }
 $("printScreen").onclick=()=>{if(build(current()))window.print()};
 
